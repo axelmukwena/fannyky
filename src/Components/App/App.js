@@ -1,25 +1,14 @@
-import React from 'react';
-import logo from './../../logo.svg';
-import './App.css';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import { Button, Paper } from '@material-ui/core';
+import React from "react";
+import "./App.css";
+import LandingNav from "../Bars/LandingNav";
+import Footer from "../Bars/Footer";
+
 function App() {
-  return (
-    <Container className="App">
-      <Paper>
-        <img src={logo} className="App-logo" alt="logo" />
-        <Typography variant="h4" component="h1" gutterBottom>
-          Create React App + Material-UI
-        </Typography>
-        <Button variant="contained" color="primary">
-          Primary Button
-        </Button>
-        <Button variant="contained" color="secondary">
-          Secondary Button
-        </Button>
-      </Paper>
-    </Container>
-  );
+	return (
+		<div className="App">
+			<LandingNav />
+			
+		</div>
+	);
 }
 export default App;
