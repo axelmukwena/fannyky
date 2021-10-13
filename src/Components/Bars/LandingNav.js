@@ -7,11 +7,10 @@ import clsx from "clsx";
 const useStyles = makeStyles((theme) => ({
 	topBar: {
 		margin: 0,
-		padding: 20,
 		position: "static",
 	},
-	title: {
-		marginLeft: theme.spacing(2),
+	toolBar: {
+		marginLeft: theme.spacing(3),
 		marginTop: theme.spacing(2),
 	},
 	typography: {
@@ -25,13 +24,9 @@ const Navbar = () => {
 	const classes = useStyles();
 
 	return (
-		<AppBar elevation={0} classes={clsx(classes.topBar)}>
-			<Toolbar>
-				<Link
-					href="#"
-					className={clsx(classes.typography, classes.title)}
-					underline="none"
-				>
+		<AppBar color="secondary" elevation={0} className={clsx(classes.topBar)}>
+			<Toolbar className={clsx(classes.toolBar)}>
+				<Link href="#" className={clsx(classes.typography)} underline="none">
 					Works
 				</Link>
 			</Toolbar>

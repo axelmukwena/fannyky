@@ -5,12 +5,12 @@ const theme = createTheme({
 	palette: {
 		type: "light",
 		primary: {
-			main: "#fff",
-			light: "#157d5a",
-			dark: "#15563d",
+			main: "#000",
+			light: "#c7c7c7",
+			dark: "#404040",
 		},
 		secondary: {
-			main: "#15563d",
+			main: "#fff",
 			light: "#61dafb",
 			dark: "#fdb03c",
 		},
@@ -25,7 +25,7 @@ const theme = createTheme({
 		MuiCssBaseline: {
 			styleOverrides: {
 				body: {
-					// color: "#444",
+					color: "#444",
 				},
 			},
 		},
