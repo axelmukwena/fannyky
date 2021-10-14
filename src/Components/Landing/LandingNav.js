@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Link from "@material-ui/core/Link";
+import { AppBar, Toolbar } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,16 +16,17 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 500,
 		fontSize: "1.2rem",
 		color: "#444",
+		textDecoration: "none",
 	},
 }));
 
-const Navbar = () => {
+const LandingNav = () => {
 	const classes = useStyles();
 
 	return (
 		<AppBar color="secondary" elevation={0} className={clsx(classes.topBar)}>
 			<Toolbar className={clsx(classes.toolBar)}>
-				<Link href="#" className={clsx(classes.typography)} underline="none">
+				<Link to="/home" className={clsx(classes.typography)}>
 					Works
 				</Link>
 			</Toolbar>
@@ -34,4 +34,4 @@ const Navbar = () => {
 	);
 };
 
-export default Navbar;
+export default LandingNav;

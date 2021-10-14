@@ -1,9 +1,20 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import LandingNav from "../Bars/LandingNav";
-import Footer from "../Bars/Footer";
+import Footer from "./Footer";
 import clsx from "clsx";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Home from "../Home/Home";
+import Landing from "../Landing/Landing";
+
+class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			CurrentUser: null,
+		};
+	}
+}
 
 const useStyles = makeStyles((theme) => ({
 	container: {},
@@ -14,7 +25,16 @@ function App() {
 
 	return (
 		<div className={clsx(classes.container)}>
-			<LandingNav />
+			<BrowserRouter>
+				<Switch>
+					<Route path="/home">
+						<Home />
+					</Route>
+					<Route path="/">
+						<Landing />
+					</Route>
+				</Switch>
+			</BrowserRouter>
 			<Footer />
 		</div>
 	);

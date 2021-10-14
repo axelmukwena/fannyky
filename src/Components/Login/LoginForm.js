@@ -5,7 +5,15 @@ import {
 	makeStyles,
 	Button,
 	Grid,
+	Link,
+	InputAdornment,
+	FormControl,
+	InputLabel,
+	OutlinedInput,
+	IconButton,
 } from "@material-ui/core";
+
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
 	form: {
@@ -14,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		alignItems: "center",
 		padding: theme.spacing(4),
+		maxWidth: 400,
 		//width: "100%",
 
 		//"& .MuiTextField-root": {
@@ -26,9 +35,10 @@ const useStyles = makeStyles((theme) => ({
 		// width: "100%",
 	},
 	button: {
-		margin: theme.spacing(2),
+		// margin: theme.spacing(2),
+		width: "100%",
 	},
-	typography: {
+	title: {
 		marginBottom: theme.spacing(2),
 		fontWeight: 800,
 		fontSize: "1.2rem",
@@ -36,23 +46,13 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		textAlign: "center",
 	},
-	[theme.breakpoints.down("lg")]: {
-		textFieldStyle: {
-			backgroundColor: "yellow",
-			fontSize: 19,
-		},
-	},
-	[theme.breakpoints.down("md")]: {
-		textFieldStyle: {
-			backgroundColor: "green",
-			fontSize: 17,
-		},
-	},
-	[theme.breakpoints.down("sm")]: {
-		textFieldStyle: {
-			backgroundColor: "blue",
-			fontSize: 15,
-		},
+	forgotPassword: {
+		marginTop: theme.spacing(2),
+		fontWeight: 400,
+		fontSize: "1rem",
+		color: "#222",
+		flexGrow: 1,
+		textAlign: "center",
 	},
 }));
 
@@ -60,7 +60,11 @@ const Form = ({ handleClose }) => {
 	const classes = useStyles();
 	// create state variables for each input
 	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+
+	const [password, setPassword] = React.useState({
+		password: "",
+		showPassword: false,
+	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -68,10 +72,25 @@ const Form = ({ handleClose }) => {
 		handleClose();
 	};
 
+	const handleChange = (prop) => (event) => {
+		setPassword({ ...password, [prop]: event.target.value });
+	};
+
+	const handleClickShowPassword = () => {
+		setPassword({
+			...password,
+			showPassword: !password.showPassword,
+		});
+	};
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
+
 	return (
 		<div>
 			<form className={classes.form} onSubmit={handleSubmit}>
-				<Typography variant="h3" className={classes.typography}>
+				<Typography variant="h3" className={classes.title}>
 					Admin Login Panel
 				</Typography>
 
@@ -89,37 +108,59 @@ const Form = ({ handleClose }) => {
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</Grid>
+
 					<Grid item lg={12} xs={12} md={12}>
-						<TextField
-							fullWidth
-							label="Password"
-							variant="outlined"
-							type="password"
-							name="password"
-							required
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
+						<FormControl required fullWidth variant="outlined">
+							<InputLabel htmlFor="outlined-adornment-password">
+								Password
+							</InputLabel>
+							<OutlinedInput
+								id="outlined-adornment-password"
+								type={password.showPassword ? "text" : "password"}
+                                name="password"
+								value={password.password}
+								onChange={handleChange("password")}
+								endAdornment={
+									<InputAdornment position="end">
+										<IconButton
+											aria-label="toggle password visibility"
+											onClick={handleClickShowPassword}
+											onMouseDown={handleMouseDownPassword}
+											edge="end"
+										>
+											{password.showPassword ? <VisibilityOff /> : <Visibility />}
+										</IconButton>
+									</InputAdornment>
+								}
+								label="Password"
+							/>
+						</FormControl>
+					</Grid>
+
+					<Grid item lg={6} xs={6} md={6}>
+						<Button
+							className={classes.button}
+							variant="contained"
+							onClick={handleClose}
+						>
+							Cancel
+						</Button>
+					</Grid>
+					<Grid item lg={6} xs={6} md={6}>
+						<Button
+							className={classes.button}
+							type="submit"
+							variant="contained"
+							color="primary"
+						>
+							Signup
+						</Button>
 					</Grid>
 				</Grid>
 
-				<div>
-					<Button
-						className={classes.button}
-						variant="contained"
-						onClick={handleClose}
-					>
-						Cancel
-					</Button>
-					<Button
-						className={classes.button}
-						type="submit"
-						variant="contained"
-						color="primary"
-					>
-						Signup
-					</Button>
-				</div>
+				<Link href="#" className={classes.forgotPassword}>
+					Forgot password?
+				</Link>
 			</form>
 		</div>
 	);
