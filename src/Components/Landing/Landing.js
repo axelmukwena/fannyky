@@ -1,7 +1,7 @@
 import React from "react";
 import LandingNav from "./LandingNav";
 
-export default function Landing() {
+function Landing() {
 	return (
 		<div>
             <LandingNav />
@@ -9,3 +9,5 @@ export default function Landing() {
 		</div>
 	);
 }
+
+export default Landing;

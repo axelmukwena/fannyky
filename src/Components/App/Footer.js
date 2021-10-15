@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import clsx from "clsx";
-import { Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import ModalDialog from "./../Login/ModalDialog";
+import {
+	capitalize,
+	Typography,
+	Toolbar,
+	AppBar,
+	Button,
+} from "@material-ui/core";
+import ModalDialog from "../Login/ModalDialog";
+import { UserContext } from "../Globals/UserContext";
 
 const useStyless = makeStyles((theme) => ({
 	topBar: {
@@ -44,19 +48,54 @@ const Footer = () => {
 		setOpen(false);
 	};
 
+    const handleLogOut = () => {
+		setOpen(true);
+	};
+
+	const userDetails = useContext(UserContext);
+
+	const LoggedOut = () => {
+		return (
+			<Button className={classes.button} onClick={handleOpen}>
+				<p
+					style={{ textDecoration: "underline" }}
+					className={classes.typography}
+				>
+					Admin
+				</p>
+			</Button>
+		);
+	};
+
+	const LoggedIn = () => {
+		return (
+			<span>
+				<Button className={classes.button} onClick={handleLogOut}>
+					<p
+						style={{ textDecoration: "underline" }}
+						className={classes.typography}
+					>
+						Logout
+					</p>
+				</Button>
+				<span> {capitalize(userDetails.email.split("@")[0])}</span>
+			</span>
+		);
+	};
+
+	const IsLoggedIn = () => {
+		const email = userDetails.email;
+		if (email) {
+			return <LoggedIn />;
+		}
+		return <LoggedOut />;
+	};
+
 	return (
 		<AppBar color="secondary" elevation={0} className={clsx(classes.topBar)}>
 			<Toolbar className={classes.toolBar}>
 				<Typography className={classes.typography}>
-					© {currentYear}. All rights reserved.{" "}
-					<Button className={classes.button} onClick={handleOpen}>
-						<p
-							style={{ textDecoration: "underline" }}
-							className={classes.typography}
-						>
-							Admin
-						</p>
-					</Button>
+					© {currentYear}. All rights reserved. <IsLoggedIn />
 				</Typography>
 			</Toolbar>
 			<ModalDialog open={open} handleClose={handleClose} />

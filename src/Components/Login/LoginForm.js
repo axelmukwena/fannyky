@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
 	Typography,
 	TextField,
@@ -12,8 +12,12 @@ import {
 	OutlinedInput,
 	IconButton,
 } from "@material-ui/core";
-
+import axios from "axios";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import {
+	LoadingContext,
+	LoadingDispatchContext,
+} from "../Globals/LoadingContext";
 
 const useStyles = makeStyles((theme) => ({
 	form: {
@@ -23,20 +27,13 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		padding: theme.spacing(4),
 		maxWidth: 400,
-		//width: "100%",
-
-		//"& .MuiTextField-root": {
-		//	margin: theme.spacing(1),
-		//	width: "300px",
-		//},
 	},
 	textField: {
 		margin: theme.spacing(1),
-		// width: "100%",
 	},
 	button: {
-		// margin: theme.spacing(2),
 		width: "100%",
+		height: 40,
 	},
 	title: {
 		marginBottom: theme.spacing(2),
@@ -58,18 +55,40 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = ({ handleClose }) => {
 	const classes = useStyles();
+
+	const loading = useContext(LoadingContext);
+	const setLoading = useContext(LoadingDispatchContext);
+
 	// create state variables for each input
 	const [email, setEmail] = useState("");
-
-	const [password, setPassword] = React.useState({
+	const [password, setPassword] = useState({
 		password: "",
 		showPassword: false,
 	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(email, password);
-		handleClose();
+
+		// Data
+		const url = "http://localhost:3000/api/login";
+		let user = {
+			email: email,
+			password: password,
+		};
+		let headers = {};
+
+		setLoading(true);
+		axios
+			.post(url, user)
+			.then(function (response) {
+				console.log(response);
+				setLoading(false);
+				handleClose();
+			})
+			.catch(function (error) {
+				console.log("Error");
+				console.log(error);
+			});
 	};
 
 	const handleChange = (prop) => (event) => {
@@ -117,7 +136,7 @@ const Form = ({ handleClose }) => {
 							<OutlinedInput
 								id="outlined-adornment-password"
 								type={password.showPassword ? "text" : "password"}
-                                name="password"
+								name="password"
 								value={password.password}
 								onChange={handleChange("password")}
 								endAdornment={
@@ -128,7 +147,11 @@ const Form = ({ handleClose }) => {
 											onMouseDown={handleMouseDownPassword}
 											edge="end"
 										>
-											{password.showPassword ? <VisibilityOff /> : <Visibility />}
+											{password.showPassword ? (
+												<VisibilityOff />
+											) : (
+												<Visibility />
+											)}
 										</IconButton>
 									</InputAdornment>
 								}
@@ -140,7 +163,7 @@ const Form = ({ handleClose }) => {
 					<Grid item lg={6} xs={6} md={6}>
 						<Button
 							className={classes.button}
-							variant="contained"
+							variant="outlined"
 							onClick={handleClose}
 						>
 							Cancel

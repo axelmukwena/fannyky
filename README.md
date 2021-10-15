@@ -72,3 +72,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # Resources
 ### Set up and going
 - https://medium.com/@martink_rsa/creating-a-react-app-with-create-react-app-and-material-ui-380985fc2b19
+
+### Connecting front end to rails
+- https://medium.com/@jennyjean8675309/connect-your-react-application-to-a-rails-api-using-active-storage-part-1-e59dcacc481b
+
+### Global User Details
+- https://blog.logrocket.com/a-deep-dive-into-react-context-api/
+- https://codesandbox.io/s/context-nav-profile-example-r22jz?from-embed=&file=/src/App.js:286-508
+
+### Fetching Data *Axios* vs Fetch
+- https://www.freecodecamp.org/news/how-to-use-axios-with-react/
+- https://www.smashingmagazine.com/2020/06/rest-api-react-fetch-axios/
+
+### Loading State
+- https://stackoverflow.com/a/69110667/8050183

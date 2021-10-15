@@ -1,7 +1,7 @@
 import React from "react";
 import MainNav from "./MainNav";
 
-export default function Home() {
+function Home() {
 	return (
 		<div>
 			<MainNav />
@@ -9,3 +9,5 @@ export default function Home() {
 		</div>
 	);
 }
+
+export default Home;
