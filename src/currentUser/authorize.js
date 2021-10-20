@@ -37,6 +37,7 @@ async function authorizeUser(dispatch) {
 			.catch(function (error) {
 				console.log("Authorize Error");
 				console.log(error);
+                return false
 			});
 	}
 }

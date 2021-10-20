@@ -13,8 +13,9 @@ import {
 	IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../../currentUser/login";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	form: {
@@ -53,8 +54,8 @@ const useStyles = makeStyles((theme) => ({
 const Form = ({ handleClose }) => {
 	const classes = useStyles();
 
-	const user = useSelector((state) => state.currentUser.user);
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	// create state variables for each input
 	const [email, setEmail] = useState("");
@@ -76,6 +77,7 @@ const Form = ({ handleClose }) => {
 		const success = loginUser(dispatch, params);
 		if (success) {
 			handleClose();
+			history.push("/home");
 		}
 	};
 
@@ -172,8 +174,6 @@ const Form = ({ handleClose }) => {
 				<Link to="" className={classes.forgotPassword}>
 					Forgot password?
 				</Link>
-
-				<Typography>{JSON.stringify(user)}</Typography>
 			</form>
 		</div>
 	);

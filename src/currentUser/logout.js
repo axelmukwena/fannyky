@@ -38,6 +38,7 @@ async function logoutUser(dispatch) {
 			.catch(function (error) {
 				console.log("Logout Error");
 				console.log(error);
+                return false
 			});
 	}
 }

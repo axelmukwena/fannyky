@@ -33,6 +33,7 @@ async function loginUser(dispatch, params) {
 		.catch(function (error) {
 			console.log("Login Error");
 			console.log(error);
+            return false
 		});
 }
 

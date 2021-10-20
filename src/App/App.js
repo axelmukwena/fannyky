@@ -9,7 +9,6 @@ import Footer from "./Footer";
 import { useDispatch } from "react-redux";
 import { authorizeUser } from "../currentUser/authorize";
 
-
 const useStyles = makeStyles((theme) => ({
 	container: {},
 }));
@@ -20,23 +19,21 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-        authorizeUser(dispatch)
-    });
+		authorizeUser(dispatch);
+	});
 
 	return (
-		<div className={clsx(classes.container)}>
-			<BrowserRouter>
-				<Switch>
-					<Route path="/home">
-						<Home />
-					</Route>
-					<Route path="/">
-						<Landing />
-					</Route>
-				</Switch>
-			</BrowserRouter>
+		<BrowserRouter className={clsx(classes.container)}>
+			<Switch>
+				<Route path="/home">
+					<Home />
+				</Route>
+				<Route path="/">
+					<Landing />
+				</Route>
+			</Switch>
 			<Footer />
-		</div>
+		</BrowserRouter>
 	);
 }
 export default App;

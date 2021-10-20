@@ -5,7 +5,7 @@ import { Typography, Toolbar, AppBar, Button } from "@material-ui/core";
 import ModalDialog from "../Components/Login/ModalDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../currentUser/logout";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const useStyless = makeStyles((theme) => ({
 	topBar: {
@@ -36,7 +36,7 @@ const Footer = () => {
 	const currentYear = new Date().getFullYear();
 	const [open, setOpen] = useState(false);
 	const dispatch = useDispatch();
-    const history = useHistory()
+	const history = useHistory();
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -46,11 +46,11 @@ const Footer = () => {
 		setOpen(false);
 	};
 
-	const handleLogOut = () => {
+	const handleLogout = () => {
 		const success = logoutUser(dispatch);
-        // https://reactrouter.com/web/api/Hooks/usehistory
+		// https://reactrouter.com/web/api/Hooks/usehistory
 		if (success) {
-            history.push('/')
+			history.push("/");
 		}
 	};
 
@@ -63,7 +63,7 @@ const Footer = () => {
 					style={{ textDecoration: "underline" }}
 					className={classes.typography}
 				>
-					Admin
+					admin
 				</p>
 			</Button>
 		);
@@ -72,12 +72,12 @@ const Footer = () => {
 	const LoggedIn = () => {
 		return (
 			<span>
-				<Button className={classes.button} onClick={handleLogOut}>
+				<Button className={classes.button} onClick={handleLogout}>
 					<p
 						style={{ textDecoration: "underline" }}
 						className={classes.typography}
 					>
-						Logout
+						logout
 					</p>
 				</Button>
 				<span> {currentUser.user.email.split("@")[0]}</span>
