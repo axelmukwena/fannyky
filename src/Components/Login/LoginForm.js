@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
 	Typography,
 	TextField,
@@ -12,12 +12,9 @@ import {
 	OutlinedInput,
 	IconButton,
 } from "@material-ui/core";
-import axios from "axios";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import {
-	LoadingContext,
-	LoadingDispatchContext,
-} from "../Globals/LoadingContext";
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser } from "../../currentUser/login";
 
 const useStyles = makeStyles((theme) => ({
 	form: {
@@ -56,8 +53,8 @@ const useStyles = makeStyles((theme) => ({
 const Form = ({ handleClose }) => {
 	const classes = useStyles();
 
-	const loading = useContext(LoadingContext);
-	const setLoading = useContext(LoadingDispatchContext);
+	const user = useSelector((state) => state.currentUser.user);
+	const dispatch = useDispatch();
 
 	// create state variables for each input
 	const [email, setEmail] = useState("");
@@ -69,26 +66,17 @@ const Form = ({ handleClose }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// Data
-		const url = "http://localhost:3000/api/login";
-		let user = {
-			email: email,
-			password: password,
+		let params = {
+			user: {
+				email: email,
+				password: password.password,
+			},
 		};
-		let headers = {};
 
-		setLoading(true);
-		axios
-			.post(url, user)
-			.then(function (response) {
-				console.log(response);
-				setLoading(false);
-				handleClose();
-			})
-			.catch(function (error) {
-				console.log("Error");
-				console.log(error);
-			});
+		const success = loginUser(dispatch, params);
+		if (success) {
+			handleClose();
+		}
 	};
 
 	const handleChange = (prop) => (event) => {
@@ -176,14 +164,16 @@ const Form = ({ handleClose }) => {
 							variant="contained"
 							color="primary"
 						>
-							Signup
+							Login
 						</Button>
 					</Grid>
 				</Grid>
 
-				<Link href="#" className={classes.forgotPassword}>
+				<Link to="" className={classes.forgotPassword}>
 					Forgot password?
 				</Link>
+
+				<Typography>{JSON.stringify(user)}</Typography>
 			</form>
 		</div>
 	);

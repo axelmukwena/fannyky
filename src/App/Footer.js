@@ -1,15 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import {
-	capitalize,
-	Typography,
-	Toolbar,
-	AppBar,
-	Button,
-} from "@material-ui/core";
-import ModalDialog from "../Login/ModalDialog";
-import { UserContext } from "../Globals/UserContext";
+import { Typography, Toolbar, AppBar, Button } from "@material-ui/core";
+import ModalDialog from "../Components/Login/ModalDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../currentUser/logout";
+import { useHistory } from "react-router";
 
 const useStyless = makeStyles((theme) => ({
 	topBar: {
@@ -39,6 +35,8 @@ const Footer = () => {
 	const classes = useStyless();
 	const currentYear = new Date().getFullYear();
 	const [open, setOpen] = useState(false);
+	const dispatch = useDispatch();
+    const history = useHistory()
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -48,11 +46,15 @@ const Footer = () => {
 		setOpen(false);
 	};
 
-    const handleLogOut = () => {
-		setOpen(true);
+	const handleLogOut = () => {
+		const success = logoutUser(dispatch);
+        // https://reactrouter.com/web/api/Hooks/usehistory
+		if (success) {
+            history.push('/')
+		}
 	};
 
-	const userDetails = useContext(UserContext);
+	const currentUser = useSelector((state) => state.currentUser.user);
 
 	const LoggedOut = () => {
 		return (
@@ -78,14 +80,13 @@ const Footer = () => {
 						Logout
 					</p>
 				</Button>
-				<span> {capitalize(userDetails.email.split("@")[0])}</span>
+				<span> {currentUser.user.email.split("@")[0]}</span>
 			</span>
 		);
 	};
 
 	const IsLoggedIn = () => {
-		const email = userDetails.email;
-		if (email) {
+		if (currentUser) {
 			return <LoggedIn />;
 		}
 		return <LoggedOut />;
