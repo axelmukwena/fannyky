@@ -1,10 +1,9 @@
 import { AppBar, Toolbar, IconButton, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { Menu as MenuIcon } from '@material-ui/icons'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import SideMenu from './SideMenu'
-import { apiURL } from '../../utils/Helpers'
+import { getPublicData } from '../../utils/Helpers'
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -31,7 +30,6 @@ const MainNav = () => {
   const [painters, setPainters] = useState([])
 
   const handleOpen = () => {
-    console.log(painters)
     document.getElementById('sidenav').style.width = '250px'
     document.getElementById('back-layer').style.display = 'block'
   }
@@ -41,28 +39,8 @@ const MainNav = () => {
     document.getElementById('back-layer').style.display = 'none'
   }
 
-  async function getMenuData() {
-    // Data
-    const url = apiURL('/')
-    const headers = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-
-    await axios
-      .get(url, headers)
-      .then(function (response) {
-        setPainters(response.data)
-      })
-      .catch(function (error) {
-        console.log('Get Painters Error')
-        console.log(error)
-      })
-  }
-
   useEffect(() => {
-    console.log(getMenuData())
+    getPublicData(setPainters, '/')
   }, [])
 
   return (
@@ -72,14 +50,9 @@ const MainNav = () => {
           <IconButton style={{ alignSelf: 'end' }} onClick={handleOpen}>
             <MenuIcon />
           </IconButton>
-          <div>
-            {painters.map((book) => (
-              <li key={book.id}>{book.name}</li>
-            ))}
-          </div>
         </Toolbar>
       </AppBar>
-      <SideMenu handleClose={handleClose} />
+      <SideMenu painters={painters} handleClose={handleClose} />
     </div>
   )
 }
