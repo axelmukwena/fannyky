@@ -110,3 +110,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### History
 - https://reactrouter.com/web/api/Hooks/usehistory
+
+### Lints
+- https://www.npmjs.com/package/@imaginary-cloud/eslint-config-react
+- https://stackoverflow.com/a/68315971/8050183

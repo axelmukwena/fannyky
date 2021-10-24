@@ -1,13 +1,12 @@
-import React from "react";
-import MainNav from "./MainNav";
+import React from 'react'
+import './Home.css'
 
 function Home() {
-	return (
-		<div>
-			<MainNav />
-			<h2>Home</h2>
-		</div>
-	);
+  return (
+    <div>
+      <h2>Home</h2>
+    </div>
+  )
 }
 
-export default Home;
+export default Home
