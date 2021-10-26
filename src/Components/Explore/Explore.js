@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { defaultMenu } from '../Menu/menuSlice/updateMenu'
+import './Explore.css'
 
-function Landing() {
+function Home() {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -11,9 +12,9 @@ function Landing() {
 
   return (
     <div>
-      <h1>Landing</h1>
+      <h1>Hey</h1>
     </div>
   )
 }
 
-export default Landing
+export default Home

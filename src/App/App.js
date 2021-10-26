@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 import './App.css'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import Home from '../Components/Home/Home'
+import Explore from '../Components/Explore/Explore'
 import Landing from '../Components/Landing/Landing'
-import Footer from './Footer'
+import Footer from '../Components/Footer/Footer'
 import { authorizeUser } from '../currentUser/authorize'
 import MainNav from '../Components/Menu/MainNav'
+import Painter from '../Components/Painter/Painter'
 
 const useStyles = makeStyles(() => ({
   container: {},
@@ -24,18 +25,23 @@ function App() {
   })
 
   return (
-    <BrowserRouter className={clsx(classes.container)}>
+    <Router className={clsx(classes.container)}>
       <MainNav />
       <Switch>
-        <Route path="/home">
-          <Home />
-        </Route>
-        <Route path="/">
+        <Route exact path="/">
           <Landing />
         </Route>
+        <Route exact path="/explore">
+          <Explore />
+        </Route>
+        <Route
+          path="/:painterID"
+          component={Painter}
+          key={document.location.href}
+        />
       </Switch>
       <Footer />
-    </BrowserRouter>
+    </Router>
   )
 }
 export default App

@@ -1,9 +1,7 @@
 import { AppBar, Toolbar, IconButton, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { Menu as MenuIcon } from '@material-ui/icons'
-import { useEffect, useState } from 'react'
 import SideMenu from './SideMenu'
-import { getPublicData } from '../../utils/Helpers'
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -27,7 +25,6 @@ const useStyles = makeStyles(() => ({
 
 const MainNav = () => {
   const classes = useStyles()
-  const [painters, setPainters] = useState([])
 
   const handleOpen = () => {
     document.getElementById('sidenav').style.width = '250px'
@@ -39,10 +36,6 @@ const MainNav = () => {
     document.getElementById('back-layer').style.display = 'none'
   }
 
-  useEffect(() => {
-    getPublicData(setPainters, '/')
-  }, [])
-
   return (
     <div>
       <AppBar color="secondary" elevation={0} className={clsx(classes.appBar)}>
@@ -52,7 +45,7 @@ const MainNav = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <SideMenu painters={painters} handleClose={handleClose} />
+      <SideMenu handleClose={handleClose} />
     </div>
   )
 }

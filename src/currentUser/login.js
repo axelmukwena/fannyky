@@ -2,7 +2,7 @@ import axios from 'axios'
 import { authorize } from './currentUserSlice'
 import { setUserCookie } from '../utils/cookies'
 import { AUTHORIZE } from '../utils/constants'
-import { apiURL } from '../utils/Helpers'
+import { apiUrl } from '../utils/Helpers'
 
 function handleResponse(dispatch, data) {
   if (data.success === true) {
@@ -16,7 +16,7 @@ function handleResponse(dispatch, data) {
 
 async function loginUser(dispatch, params) {
   // Data
-  const url = apiURL('/login')
+  const url = apiUrl('/login')
   const headers = {
     headers: {
       'Content-Type': 'application/json',

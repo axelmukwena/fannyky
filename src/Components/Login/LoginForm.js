@@ -171,7 +171,7 @@ const Form = ({ handleClose }) => {
           </Grid>
         </Grid>
 
-        <Link to="/" className={classes.forgotPassword}>
+        <Link href="/" className={classes.forgotPassword}>
           Forgot password?
         </Link>
       </form>

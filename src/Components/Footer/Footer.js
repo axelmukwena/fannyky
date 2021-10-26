@@ -4,8 +4,8 @@ import clsx from 'clsx'
 import { Typography, Toolbar, AppBar, Button } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import ModalDialog from '../Components/Login/ModalDialog'
-import { logoutUser } from '../currentUser/logout'
+import ModalDialog from '../Login/ModalDialog'
+import { logoutUser } from '../../currentUser/logout'
 
 const useStyless = makeStyles(() => ({
   topBar: {

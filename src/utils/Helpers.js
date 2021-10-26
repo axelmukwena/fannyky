@@ -1,13 +1,15 @@
 import axios from 'axios'
 import { BASE_URL } from './constants'
 
-export function apiURL(sub) {
+// Compose complete api url
+export function apiUrl(sub) {
   return BASE_URL + sub
 }
 
+// Get public data from api
 export async function getPublicData(customFuntion, link) {
   // Data
-  const url = apiURL(link)
+  const url = apiUrl(link)
   const headers = {
     headers: {
       'Content-Type': 'application/json',
@@ -25,4 +27,31 @@ export async function getPublicData(customFuntion, link) {
     })
 }
 
+// Get private data from api
 // export async function getPrivateData(customFuntion, link) {}
+
+// Compose menu data for a painter's page
+export function menuData(
+  painterName,
+  painterSlug,
+  paintingsSlug,
+  exhibSlug,
+  contactSlug,
+) {
+  const data = {
+    1: {
+      id: 1,
+      name: `About ${painterName}`,
+      slug: painterSlug,
+    },
+    2: {
+      id: 2,
+      name: 'Paintings',
+      slug: paintingsSlug,
+    },
+    3: { id: 3, name: 'Exhibitions', slug: exhibSlug },
+    4: { id: 4, name: 'Contact', slug: contactSlug },
+    5: { id: 5, name: 'Exhibitions', slug: exhibSlug },
+  }
+  return data
+}

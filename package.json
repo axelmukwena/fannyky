@@ -31,7 +31,8 @@
          "react/react-in-jsx-scope": "off",
          "react/prop-types": "off",
          "no-console": "off",
-         "func-names" : "off"
+         "func-names" : "off",
+         "no-param-reassign": [2, {"props": false}]
      }
   },
   "prettier": "@imaginary-cloud/prettier-config",

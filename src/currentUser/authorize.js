@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AUTHORIZE } from '../utils/constants'
 import { getUserCookie, setUserCookie } from '../utils/cookies'
-import { apiURL } from '../utils/Helpers'
+import { apiUrl } from '../utils/Helpers'
 import { authorize } from './currentUserSlice'
 
 function handleResponse(dispatch, data) {
@@ -20,7 +20,7 @@ async function authorizeUser(dispatch) {
   // Only send request if there's a authorize cookie set
   if (token) {
     // Data
-    const url = apiURL('/authorize')
+    const url = apiUrl('/authorize')
     const headers = {
       headers: {
         'Content-Type': 'application/json',

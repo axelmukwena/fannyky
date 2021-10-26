@@ -1,15 +1,17 @@
-import { MenuItem, IconButton } from '@material-ui/core'
+import { MenuItem, IconButton, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import './SideMenu.css'
 
-const SideMenu = ({ painters, handleClose }) => {
-  const history = useHistory()
+const SideMenu = ({ handleClose }) => {
+  const currentMenu = useSelector((state) => state.currentMenu.menu)
 
+  const history = useHistory()
   const handleClick = (url) => {
     handleClose()
     if (url) {
-      history.push(url)
+      history.replace(url)
     }
   }
 
@@ -24,8 +26,7 @@ const SideMenu = ({ painters, handleClose }) => {
             borderBottom: '1px solid rgb(16 16 16)',
             color: 'white',
           }}
-          value={undefined}
-          onClick={handleClick}
+          onClick={() => handleClick(undefined)}
         >
           <IconButton style={{ padding: 0 }}>
             <Close style={{ color: 'white' }} />
@@ -36,25 +37,22 @@ const SideMenu = ({ painters, handleClose }) => {
             color: 'white',
             paddingLeft: 30,
             borderBottom: '1px solid rgb(16 16 16)',
-            fontWeight: 500,
           }}
-          value={undefined}
-          onClick={handleClick}
+          onClick={() => handleClick('/explore')}
         >
-          View all
+          <Typography>Explore</Typography>
         </MenuItem>
-        {painters.map((painter) => (
+        {currentMenu.map((item) => (
           <MenuItem
             style={{
               color: 'white',
               paddingLeft: 30,
               borderBottom: '1px solid rgb(16 16 16)',
-              fontWeight: 500,
             }}
-            onClick={() => handleClick(painter.slug)}
-            key={painter.id}
+            onClick={() => handleClick(`/${item.slug}`)}
+            key={item.id}
           >
-            {painter.name}
+            <Typography>{item.name}</Typography>
           </MenuItem>
         ))}
       </div>
