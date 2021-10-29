@@ -27,13 +27,15 @@ const MainNav = () => {
   const classes = useStyles()
 
   const handleOpen = () => {
-    document.getElementById('sidenav').style.width = '250px'
+    document.getElementById('sidenav').style.minWidth = '200px'
     document.getElementById('back-layer').style.display = 'block'
+    document.getElementById('sidenav').style.padding = '1.5em'
   }
 
   const handleClose = () => {
-    document.getElementById('sidenav').style.width = '0'
+    document.getElementById('sidenav').style.minWidth = '0'
     document.getElementById('back-layer').style.display = 'none'
+    document.getElementById('sidenav').style.padding = '0'
   }
 
   return (

@@ -21,23 +21,15 @@ const SideMenu = ({ handleClose }) => {
       <div id="back-layer" className="back-layer" onClick={handleClose} />
       <div id="sidenav" className="sidenav">
         <MenuItem
-          style={{
-            paddingLeft: 30,
-            borderBottom: '1px solid rgb(16 16 16)',
-            color: 'white',
-          }}
+          style={{ borderRadius: 5 }}
           onClick={() => handleClick(undefined)}
         >
           <IconButton style={{ padding: 0 }}>
-            <Close style={{ color: 'white' }} />
+            <Close style={{}} />
           </IconButton>
         </MenuItem>
         <MenuItem
-          style={{
-            color: 'white',
-            paddingLeft: 30,
-            borderBottom: '1px solid rgb(16 16 16)',
-          }}
+          style={{ borderRadius: 5 }}
           onClick={() => handleClick('/explore')}
         >
           <Typography>Explore</Typography>
@@ -45,9 +37,7 @@ const SideMenu = ({ handleClose }) => {
         {currentMenu.map((item) => (
           <MenuItem
             style={{
-              color: 'white',
-              paddingLeft: 30,
-              borderBottom: '1px solid rgb(16 16 16)',
+              borderRadius: 5,
             }}
             onClick={() => handleClick(`/${item.slug}`)}
             key={item.id}
