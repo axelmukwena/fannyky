@@ -6,7 +6,7 @@ function updateMenu(dispatch, contents) {
   dispatch(update(contents))
 }
 
-async function defaultMenu(dispatch) {
+async function paintersMenu(dispatch) {
   // Data
   const url = apiUrl('/')
   const headers = {
@@ -26,4 +26,16 @@ async function defaultMenu(dispatch) {
     })
 }
 
-export { updateMenu, defaultMenu }
+// Compose menu data for a painter's page
+function parsePainterMenu(aboutSlug, paintingsSlug, exhibSlug, booksSlug) {
+  console.log(aboutSlug)
+  const data = [
+    { id: 1, name: 'About', slug: aboutSlug },
+    { id: 2, name: 'Paintings', slug: paintingsSlug },
+    { id: 3, name: 'Exhibitions', slug: exhibSlug },
+    { id: 4, name: 'Books', slug: booksSlug },
+  ]
+  return data
+}
+
+export { updateMenu, paintersMenu, parsePainterMenu }

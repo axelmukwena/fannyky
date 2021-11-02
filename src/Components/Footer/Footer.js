@@ -15,7 +15,6 @@ const useStyless = makeStyles(() => ({
     zIndex: -2,
   },
   typography: {
-    fontWeight: 400,
     fontSize: '0.8rem',
     color: '#444',
     flexGrow: 1,
@@ -57,7 +56,10 @@ const Footer = () => {
 
   const LoggedOut = () => (
     <Button className={classes.button} onClick={handleOpen}>
-      <p style={{ textDecoration: 'underline' }} className={classes.typography}>
+      <p
+        style={{ textDecoration: 'underline', marginTop: 2 }}
+        className={classes.typography}
+      >
         admin
       </p>
     </Button>
@@ -67,7 +69,7 @@ const Footer = () => {
     <span>
       <Button className={classes.button} onClick={handleLogout}>
         <p
-          style={{ textDecoration: 'underline' }}
+          style={{ textDecoration: 'underline', marginTop: 2 }}
           className={classes.typography}
         >
           logout

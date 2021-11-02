@@ -1,5 +1,4 @@
-import { MenuItem, IconButton, Typography } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
+import { MenuItem, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import './SideMenu.css'
@@ -8,7 +7,7 @@ const SideMenu = ({ handleClose }) => {
   const currentMenu = useSelector((state) => state.currentMenu.menu)
 
   const history = useHistory()
-  const handleClick = (url) => {
+  function handleClick(url) {
     handleClose()
     if (url) {
       history.replace(url)
@@ -24,25 +23,41 @@ const SideMenu = ({ handleClose }) => {
           style={{ borderRadius: 5 }}
           onClick={() => handleClick(undefined)}
         >
-          <IconButton style={{ padding: 0 }}>
-            <Close style={{}} />
-          </IconButton>
+          <Typography
+            style={{
+              fontWeight: 300,
+            }}
+          >
+            Close
+          </Typography>
         </MenuItem>
         <MenuItem
           style={{ borderRadius: 5 }}
-          onClick={() => handleClick('/explore')}
+          onClick={() => handleClick('explore')}
         >
-          <Typography>Explore</Typography>
+          <Typography
+            style={{
+              fontWeight: 300,
+            }}
+          >
+            Explore
+          </Typography>
         </MenuItem>
         {currentMenu.map((item) => (
           <MenuItem
             style={{
               borderRadius: 5,
             }}
-            onClick={() => handleClick(`/${item.slug}`)}
+            onClick={() => handleClick(`${item.slug}`)}
             key={item.id}
           >
-            <Typography>{item.name}</Typography>
+            <Typography
+              style={{
+                fontWeight: 300,
+              }}
+            >
+              {item.name}
+            </Typography>
           </MenuItem>
         ))}
       </div>

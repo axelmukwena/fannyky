@@ -1,17 +1,18 @@
+import { Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { defaultMenu } from '../Menu/menuSlice/updateMenu'
+import { paintersMenu } from '../Menu/menuSlice/updateMenu'
 
 function Landing() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    defaultMenu(dispatch)
+    paintersMenu(dispatch)
   }, [])
 
   return (
     <div>
-      <h1>Landing</h1>
+      <Typography>Landing</Typography>
     </div>
   )
 }

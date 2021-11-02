@@ -21,6 +21,9 @@ const theme = createTheme({
       default: '#ffffff',
     },
   },
+  typography: {
+    fontFamily: 'Helvetica, Arial, sans-serif',
+  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
