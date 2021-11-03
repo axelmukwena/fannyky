@@ -1,12 +1,20 @@
-import { Card, Link, Typography } from '@material-ui/core'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 import { getPublicData } from '../../utils/Helpers'
 import { parsePainterMenu, updateMenu } from '../Menu/menuSlice/updateMenu'
+import Books from './Books'
+import Exhibitions from './Exhibitions'
+import Paintings from './Paintings'
 
 const Painter = ({ match }) => {
-  const [paintings, setPaintings] = useState([])
   const dispatch = useDispatch()
+
+  // paths
+  // paintings => /painter
+  // exhibitions => /painter/exhibitions
+  // books => /painter/books
+  // about => /painter/about
 
   // If painter updated, set painter menu
   // parsePainterMenu(painterName, aboutSlug, paintingsSlug, exhibSlug, booksSlug)
@@ -22,41 +30,29 @@ const Painter = ({ match }) => {
     }
   }
 
-  const paintingsUrl = `${match.url}/paintings`
   useEffect(() => {
     getPublicData(setPainter, match.url)
-    getPublicData(setPaintings, paintingsUrl)
-  }, [paintingsUrl])
+  }, [])
 
   return (
-    <div>
-      {paintings.map((painting) => (
-        <Card key={painting.id} style={{ width: '33%', margin: 20 }}>
-          <Typography
-            style={{
-              fontWeight: 300,
-            }}
-          >
-            {painting.painter.name}
-          </Typography>
-          <Link href={`${match.url}/paintings/${painting.slug}`}>
-            <Typography
-              style={{
-                fontWeight: 300,
-              }}
-            >
-              {painting.title}
-            </Typography>
-          </Link>
-          <Typography
-            style={{
-              fontWeight: 300,
-            }}
-          >
-            {painting.description}
-          </Typography>
-        </Card>
-      ))}
+    <div style={{ margin: 15 }}>
+      <Switch>
+        <Route
+          path={`${match.url}/exhibitions`}
+          component={Exhibitions}
+          key={document.location.href}
+        />
+        <Route
+          path={`${match.url}/books`}
+          component={Books}
+          key={document.location.href}
+        />
+        <Route
+          path={match.url}
+          component={Paintings}
+          key={document.location.href}
+        />
+      </Switch>
     </div>
   )
 }

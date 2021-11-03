@@ -28,7 +28,6 @@ async function paintersMenu(dispatch) {
 
 // Compose menu data for a painter's page
 function parsePainterMenu(aboutSlug, paintingsSlug, exhibSlug, booksSlug) {
-  console.log(aboutSlug)
   const data = [
     { id: 1, name: 'About', slug: aboutSlug },
     { id: 2, name: 'Paintings', slug: paintingsSlug },

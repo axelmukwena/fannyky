@@ -7,10 +7,15 @@ const SideMenu = ({ handleClose }) => {
   const currentMenu = useSelector((state) => state.currentMenu.menu)
 
   const history = useHistory()
+
   function handleClick(url) {
     handleClose()
     if (url) {
-      history.replace(url)
+      if (url === 'explore') {
+        history.push(`/${url}`)
+      } else {
+        history.push(url)
+      }
     }
   }
 
