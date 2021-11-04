@@ -1,4 +1,4 @@
-import { MenuItem, Typography } from '@material-ui/core'
+import { MenuItem, Paper, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import './SideMenu.css'
@@ -23,7 +23,12 @@ const SideMenu = ({ handleClose }) => {
     <div>
       {/* eslint-disable-next-line */}
       <div id="back-layer" className="back-layer" onClick={handleClose} />
-      <div id="sidenav" className="sidenav">
+      <Paper
+        id="sidenav"
+        elevation={0}
+        style={{ boxShadow: 'rgb(140 152 164 / 18%) 0px 0px 14px 0px' }}
+        className="sidenav"
+      >
         <MenuItem
           style={{ borderRadius: 5 }}
           onClick={() => handleClick(undefined)}
@@ -65,7 +70,7 @@ const SideMenu = ({ handleClose }) => {
             </Typography>
           </MenuItem>
         ))}
-      </div>
+      </Paper>
     </div>
   )
 }

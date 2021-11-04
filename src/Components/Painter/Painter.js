@@ -40,18 +40,10 @@ const Painter = ({ match }) => {
         <Route
           path={`${match.url}/exhibitions`}
           component={Exhibitions}
-          key={document.location.href}
+          key="exhibitions"
         />
-        <Route
-          path={`${match.url}/books`}
-          component={Books}
-          key={document.location.href}
-        />
-        <Route
-          path={match.url}
-          component={Paintings}
-          key={document.location.href}
-        />
+        <Route path={`${match.url}/books`} component={Books} key="books" />
+        <Route path={match.url} component={Paintings} key="paintings" />
       </Switch>
     </div>
   )

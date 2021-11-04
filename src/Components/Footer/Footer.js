@@ -8,11 +8,12 @@ import ModalDialog from '../Login/ModalDialog'
 import { logoutUser } from '../../currentUser/logout'
 
 const useStyless = makeStyles(() => ({
-  topBar: {
+  appBar: {
     bottom: 0,
     top: 'auto',
-    position: 'fixed',
+    position: 'static',
     zIndex: -2,
+    margin: '35px 0 10px 0',
   },
   typography: {
     fontSize: '0.8rem',
@@ -88,7 +89,7 @@ const Footer = () => {
   }
 
   return (
-    <AppBar color="secondary" elevation={0} className={clsx(classes.topBar)}>
+    <AppBar color="secondary" elevation={0} className={clsx(classes.appBar)}>
       <Toolbar className={classes.toolBar}>
         <Typography className={classes.typography}>
           © {currentYear}. All rights reserved. <IsLoggedIn />

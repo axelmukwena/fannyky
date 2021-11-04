@@ -34,11 +34,7 @@ function App() {
         <Route exact path="/explore">
           <Explore />
         </Route>
-        <Route
-          path="/:painterID"
-          component={Painter}
-          key={document.location.href}
-        />
+        <Route path="/:painterID" component={Painter} key="painter" />
       </Switch>
       <Footer />
     </Router>

@@ -114,3 +114,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Lints
 - https://www.npmjs.com/package/@imaginary-cloud/eslint-config-react
 - https://stackoverflow.com/a/68315971/8050183
+
+### Photos with Pexels API
+- https://medium.com/star-gazers/how-to-work-pexels-api-with-javascript-9cda16bbece9

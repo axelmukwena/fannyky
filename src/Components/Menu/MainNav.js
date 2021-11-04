@@ -1,4 +1,11 @@
-import { AppBar, Toolbar, IconButton, makeStyles } from '@material-ui/core'
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  makeStyles,
+  Typography,
+  Box,
+} from '@material-ui/core'
 import clsx from 'clsx'
 import { Menu as MenuIcon } from '@material-ui/icons'
 import SideMenu from './SideMenu'
@@ -9,9 +16,9 @@ const useStyles = makeStyles(() => ({
     position: 'static',
   },
   toolBar: {
-    margin: '15px 10px 0 10px',
-    display: 'flex',
-    flexDirection: 'column',
+    margin: '10px 10px 0 10px',
+    // display: 'flex',
+    // flexDirection: 'column',
   },
   typography: {
     fontWeight: 500,
@@ -40,13 +47,36 @@ const MainNav = () => {
 
   return (
     <div>
-      <AppBar color="secondary" elevation={0} className={clsx(classes.appBar)}>
-        <Toolbar className={clsx(classes.toolBar)}>
-          <IconButton style={{ alignSelf: 'end' }} onClick={handleOpen}>
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar
+          color="secondary"
+          elevation={0}
+          className={clsx(classes.appBar)}
+        >
+          <Toolbar className={clsx(classes.toolBar)}>
+            <Typography
+              style={{
+                fontWeight: 900,
+                fontSize: '1.4rem',
+                fontFamily: 'Roboto',
+                flex: 1,
+              }}
+            >
+              Fanny & Ky
+            </Typography>
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              style={{ marginTop: 5 }}
+              onClick={handleOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <SideMenu handleClose={handleClose} />
     </div>
   )
