@@ -8,17 +8,14 @@ import {
 } from '@material-ui/core'
 import clsx from 'clsx'
 import { Menu as MenuIcon } from '@material-ui/icons'
+import { useSelector } from 'react-redux'
 import SideMenu from './SideMenu'
+import './Menu.css'
 
 const useStyles = makeStyles(() => ({
   appBar: {
     margin: 0,
     position: 'static',
-  },
-  toolBar: {
-    margin: '10px 10px 0 10px',
-    // display: 'flex',
-    // flexDirection: 'column',
   },
   typography: {
     fontWeight: 500,
@@ -32,6 +29,7 @@ const useStyles = makeStyles(() => ({
 
 const MainNav = () => {
   const classes = useStyles()
+  const siteName = useSelector((state) => state.currentMenu.siteName)
 
   const handleOpen = () => {
     document.getElementById('sidenav').style.minWidth = '200px'
@@ -46,14 +44,14 @@ const MainNav = () => {
   }
 
   return (
-    <div>
+    <div className="main-nav">
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           color="secondary"
           elevation={0}
           className={clsx(classes.appBar)}
         >
-          <Toolbar className={clsx(classes.toolBar)}>
+          <Toolbar className="toolbar">
             <Typography
               style={{
                 fontWeight: 900,
@@ -62,7 +60,7 @@ const MainNav = () => {
                 flex: 1,
               }}
             >
-              Fanny & Ky
+              {siteName}
             </Typography>
             <IconButton
               edge="end"

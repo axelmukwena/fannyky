@@ -1,7 +1,6 @@
 import { MenuItem, Paper, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import './SideMenu.css'
 
 const SideMenu = ({ handleClose }) => {
   const currentMenu = useSelector((state) => state.currentMenu.menu)
@@ -20,7 +19,7 @@ const SideMenu = ({ handleClose }) => {
   }
 
   return (
-    <div>
+    <div className="side-menu">
       {/* eslint-disable-next-line */}
       <div id="back-layer" className="back-layer" onClick={handleClose} />
       <Paper

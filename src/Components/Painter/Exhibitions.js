@@ -14,7 +14,7 @@ const Exhibitions = () => {
   const handleOpen = () => {}
 
   return (
-    <div style={{ margin: 15 }}>
+    <div className="exhibitions">
       <Grid container spacing={4} style={{ marginBottom: 10 }}>
         <Grid item lg={3} md={6} xs={6}>
           <Button
@@ -29,8 +29,8 @@ const Exhibitions = () => {
       </Grid>
       <Grid container spacing={4}>
         {exhibitions.map((exhibition) => (
-          <Grid item lg={4} md={6} xs={12}>
-            <Card key={exhibition.id} style={{ width: '100%', padding: 10 }}>
+          <Grid key={exhibition.id} item lg={4} md={6} xs={12}>
+            <Card style={{ width: '100%', padding: 10 }}>
               <Typography
                 style={{
                   fontWeight: 300,

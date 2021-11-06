@@ -31,7 +31,7 @@ export async function getPublicData(customFuntion, link) {
 // export async function getPrivateData(customFuntion, link) {}
 
 // Get images from pexels
-export async function getPhotos(key, customFuntion) {
+export async function getPhotos(customFuntion, key) {
   await fetch(`https://api.pexels.com/v1/search?query=${key}`, {
     headers: {
       Authorization: '563492ad6f917000010000014904033d054f48ba9fc7f0d777704c8c',

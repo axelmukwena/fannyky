@@ -4,15 +4,19 @@ export const currentMenuSlice = createSlice({
   name: 'menu',
   initialState: {
     menu: [],
+    siteName: 'Fanny & Ky',
   },
   reducers: {
-    update: (state, action) => {
+    updateMenu: (state, action) => {
       state.menu = action.payload
+    },
+    updateSiteName: (state, action) => {
+      state.siteName = action.payload
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { update } = currentMenuSlice.actions
+export const { updateMenu, updateSiteName } = currentMenuSlice.actions
 
 export default currentMenuSlice.reducer

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { apiUrl } from '../../../utils/Helpers'
-import { update } from './currentMenuSlice'
+import { updateMenu } from './currentMenuSlice'
 
-function updateMenu(dispatch, contents) {
-  dispatch(update(contents))
+function updateMenuSlice(dispatch, contents) {
+  dispatch(updateMenu(contents))
 }
 
 async function paintersMenu(dispatch) {
@@ -18,7 +18,7 @@ async function paintersMenu(dispatch) {
   await axios
     .get(url, headers)
     .then(function (response) {
-      dispatch(update(response.data))
+      dispatch(updateMenu(response.data))
     })
     .catch(function (error) {
       console.log('Get Painters Error')
@@ -37,4 +37,4 @@ function parsePainterMenu(aboutSlug, paintingsSlug, exhibSlug, booksSlug) {
   return data
 }
 
-export { updateMenu, paintersMenu, parsePainterMenu }
+export { updateMenuSlice, paintersMenu, parsePainterMenu }

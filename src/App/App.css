@@ -12,3 +12,7 @@
 .Logo {
     max-width: 10px;
 }
+
+.app-body {
+    min-height: 100vh;
+}

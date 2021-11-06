@@ -117,3 +117,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Photos with Pexels API
 - https://medium.com/star-gazers/how-to-work-pexels-api-with-javascript-9cda16bbece9
+
+### Canvas with Konva
+- https://dev.to/ankursheel/react-component-to-fraw-on-a-page-using-hooks-and-typescript-2ahp
+- http://jsfiddle.net/FgNQk/6/
+- https://stackoverflow.com/questions/11179274/html-canvas-drawing-disappear-on-resizing

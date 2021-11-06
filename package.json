@@ -28,12 +28,17 @@
   "eslintConfig": {
     "extends": "@imaginary-cloud/react",
     "rules": {
-         "react/react-in-jsx-scope": "off",
-         "react/prop-types": "off",
-         "no-console": "off",
-         "func-names" : "off",
-         "no-param-reassign": [2, {"props": false}]
-     }
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "no-console": "off",
+      "func-names": "off",
+      "no-param-reassign": [
+        2,
+        {
+          "props": false
+        }
+      ]
+    }
   },
   "prettier": "@imaginary-cloud/prettier-config",
   "browserslist": {

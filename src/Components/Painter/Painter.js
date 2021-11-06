@@ -2,10 +2,13 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { getPublicData } from '../../utils/Helpers'
-import { parsePainterMenu, updateMenu } from '../Menu/menuSlice/updateMenu'
+import { parsePainterMenu, updateMenuSlice } from '../Menu/menuSlice/updateMenu'
 import Books from './Books'
 import Exhibitions from './Exhibitions'
 import Paintings from './Paintings'
+import './Painter.css'
+import { updatePainter } from './currentPainterSlice/currentPainterSlice'
+import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
 
 const Painter = ({ match }) => {
   const dispatch = useDispatch()
@@ -20,13 +23,15 @@ const Painter = ({ match }) => {
   // parsePainterMenu(painterName, aboutSlug, paintingsSlug, exhibSlug, booksSlug)
   function setPainter(painter) {
     if (painter) {
-      const data = parsePainterMenu(
+      const menu = parsePainterMenu(
         `${match.url}/about`,
         `${match.url}`,
         `${match.url}/exhibitions`,
         `${match.url}/books`,
       )
-      updateMenu(dispatch, data)
+      updateMenuSlice(dispatch, menu)
+      dispatch(updatePainter(painter))
+      dispatch(updateSiteName(`Paintings by ${painter.name}`))
     }
   }
 
@@ -35,7 +40,7 @@ const Painter = ({ match }) => {
   }, [])
 
   return (
-    <div style={{ margin: 15 }}>
+    <div className="painter">
       <Switch>
         <Route
           path={`${match.url}/exhibitions`}

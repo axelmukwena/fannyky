@@ -13,7 +13,7 @@ const useStyless = makeStyles(() => ({
     top: 'auto',
     position: 'static',
     zIndex: -2,
-    margin: '35px 0 10px 0',
+    padding: '35px 0 10px 0',
   },
   typography: {
     fontSize: '0.8rem',
@@ -89,14 +89,16 @@ const Footer = () => {
   }
 
   return (
-    <AppBar color="secondary" elevation={0} className={clsx(classes.appBar)}>
-      <Toolbar className={classes.toolBar}>
-        <Typography className={classes.typography}>
-          © {currentYear}. All rights reserved. <IsLoggedIn />
-        </Typography>
-      </Toolbar>
-      <ModalDialog open={open} handleClose={handleClose} />
-    </AppBar>
+    <div className="footer">
+      <AppBar color="secondary" elevation={0} className={clsx(classes.appBar)}>
+        <Toolbar className={classes.toolBar}>
+          <Typography className={classes.typography}>
+            © {currentYear}. All rights reserved. <IsLoggedIn />
+          </Typography>
+        </Toolbar>
+        <ModalDialog open={open} handleClose={handleClose} />
+      </AppBar>
+    </div>
   )
 }
 

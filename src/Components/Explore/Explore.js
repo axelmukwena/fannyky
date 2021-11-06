@@ -2,6 +2,7 @@ import { Card, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getPublicData } from '../../utils/Helpers'
+import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
 import { paintersMenu } from '../Menu/menuSlice/updateMenu'
 import './Explore.css'
 
@@ -11,6 +12,7 @@ function Explore() {
 
   useEffect(() => {
     paintersMenu(dispatch)
+    dispatch(updateSiteName('Explore by Fanny & Ky'))
     getPublicData(setExplorers, '/explorer')
   }, [])
 

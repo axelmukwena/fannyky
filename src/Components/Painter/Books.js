@@ -14,7 +14,7 @@ const Books = () => {
   const handleOpen = () => {}
 
   return (
-    <div style={{ margin: 15 }}>
+    <div className="books" style={{}}>
       <Grid container spacing={4} style={{ marginBottom: 10 }}>
         <Grid item lg={3} md={6} xs={6}>
           <Button
@@ -29,8 +29,8 @@ const Books = () => {
       </Grid>
       <Grid container spacing={4}>
         {books.map((book) => (
-          <Grid item lg={4} md={6} xs={12}>
-            <Card key={book.id} style={{ width: '100%', padding: 10 }}>
+          <Grid key={book.id} item lg={4} md={6} xs={12}>
+            <Card style={{ width: '100%', padding: 10 }}>
               <Typography
                 style={{
                   fontWeight: 300,

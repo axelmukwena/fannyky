@@ -1,9 +1,9 @@
-import { Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { paintersMenu } from '../Menu/menuSlice/updateMenu'
+import Canvas from './Canvas'
 
-function Landing() {
+function Landing({ h, w }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -11,8 +11,8 @@ function Landing() {
   }, [])
 
   return (
-    <div>
-      <Typography>Landing</Typography>
+    <div className="canvas">
+      <Canvas h={h} w={w} />
     </div>
   )
 }
