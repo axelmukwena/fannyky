@@ -12,7 +12,7 @@ const Paintings = () => {
   useEffect(() => {
     getPhotos(setPhotos, 'painting')
     getPublicData(setPaintings, `/${path}/paintings`)
-    // Initialize
+    // Initialize size
     handleResize()
     window.addEventListener('resize', handleResize)
   }, [])

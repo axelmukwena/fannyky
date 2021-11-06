@@ -7,7 +7,7 @@ import Books from './Books'
 import Exhibitions from './Exhibitions'
 import Paintings from './Paintings'
 import './Painter.css'
-import { updatePainter } from './currentPainterSlice/currentPainterSlice'
+import { updatePainter } from './painterSlice/currentPainterSlice'
 import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
 
 const Painter = ({ match }) => {

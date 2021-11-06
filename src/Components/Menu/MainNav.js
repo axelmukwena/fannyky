@@ -9,6 +9,7 @@ import {
 import clsx from 'clsx'
 import { Menu as MenuIcon } from '@material-ui/icons'
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import SideMenu from './SideMenu'
 import './Menu.css'
 
@@ -30,6 +31,7 @@ const useStyles = makeStyles(() => ({
 const MainNav = () => {
   const classes = useStyles()
   const siteName = useSelector((state) => state.currentMenu.siteName)
+  const history = useHistory()
 
   const handleOpen = () => {
     document.getElementById('sidenav').style.minWidth = '200px'
@@ -43,6 +45,10 @@ const MainNav = () => {
     document.getElementById('sidenav').style.padding = '0'
   }
 
+  const handleClick = () => {
+    history.push('/explore')
+  }
+
   return (
     <div className="main-nav">
       <Box sx={{ flexGrow: 1 }}>
@@ -53,11 +59,13 @@ const MainNav = () => {
         >
           <Toolbar className="toolbar">
             <Typography
+              onClick={handleClick}
               style={{
                 fontWeight: 900,
                 fontSize: '1.4rem',
                 fontFamily: 'Roboto',
                 flex: 1,
+                // cursor: 'pointer',
               }}
             >
               {siteName}
@@ -67,7 +75,7 @@ const MainNav = () => {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              style={{ marginTop: 5 }}
+              style={{ marginTop: 3 }}
               onClick={handleOpen}
             >
               <MenuIcon />
