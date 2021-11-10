@@ -10,12 +10,9 @@
 
 .sidenav {
     max-height: fit-content;
-    width: 0;
+    width: 200px;
     position: fixed;
     z-index: 2;
-    bottom: 0;
-    right: 65px;
-    top: 65px;
     background-color: white;
     overflow-x: hidden;
     border-radius: 5px;

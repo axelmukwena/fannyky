@@ -1,18 +1,41 @@
 * {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .App {
-	height: 100vh;
-	display: flex;
-	text-align: center;
+  height: 100vh;
+  display: flex;
+  text-align: center;
 }
 
 .Logo {
-    max-width: 10px;
+  max-width: 10px;
 }
 
-.app-body {
-    min-height: 100vh;
+.app-container {
+  min-height: 100vh;
+  padding: 60px 60px 30px 60px;
+  background-color: #f1f1f1 !important;
+  /*background-image: url('../images/background.png') !important;*/
+}
+
+@media (max-width: 800px) {
+  .app-container {
+    padding: 0;
+  }
+}
+
+.MuiPaper-root {
+  background-color: #f1f1f1 !important;
+  /*background-image: url('../images/background.png') !important;*/
+}
+
+.sidemenu {
+  max-height: fit-content;
+  width: 200px;
+  position: fixed;
+  background-color: white;
+  overflow-x: hidden;
+  border-radius: 5px;
 }

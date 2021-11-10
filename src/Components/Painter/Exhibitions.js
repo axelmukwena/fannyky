@@ -1,5 +1,5 @@
 import { Button, Card, Grid, Link, Typography } from '@material-ui/core'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { getPublicData } from '../../utils/Helpers'
 
@@ -8,8 +8,8 @@ const Exhibitions = () => {
   const { path } = useRouteMatch()
 
   useEffect(() => {
-    getPublicData(setExhibitions, path)
-  }, [])
+    getPublicData(setExhibitions,  path)
+  }, [path])
 
   const handleOpen = () => {}
 

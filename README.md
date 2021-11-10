@@ -70,55 +70,75 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 # Resources
+
 ### Set up and going
+
 - https://medium.com/@martink_rsa/creating-a-react-app-with-create-react-app-and-material-ui-380985fc2b19
 
 ### Responsive forms
+
 - https://leevi.info/responsive-forms/
 
 ### Login/SignUp form
+
 - https://levelup.gitconnected.com/create-a-signup-page-with-react-and-material-ui-9b203d18cf3f
 
 ### Navigation bar with menu (Kinda useful)
+
 - https://levelup.gitconnected.com/how-to-create-a-navigation-bar-with-material-ui-9cbcfcec2570
 
 ### Connecting front end to rails
+
 - https://medium.com/@jennyjean8675309/connect-your-react-application-to-a-rails-api-using-active-storage-part-1-e59dcacc481b
 
 ### Redux states and cookies
+
 - https://react-redux.js.org/tutorials/quick-start
 - https://levelup.gitconnected.com/sessions-with-a-react-redux-frontend-and-rails-api-backend-25b7b951b287
 - https://dev.to/kahawaiikailana/rails-api-quickstart-guide-with-postgressql-and-jwt-tokens-3pnk
 
 ### Redux Middleware
+
 - https://stackoverflow.com/a/68421466/8050183
 - https://redux-toolkit.js.org/api/getDefaultMiddleware
 
 ### Global User Details (Not used)
+
 - https://blog.logrocket.com/a-deep-dive-into-react-context-api/
 - https://codesandbox.io/s/context-nav-profile-example-r22jz?from-embed=&file=/src/App.js:286-508
 
-### Fetching Data *Axios* vs Fetch
+### Fetching Data _Axios_ vs Fetch
+
 - https://www.freecodecamp.org/news/how-to-use-axios-with-react/
 - https://www.smashingmagazine.com/2020/06/rest-api-react-fetch-axios/
 
 ### Loading State (Not used)
+
 - https://stackoverflow.com/a/69110667/8050183
 
 ### Authentication (Not Used)
+
 - https://auth0.com/docs/quickstart/webapp/rails/01-login
 
 ### History
+
 - https://reactrouter.com/web/api/Hooks/usehistory
 
 ### Lints
+
 - https://www.npmjs.com/package/@imaginary-cloud/eslint-config-react
 - https://stackoverflow.com/a/68315971/8050183
 
 ### Photos with Pexels API
+
 - https://medium.com/star-gazers/how-to-work-pexels-api-with-javascript-9cda16bbece9
 
 ### Canvas with Konva
+
 - https://dev.to/ankursheel/react-component-to-fraw-on-a-page-using-hooks-and-typescript-2ahp
 - http://jsfiddle.net/FgNQk/6/
 - https://stackoverflow.com/questions/11179274/html-canvas-drawing-disappear-on-resizing
+
+### PropTypes Validation
+
+- https://blog.logrocket.com/validating-react-component-props-with-prop-types-ef14b29963fc/

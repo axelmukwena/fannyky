@@ -22,7 +22,7 @@ function Explore() {
     // Initialize size
     handleResize()
     window.addEventListener('resize', handleResize)
-  }, [])
+  }, [dispatch])
 
   // On screen width changes
   const handleResize = () => {

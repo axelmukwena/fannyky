@@ -77,7 +77,7 @@ const Form = ({ handleClose }) => {
     const success = loginUser(dispatch, params)
     if (success) {
       handleClose()
-      history.push('/explore')
+      history.replace(history.location.pathname)
     }
   }
 

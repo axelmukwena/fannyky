@@ -7,6 +7,7 @@ import {
   Box,
 } from '@material-ui/core'
 import clsx from 'clsx'
+import React from 'react'
 import { Menu as MenuIcon } from '@material-ui/icons'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -34,19 +35,19 @@ const MainNav = () => {
   const history = useHistory()
 
   const handleOpen = () => {
-    document.getElementById('sidenav').style.minWidth = '200px'
-    document.getElementById('back-layer').style.display = 'block'
-    document.getElementById('sidenav').style.padding = '1.5em'
+    // document.getElementById('sidenav').style.minWidth = '200px'
+    // document.getElementById('back-layer').style.display = 'block'
+    // document.getElementById('sidenav').style.padding = '1.5em'
   }
 
   const handleClose = () => {
-    document.getElementById('sidenav').style.minWidth = '0'
-    document.getElementById('back-layer').style.display = 'none'
-    document.getElementById('sidenav').style.padding = '0'
+    // document.getElementById('sidenav').style.minWidth = '0'
+    // document.getElementById('back-layer').style.display = 'none'
+    // document.getElementById('sidenav').style.padding = '0'
   }
 
   const handleClick = () => {
-    history.push('/explore')
+    history.push('/')
   }
 
   return (

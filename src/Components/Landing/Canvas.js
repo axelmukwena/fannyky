@@ -1,11 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-function Canvas({ h, w }) {
+function Canvas() {
   const canvasRef = useRef(null)
   const [x, setX] = useState(undefined)
   const [y, setY] = useState(undefined)
+  const [height, setHeight] = useState(0)
+  const [width, setWidth] = useState(0)
 
-  useEffect(() => {}, [])
+  function handleResize() {
+    const contentContainer = document.querySelector('.content-container')
+    // appBody.style.minHeight = `${bodyHeight.toString()}px`
+    setHeight(window.innerHeight - 115)
+    setWidth(contentContainer.offsetWidth)
+  }
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+  }, [])
 
   const handleMouseMove = (e) => {
     const canvas = canvasRef.current
@@ -38,8 +50,8 @@ function Canvas({ h, w }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={clearDrawing}
       ref={canvasRef}
-      height={h}
-      width={w}
+      height={height}
+      width={width}
     />
   )
 }

@@ -1,11 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import { Typography, Toolbar, AppBar, Button } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import ModalDialog from '../Login/ModalDialog'
-import { logoutUser } from '../../currentUser/logout'
+import { Typography, Toolbar, AppBar } from '@material-ui/core'
 
 const useStyless = makeStyles(() => ({
   appBar: {
@@ -35,68 +31,15 @@ const useStyless = makeStyles(() => ({
 const Footer = () => {
   const classes = useStyless()
   const currentYear = new Date().getFullYear()
-  const [open, setOpen] = useState(false)
-  const dispatch = useDispatch()
-  const history = useHistory()
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
-  const handleLogout = () => {
-    const success = logoutUser(dispatch)
-    // https://reactrouter.com/web/api/Hooks/usehistory
-    if (success) {
-      history.push('/')
-    }
-  }
-
-  const LoggedOut = () => (
-    <Button className={classes.button} onClick={handleOpen}>
-      <p
-        style={{ textDecoration: 'underline', marginTop: 2 }}
-        className={classes.typography}
-      >
-        admin
-      </p>
-    </Button>
-  )
-
-  const LoggedIn = () => (
-    <span>
-      <Button className={classes.button} onClick={handleLogout}>
-        <p
-          style={{ textDecoration: 'underline', marginTop: 2 }}
-          className={classes.typography}
-        >
-          logout
-        </p>
-      </Button>
-      <span> {currentUser.user.email.split('@')[0]}</span>
-    </span>
-  )
-
-  let currentUser = useSelector((state) => state.currentUser.user)
-  const IsLoggedIn = () => {
-    if (currentUser) {
-      return <LoggedIn />
-    }
-    return <LoggedOut />
-  }
 
   return (
     <div className="footer">
       <AppBar color="secondary" elevation={0} className={clsx(classes.appBar)}>
         <Toolbar className={classes.toolBar}>
           <Typography className={classes.typography}>
-            © {currentYear}. All rights reserved. <IsLoggedIn />
+            ©{currentYear}. All rights reserved.
           </Typography>
         </Toolbar>
-        <ModalDialog open={open} handleClose={handleClose} />
       </AppBar>
     </div>
   )

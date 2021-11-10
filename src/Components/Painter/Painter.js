@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { getPublicData } from '../../utils/Helpers'
@@ -37,7 +37,7 @@ const Painter = ({ match }) => {
 
   useEffect(() => {
     getPublicData(setPainter, match.url)
-  }, [])
+  }, [match.url])
 
   return (
     <div className="painter">

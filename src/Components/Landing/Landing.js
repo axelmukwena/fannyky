@@ -4,17 +4,17 @@ import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
 import { paintersMenu } from '../Menu/menuSlice/updateMenu'
 import Canvas from './Canvas'
 
-function Landing({ h, w }) {
+function Landing() {
   const dispatch = useDispatch()
 
   useEffect(() => {
     paintersMenu(dispatch)
     dispatch(updateSiteName('Fanny & Ky'))
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="canvas">
-      <Canvas h={h} w={w} />
+      <Canvas />
     </div>
   )
 }
