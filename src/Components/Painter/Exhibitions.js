@@ -8,7 +8,7 @@ const Exhibitions = () => {
   const { path } = useRouteMatch()
 
   useEffect(() => {
-    getPublicData(setExhibitions,  path)
+    getPublicData(setExhibitions, path)
   }, [path])
 
   const handleOpen = () => {}

@@ -4,7 +4,7 @@ export const currentMenuSlice = createSlice({
   name: 'menu',
   initialState: {
     menu: [],
-    siteName: 'Fanny & Ky',
+    siteName: ['buda fans', '/'],
   },
   reducers: {
     updateMenu: (state, action) => {

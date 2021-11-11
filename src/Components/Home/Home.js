@@ -4,25 +4,13 @@ import { useDispatch } from 'react-redux'
 import { getPhotos, getPublicData } from '../../utils/Helpers'
 import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
 import { paintersMenu } from '../Menu/menuSlice/updateMenu'
-import './Explore.css'
+import './Home.css'
 
-function Explore() {
+function Home() {
   const dispatch = useDispatch()
   const [paintings, setPaintings] = useState([])
   const [photos, setPhotos] = useState([])
   const [columnQty, setColumnQty] = useState(1)
-
-  useEffect(() => {
-    getPhotos(setPhotos, 'painting')
-    getPublicData(setPaintings, '/explorers')
-
-    paintersMenu(dispatch)
-    dispatch(updateSiteName('Explore by Fanny & Ky'))
-
-    // Initialize size
-    handleResize()
-    window.addEventListener('resize', handleResize)
-  }, [dispatch])
 
   // On screen width changes
   const handleResize = () => {
@@ -34,6 +22,18 @@ function Explore() {
       setColumnQty(3)
     }
   }
+
+  useEffect(() => {
+    getPhotos(setPhotos, 'painting')
+    getPublicData(setPaintings, '/explorers')
+
+    paintersMenu(dispatch)
+    dispatch(updateSiteName(['buda fans', '/']))
+
+    // Initialize size
+    handleResize()
+    window.addEventListener('resize', handleResize)
+  }, [dispatch])
 
   // sort Paintings into columns
   const SortIntoColumns = () => {
@@ -101,4 +101,4 @@ function Explore() {
   )
 }
 
-export default Explore
+export default Home

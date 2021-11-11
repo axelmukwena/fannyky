@@ -11,7 +11,7 @@ function Canvas() {
     const contentContainer = document.querySelector('.content-container')
     // appBody.style.minHeight = `${bodyHeight.toString()}px`
     setHeight(window.innerHeight - 115)
-    setWidth(contentContainer.offsetWidth)
+    setWidth(contentContainer.offsetWidth - 70)
   }
 
   useEffect(() => {

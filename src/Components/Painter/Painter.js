@@ -12,6 +12,7 @@ import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
 
 const Painter = ({ match }) => {
   const dispatch = useDispatch()
+  const { url } = match
 
   // paths
   // paintings => /painter
@@ -24,31 +25,31 @@ const Painter = ({ match }) => {
   function setPainter(painter) {
     if (painter) {
       const menu = parsePainterMenu(
-        `${match.url}/about`,
-        `${match.url}`,
-        `${match.url}/exhibitions`,
-        `${match.url}/books`,
+        `${url}/about`,
+        `${url}`,
+        `${url}/exhibitions`,
+        `${url}/books`,
       )
       updateMenuSlice(dispatch, menu)
       dispatch(updatePainter(painter))
-      dispatch(updateSiteName(`Paintings by ${painter.name}`))
+      dispatch(updateSiteName([painter.name, painter.slug]))
     }
   }
 
   useEffect(() => {
-    getPublicData(setPainter, match.url)
-  }, [match.url])
+    getPublicData(setPainter, url)
+  }, [url])
 
   return (
     <div className="painter">
       <Switch>
         <Route
-          path={`${match.url}/exhibitions`}
+          path={`${url}/exhibitions`}
           component={Exhibitions}
           key="exhibitions"
         />
-        <Route path={`${match.url}/books`} component={Books} key="books" />
-        <Route path={match.url} component={Paintings} key="paintings" />
+        <Route path={`${url}/books`} component={Books} key="books" />
+        <Route path={url} component={Paintings} key="paintings" />
       </Switch>
     </div>
   )

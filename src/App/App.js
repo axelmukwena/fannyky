@@ -5,11 +5,12 @@ import clsx from 'clsx'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Grid } from '@material-ui/core'
-import Explore from '../Components/Explore/Explore'
 import Landing from '../Components/Landing/Landing'
 import { authorizeUser } from '../currentUser/authorize'
 import Painter from '../Components/Painter/Painter'
-import SideMenu from '../Components/Menu/SideMenu'
+import Menu from '../Components/Menu/Menu'
+import Login from '../Components/Login/Login'
+import Home from '../Components/Home/Home'
 
 const useStyles = makeStyles(() => ({
   container: {},
@@ -27,9 +28,9 @@ function App() {
   return (
     <div className="app-container">
       <Router className={clsx(classes.container)}>
-        <Grid container spacing={4}>
-          <Grid item xs={2}>
-            <SideMenu />
+        <Grid container spacing={1}>
+          <Grid item xs={1} style={{ marginRight: 70 }}>
+            <Menu />
           </Grid>
           <Grid item xs>
             <div className="content-container">
@@ -37,8 +38,11 @@ function App() {
                 <Route exact path="/">
                   <Landing />
                 </Route>
-                <Route exact path="/explore">
-                  <Explore />
+                <Route exact path="/home">
+                  <Home />
+                </Route>
+                <Route exact path="/login">
+                  <Login />
                 </Route>
                 <Route path="/:painterID" component={Painter} key="painter" />
               </Switch>

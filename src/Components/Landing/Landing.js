@@ -9,7 +9,7 @@ function Landing() {
 
   useEffect(() => {
     paintersMenu(dispatch)
-    dispatch(updateSiteName('Fanny & Ky'))
+    dispatch(updateSiteName(['buda fans', '/']))
   }, [dispatch])
 
   return (

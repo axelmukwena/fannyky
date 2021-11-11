@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Form = ({ handleClose }) => {
+const Login = () => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -63,6 +63,11 @@ const Form = ({ handleClose }) => {
     password: '',
     showPassword: false,
   })
+
+  const handleCancel = (e) => {
+    e.preventDefault()
+    history.goBack()
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -76,8 +81,7 @@ const Form = ({ handleClose }) => {
 
     const success = loginUser(dispatch, params)
     if (success) {
-      handleClose()
-      history.replace(history.location.pathname)
+      history.replace('/')
     }
   }
 
@@ -154,7 +158,7 @@ const Form = ({ handleClose }) => {
             <Button
               className={classes.button}
               variant="outlined"
-              onClick={handleClose}
+              onClick={handleCancel}
             >
               Cancel
             </Button>
@@ -179,4 +183,4 @@ const Form = ({ handleClose }) => {
   )
 }
 
-export default Form
+export default Login

@@ -9,17 +9,7 @@ const Paintings = () => {
   const [paintings, setPaintings] = useState([])
   const [photos, setPhotos] = useState([])
   const [columnQty, setColumnQty] = useState(1)
-  let currentUser = useSelector((state) => state.currentUser.user)
-
-  useEffect(() => {
-    getPhotos(setPhotos, 'painting')
-    getPublicData(setPaintings, `/${path}/paintings`)
-    // Initialize size
-    handleResize()
-    window.addEventListener('resize', handleResize)
-  }, [path])
-
-  const handleOpen = () => {}
+  const currentUser = useSelector((state) => state.currentUser.user)
 
   // On screen width changes
   const handleResize = () => {
@@ -32,22 +22,28 @@ const Paintings = () => {
     }
   }
 
-  let trimString = function (string, length) {
-    return string.length > length ? 
-           string.substring(0, length) + '...' :
-           string;
+  useEffect(() => {
+    getPhotos(setPhotos, 'painting')
+    getPublicData(setPaintings, `/${path}/paintings`)
+    // Initialize size
+    handleResize()
+    window.addEventListener('resize', handleResize)
+  }, [path])
+
+  const handleOpen = () => {}
+
+  const trimString = function foo(string, length) {
+    return string.length > length ? `${string.substring(0, length)}...` : string
   }
 
-  const handleMouseLeave = (id) =>  {
+  const handleMouseLeave = (id) => {
     const hoverElement = document.getElementById(id)
     hoverElement.style.display = 'none'
-    
-}
+  }
 
-  const handleMouseEnter = (id) =>  {
-      const hoverElement = document.getElementById(id)
-      hoverElement.style.display = 'block'
-      
+  const handleMouseEnter = (id) => {
+    const hoverElement = document.getElementById(id)
+    hoverElement.style.display = 'block'
   }
 
   // sort Paintings into columns
@@ -82,13 +78,13 @@ const Paintings = () => {
       // console.log('Columns', columns)
 
       return columns.map((column) => (
-        <div key={column[0].slug} className="paintings_column">
+        <div key={column[0].slug} className="paintings-column">
           {column.map((painting) => (
             <div key={painting.id} className="painting">
               <Card
-              onMouseEnter={() => handleMouseEnter(painting.slug)}
-              onMouseLeave={() => handleMouseLeave(painting.slug)}
-              style={{
+                onMouseEnter={() => handleMouseEnter(painting.slug)}
+                onMouseLeave={() => handleMouseLeave(painting.slug)}
+                style={{
                   width: '100%',
                   borderRadius: 8,
                   boxShadow: 'rgb(140 152 164 / 18%) 0px 0px 14px 0px',
@@ -101,9 +97,9 @@ const Paintings = () => {
                   alt={painting.title}
                 />
                 <Typography
-                id={painting.slug}
-                className="hover-element"
-                style={{
+                  id={painting.slug}
+                  className="hover-element"
+                  style={{
                     fontWeight: 400,
                     position: 'absolute',
                     bottom: '0',
@@ -112,7 +108,8 @@ const Paintings = () => {
                     fontSize: '1em',
                     width: '100%',
                     display: 'none',
-                    background: 'linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
+                    background:
+                      'linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
                   }}
                 >
                   {trimString(painting.description, 120)}
@@ -128,35 +125,37 @@ const Paintings = () => {
 
   const IsLoggedIn = () => {
     if (currentUser) {
-      return <Grid container spacing={2} style={{ marginBottom: 10 }}>
-      <Grid item lg={3} md={6} xs={6}>
-        <Button
-          style={{ width: '100%', height: 40 }}
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
-          New Painting
-        </Button>
-      </Grid>
-      <Grid item lg={3} md={6} xs={6}>
-        <Button
-          style={{ width: '100%', height: 40 }}
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
-          New Category
-        </Button>
-      </Grid>
-    </Grid>
+      return (
+        <Grid container spacing={2} style={{ marginBottom: 10 }}>
+          <Grid item lg={3} md={6} xs={6}>
+            <Button
+              style={{ width: '100%', height: 40 }}
+              variant="contained"
+              color="primary"
+              onClick={handleOpen}
+            >
+              New Painting
+            </Button>
+          </Grid>
+          <Grid item lg={3} md={6} xs={6}>
+            <Button
+              style={{ width: '100%', height: 40 }}
+              variant="contained"
+              color="primary"
+              onClick={handleOpen}
+            >
+              New Category
+            </Button>
+          </Grid>
+        </Grid>
+      )
     }
-    return ''
+    return null
   }
 
   return (
     <div className="paintings_containter">
-        <IsLoggedIn/>
+      <IsLoggedIn />
       <Grid container spacing={4}>
         <div className="paintings">
           <SortIntoColumns />

@@ -17,10 +17,10 @@ async function paintersMenu(dispatch) {
 
   await axios
     .get(url, headers)
-    .then(function (response) {
+    .then(function foo(response) {
       dispatch(updateMenu(response.data))
     })
-    .catch(function (error) {
+    .catch(function foo(error) {
       console.log('Get Painters Error')
       console.log(error)
     })

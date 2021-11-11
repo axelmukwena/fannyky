@@ -1,14 +1,14 @@
-.painter {
+.explorer {
   margin: 10px 50px;
 }
 
 @media (max-width: 600px) {
-  .painter {
+  .explorer {
     margin: 10px 15px;
   }
 }
 
-.paintings {
+.explorers {
   display: flex;
   width: 100%;
   position: relative;

@@ -22,7 +22,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Helvetica, Arial, sans-serif',
+    fontFamily: 'gill-sans, sans-serif',
   },
   components: {
     MuiCssBaseline: {

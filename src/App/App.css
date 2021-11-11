@@ -7,6 +7,7 @@
   height: 100vh;
   display: flex;
   text-align: center;
+  color: #444444;
 }
 
 .Logo {
@@ -15,7 +16,7 @@
 
 .app-container {
   min-height: 100vh;
-  padding: 60px 60px 30px 60px;
+  padding: 80px 80px 30px 80px;
   background-color: #f1f1f1 !important;
   /*background-image: url('../images/background.png') !important;*/
 }
@@ -29,13 +30,4 @@
 .MuiPaper-root {
   background-color: #f1f1f1 !important;
   /*background-image: url('../images/background.png') !important;*/
-}
-
-.sidemenu {
-  max-height: fit-content;
-  width: 200px;
-  position: fixed;
-  background-color: white;
-  overflow-x: hidden;
-  border-radius: 5px;
 }
