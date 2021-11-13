@@ -46,3 +46,9 @@ export const randomPhoto = () => {
   console.log(["photos"][random]);
   return ["photos"][random];
 };
+
+export const parsePexelImage = (url) => {
+  let stem = url.split("crop&h")[0];
+  stem += "crop&h=200&w=200";
+  return stem;
+};

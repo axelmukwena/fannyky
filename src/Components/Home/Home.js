@@ -68,7 +68,7 @@ const Home = function Home() {
       return columns.map((column) => (
         <div key={column[0].slug} className="paintings_column">
           {column.map((painting) => (
-            <div key={painting.id} className="painting">
+            <div key={painting.id} className="painting-home">
               <Card
                 style={{
                   width: "100%",

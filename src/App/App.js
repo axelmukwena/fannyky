@@ -33,7 +33,7 @@ const App = function App() {
         </Route>
         <div className="app-container">
           <Grid container spacing={1}>
-            <Grid item xs={1} style={{ marginRight: 70 }}>
+            <Grid item xs="auto" style={{ width: 180 }}>
               <Menu />
             </Grid>
             <Grid item xs>

@@ -17,8 +17,8 @@
 .app-container {
   min-height: 100vh;
   padding: 80px 80px 30px 80px;
-  /* background-color: #f1f1f1 !important;*/
-  background-image: url('../images/landing-background.png') !important;
+  background-color: #f1f1f1 !important;
+  /*background-image: url('../images/background.png') !important;*/
 }
 
 @media (max-width: 800px) {

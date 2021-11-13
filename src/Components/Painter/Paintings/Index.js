@@ -2,7 +2,11 @@ import { Button, Card, CardMedia, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import { getPhotos, getPublicData } from "../../../utils/Helpers";
+import {
+  getPhotos,
+  getPublicData,
+  parsePexelImage,
+} from "../../../utils/Helpers";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
@@ -17,7 +21,7 @@ const Index = function Index() {
     } else if (window.innerWidth <= 1024) {
       setColumnQty(2);
     } else {
-      setColumnQty(3);
+      setColumnQty(4);
     }
   };
 
@@ -49,7 +53,8 @@ const Index = function Index() {
 
         for (let j = 0; j < rows; j += 1) {
           if (index < paintings.length) {
-            paintings[index].image = photos[index].src.large;
+            const parsed = parsePexelImage(photos[index].src.tiny);
+            paintings[index].image = parsed;
             paintings[index].index = index;
             col.push(paintings[index]);
           }
@@ -70,7 +75,6 @@ const Index = function Index() {
                 onClick={handleShowImages}
                 style={{
                   width: "100%",
-                  height: "200px",
                   borderRadius: 0,
                   cursor: "pointer",
                   boxShadow: "rgb(140 152 164 / 18%) 0px 0px 14px 0px",
@@ -132,7 +136,7 @@ const IsLoggedIn = function IsLoggedIn() {
 
   if (currentUser) {
     return (
-      <Grid container spacing={2} style={{ marginBottom: 10 }}>
+      <Grid container spacing={4} style={{ marginBottom: 10 }}>
         <Grid item lg={3} md={6} xs={6}>
           <Button
             style={{ width: "100%", height: 40 }}

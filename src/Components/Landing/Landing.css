@@ -1,0 +1,9 @@
+.canvas-container {
+position: relative;
+}
+
+.button-one, .button-two {
+  z-index: 1;
+  margin-top: -200px;
+  position: absolute;
+}

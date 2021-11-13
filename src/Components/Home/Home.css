@@ -14,12 +14,12 @@
   position: relative;
 }
 
-.painting {
-  padding: 15px;
+.painting-home {
+  margin: 15px;
 }
 
 @media (max-width: 600px) {
-  .painting {
-    padding: 0 15px 15px 15px;
+  .painting-home {
+    margin: 0 15px 15px 15px;
   }
 }

@@ -51,6 +51,7 @@ const Canvas = function Canvas() {
 
   return (
     <canvas
+      className="canvas"
       id="canvas"
       onMouseMove={handleMouseMove}
       onMouseLeave={clearDrawing}
