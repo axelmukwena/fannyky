@@ -1,24 +1,24 @@
-import { Button, Card, Grid, Link, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { useRouteMatch } from 'react-router-dom'
-import { getPublicData } from '../../utils/Helpers'
+import { Button, Card, Grid, Link, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { useRouteMatch } from "react-router-dom";
+import { getPublicData } from "../../utils/Helpers";
 
-const Books = () => {
-  const [books, setBooks] = useState([])
-  const { path } = useRouteMatch()
+const Books = function Books() {
+  const [books, setBooks] = useState([]);
+  const { path } = useRouteMatch();
 
   useEffect(() => {
-    getPublicData(setBooks, path)
-  }, [path])
+    getPublicData(setBooks, path);
+  }, [path]);
 
-  const handleOpen = () => {}
+  const handleOpen = () => {};
 
   return (
     <div className="books" style={{}}>
       <Grid container spacing={4} style={{ marginBottom: 10 }}>
         <Grid item lg={3} md={6} xs={6}>
           <Button
-            style={{ width: '100%', height: 40 }}
+            style={{ width: "100%", height: 40 }}
             variant="contained"
             color="primary"
             onClick={handleOpen}
@@ -30,7 +30,7 @@ const Books = () => {
       <Grid container spacing={4}>
         {books.map((book) => (
           <Grid key={book.id} item lg={4} md={6} xs={12}>
-            <Card style={{ width: '100%', padding: 10 }}>
+            <Card style={{ width: "100%", padding: 10 }}>
               <Typography
                 style={{
                   fontWeight: 300,
@@ -73,7 +73,7 @@ const Books = () => {
         ))}
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default Books
+export default Books;

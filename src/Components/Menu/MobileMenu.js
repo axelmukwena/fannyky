@@ -5,50 +5,50 @@ import {
   makeStyles,
   Typography,
   Box,
-} from '@material-ui/core'
-import clsx from 'clsx'
-import React from 'react'
-import { Menu as MenuIcon } from '@material-ui/icons'
-import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import SideMenu from './SideMenu'
-import './Menu.css'
+} from "@material-ui/core";
+import clsx from "clsx";
+import React from "react";
+import { Menu as MenuIcon } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import SideMenu from "./SideMenu";
+import "./Menu.css";
 
 const useStyles = makeStyles(() => ({
   appBar: {
     margin: 0,
-    position: 'static',
+    position: "static",
   },
   typography: {
     fontWeight: 500,
-    fontSize: '1.2rem',
-    color: '#444',
-    textDecoration: 'none',
+    fontSize: "1.2rem",
+    color: "#444",
+    textDecoration: "none",
     marginLeft: 5,
     marginRight: 5,
   },
-}))
+}));
 
-const MainNav = () => {
-  const classes = useStyles()
-  const siteName = useSelector((state) => state.currentMenu.siteName)
-  const history = useHistory()
+const MainNav = function MainNav() {
+  const classes = useStyles();
+  const siteName = useSelector((state) => state.currentMenu.siteName);
+  const history = useHistory();
 
   const handleOpen = () => {
     // document.getElementById('sidenav').style.minWidth = '200px'
     // document.getElementById('back-layer').style.display = 'block'
     // document.getElementById('sidenav').style.padding = '1.5em'
-  }
+  };
 
   const handleClose = () => {
     // document.getElementById('sidenav').style.minWidth = '0'
     // document.getElementById('back-layer').style.display = 'none'
     // document.getElementById('sidenav').style.padding = '0'
-  }
+  };
 
   const handleClick = () => {
-    history.push('/')
-  }
+    history.push("/");
+  };
 
   return (
     <div className="main-nav">
@@ -63,8 +63,8 @@ const MainNav = () => {
               onClick={handleClick}
               style={{
                 fontWeight: 900,
-                fontSize: '1.4rem',
-                fontFamily: 'Roboto',
+                fontSize: "1.4rem",
+                fontFamily: "Roboto",
                 flex: 1,
                 // cursor: 'pointer',
               }}
@@ -86,7 +86,7 @@ const MainNav = () => {
       </Box>
       <SideMenu handleClose={handleClose} />
     </div>
-  )
-}
+  );
+};
 
-export default MainNav
+export default MainNav;

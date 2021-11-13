@@ -126,8 +126,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Lints
 
-- https://www.npmjs.com/package/@imaginary-cloud/eslint-config-react
-- https://stackoverflow.com/a/68315971/8050183
+- `npm install --save-dev eslint prettier`
+- `npm info "@imaginary-cloud/eslint-config-react@latest" peerDependencies`
+- Install the above dependencies
+- `npm install [package]@[version] --save-dev` | @latest always works, soo
+- `npm install [package]@latest --save-dev`
 
 ### Photos with Pexels API
 
@@ -142,3 +145,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### PropTypes Validation
 
 - https://blog.logrocket.com/validating-react-component-props-with-prop-types-ef14b29963fc/
+
+### Material UI Carousel
+
+- https://learus.github.io/react-material-ui-carousel/

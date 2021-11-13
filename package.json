@@ -5,6 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@mui/icons-material": "^5.1.0",
+    "@mui/material": "^5.1.0",
+    "@mui/styles": "^5.1.0",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -15,9 +18,10 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-material-ui-carousel": "^3.0.4",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "^3.4.4",
+    "react-scripts": "^4.0.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -33,7 +37,6 @@
       "react/prop-types": "off",
       "no-console": "off",
       "func-names": "off",
-      "semi": "off",
       "no-param-reassign": [
         2,
         {
@@ -48,7 +51,6 @@
       ]
     }
   },
-  "prettier": "@imaginary-cloud/prettier-config",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -62,15 +64,14 @@
     ]
   },
   "devDependencies": {
-    "@imaginary-cloud/eslint-config-react": "^1.0.1",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.4.1",
-    "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^2.5.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.4.1"
   }
 }

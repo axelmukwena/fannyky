@@ -1,36 +1,36 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
-import { Typography, Toolbar, AppBar } from '@material-ui/core'
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { Typography, Toolbar, AppBar } from "@material-ui/core";
 
 const useStyless = makeStyles(() => ({
   appBar: {
     bottom: 0,
-    top: 'auto',
-    position: 'static',
+    top: "auto",
+    position: "static",
     zIndex: -2,
-    padding: '35px 0 10px 0',
+    padding: "35px 0 10px 0",
   },
   typography: {
-    fontSize: '0.8rem',
-    color: '#444',
+    fontSize: "0.8rem",
+    color: "#444",
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: "center",
   },
   toolBar: {
     minHeight: 50,
   },
   button: {
-    textTransform: 'none',
+    textTransform: "none",
     padding: 0,
     marginBottom: 4,
     minWidth: 50,
   },
-}))
+}));
 
-const Footer = () => {
-  const classes = useStyless()
-  const currentYear = new Date().getFullYear()
+const Footer = function Footer() {
+  const classes = useStyless();
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="footer">
@@ -42,7 +42,7 @@ const Footer = () => {
         </Toolbar>
       </AppBar>
     </div>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

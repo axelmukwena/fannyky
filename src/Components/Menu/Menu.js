@@ -1,9 +1,9 @@
-import React from 'react'
-import './Menu.css'
-import SideMenu from './SideMenu'
+import React from "react";
+import "./Menu.css";
+import SideMenu from "./SideMenu";
 
-const Menu = () => {
-  return <SideMenu />
-}
+const Menu = function Menu() {
+  return <SideMenu />;
+};
 
-export default Menu
+export default Menu;

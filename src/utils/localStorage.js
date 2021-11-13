@@ -1,9 +1,9 @@
 function setStorage(name, object) {
-	try {
-		localStorage.setItem(name, JSON.stringify(object));
-	} catch (e) {
-		console.log(e);
-	}
+  try {
+    localStorage.setItem(name, JSON.stringify(object));
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-export { setStorage };
+export default setStorage;

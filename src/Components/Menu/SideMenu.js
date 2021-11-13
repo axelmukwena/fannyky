@@ -1,45 +1,15 @@
-import { Paper, Typography } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
-import React from 'react'
-import { logoutUser } from '../../currentUser/logout'
+import { Paper, Typography } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import React from "react";
+import logoutUser from "../../currentUser/logout";
 
-const SideMenu = () => {
-  const currentMenu = useSelector((state) => state.currentMenu.menu)
-  const currentUser = useSelector((state) => state.currentUser.user)
-  const [logoName, logoUrl] = useSelector((state) => state.currentMenu.siteName)
-
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const currentYear = new Date().getFullYear()
-
-  const handleLogout = (event) => {
-    event.preventDefault()
-    const success = logoutUser(dispatch)
-    // https://reactrouter.com/web/api/Hooks/usehistory
-    if (success) {
-      history.replace(history.location.pathname)
-    }
-  }
-
-  const IsLoggedIn = () => {
-    if (currentUser) {
-      return (
-        <div className="menu-item">
-          <Link to="/logout" onClick={handleLogout} style={{ borderRadius: 5 }}>
-            <Typography
-              style={{
-                fontWeight: 400,
-              }}
-            >
-              Logout
-            </Typography>
-          </Link>
-        </div>
-      )
-    }
-    return ''
-  }
+const SideMenu = function SideMenu() {
+  const currentMenu = useSelector((state) => state.currentMenu.menu);
+  const [logoName, logoUrl] = useSelector(
+    (state) => state.currentMenu.siteName
+  );
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="menu-container">
@@ -56,12 +26,12 @@ const SideMenu = () => {
             <Typography
               style={{
                 fontWeight: 900,
-                fontSize: '1.4rem',
-                fontFamily: 'Roboto',
+                fontSize: "1.4rem",
+                fontFamily: "Roboto",
                 flex: 1,
               }}
             >
-              {logoName}
+              {logoName.toLowerCase()}
             </Typography>
           </Link>
         </div>
@@ -84,7 +54,39 @@ const SideMenu = () => {
         </div>
       </Paper>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenu
+const IsLoggedIn = function IsLoggedIn() {
+  const currentUser = useSelector((state) => state.currentUser.user);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    const success = logoutUser(dispatch);
+    // https://reactrouter.com/web/api/Hooks/usehistory
+    if (success) {
+      history.replace(history.location.pathname);
+    }
+  };
+
+  if (currentUser) {
+    return (
+      <div className="menu-item">
+        <Link to="/logout" onClick={handleLogout} style={{ borderRadius: 5 }}>
+          <Typography
+            style={{
+              fontWeight: 400,
+            }}
+          >
+            Logout
+          </Typography>
+        </Link>
+      </div>
+    );
+  }
+  return "";
+};
+
+export default SideMenu;

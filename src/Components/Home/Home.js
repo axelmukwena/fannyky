@@ -1,67 +1,67 @@
-import { Card, CardMedia, Grid } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { getPhotos, getPublicData } from '../../utils/Helpers'
-import { updateSiteName } from '../Menu/menuSlice/currentMenuSlice'
-import { paintersMenu } from '../Menu/menuSlice/updateMenu'
-import './Home.css'
+import React, { useEffect, useState } from "react";
+import { Card, CardMedia, Grid } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { getPhotos, getPublicData } from "../../utils/Helpers";
+import { updateSiteName } from "../Menu/menuSlice/currentMenuSlice";
+import { paintersMenu } from "../Menu/menuSlice/updateMenu";
+import "./Home.css";
 
-function Home() {
-  const dispatch = useDispatch()
-  const [paintings, setPaintings] = useState([])
-  const [photos, setPhotos] = useState([])
-  const [columnQty, setColumnQty] = useState(1)
+const Home = function Home() {
+  const dispatch = useDispatch();
+  const [paintings, setPaintings] = useState([]);
+  const [photos, setPhotos] = useState([]);
+  const [columnQty, setColumnQty] = useState(1);
 
   // On screen width changes
   const handleResize = () => {
     if (window.innerWidth < 540) {
-      setColumnQty(1)
+      setColumnQty(1);
     } else if (window.innerWidth <= 1024) {
-      setColumnQty(2)
+      setColumnQty(2);
     } else {
-      setColumnQty(3)
+      setColumnQty(3);
     }
-  }
+  };
 
   useEffect(() => {
-    getPhotos(setPhotos, 'painting')
-    getPublicData(setPaintings, '/explorers')
+    getPhotos(setPhotos, "painting");
+    getPublicData(setPaintings, "/explorers");
 
-    paintersMenu(dispatch)
-    dispatch(updateSiteName(['buda fans', '/']))
+    paintersMenu(dispatch);
+    dispatch(updateSiteName(["Buda Fans", "/"]));
 
     // Initialize size
-    handleResize()
-    window.addEventListener('resize', handleResize)
-  }, [dispatch])
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  }, [dispatch]);
 
   // sort Paintings into columns
   const SortIntoColumns = () => {
     if (paintings.length > 0 && photos.length > 0) {
       // Check if correct rows to fill all paintings will
       // be created per column. If not, add one more row
-      let rows = Math.round(paintings.length / columnQty)
-      const paintingsCountApprox = rows * columnQty
+      let rows = Math.round(paintings.length / columnQty);
+      const paintingsCountApprox = rows * columnQty;
       if (paintingsCountApprox < paintings.length) {
-        rows += 1
+        rows += 1;
       }
 
-      const columns = []
+      const columns = [];
       for (let i = 0; i < columnQty; i += 1) {
-        const col = []
-        let index = i
+        const col = [];
+        let index = i;
 
         for (let j = 0; j < rows; j += 1) {
           if (index < paintings.length) {
             paintings[index].image =
-              photos[photos.length - index - 1].src.large2x
-            paintings[index].index = index
-            col.push(paintings[index])
+              photos[photos.length - index - 1].src.large2x;
+            paintings[index].index = index;
+            col.push(paintings[index]);
           }
-          index += columnQty
+          index += columnQty;
         }
         if (col.length > 0) {
-          columns.push(col)
+          columns.push(col);
         }
       }
 
@@ -71,9 +71,9 @@ function Home() {
             <div key={painting.id} className="painting">
               <Card
                 style={{
-                  width: '100%',
+                  width: "100%",
                   borderRadius: 8,
-                  boxShadow: 'rgb(140 152 164 / 18%) 0px 0px 14px 0px',
+                  boxShadow: "rgb(140 152 164 / 18%) 0px 0px 14px 0px",
                 }}
               >
                 <CardMedia
@@ -85,10 +85,10 @@ function Home() {
             </div>
           ))}
         </div>
-      ))
+      ));
     }
-    return ''
-  }
+    return "";
+  };
 
   return (
     <Grid container spacing={4}>
@@ -98,7 +98,7 @@ function Home() {
         </div>
       </div>
     </Grid>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

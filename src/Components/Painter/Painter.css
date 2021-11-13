@@ -23,3 +23,18 @@
     padding: 0 15px 15px 15px;
   }
 }
+
+.abstract {
+  padding-top: 15px;
+}
+
+.title {
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: #646464 !important;
+}
+
+.index-image {
+  height: 200px;
+  width: 200px;
+}

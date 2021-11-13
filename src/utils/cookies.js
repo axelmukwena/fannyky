@@ -1,12 +1,12 @@
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 function setUserCookie(name, data, exp) {
-  Cookies.remove(name)
-  Cookies.set(name, data, { expires: exp })
+  Cookies.remove(name);
+  Cookies.set(name, data, { expires: exp });
 }
 
 function getUserCookie(name) {
-  return Cookies.get(name)
+  return Cookies.get(name);
 }
 
-export { setUserCookie, getUserCookie }
+export { setUserCookie, getUserCookie };

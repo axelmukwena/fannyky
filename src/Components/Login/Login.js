@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Typography,
   TextField,
@@ -11,18 +11,18 @@ import {
   InputLabel,
   OutlinedInput,
   IconButton,
-} from '@material-ui/core'
-import { Visibility, VisibilityOff } from '@material-ui/icons'
-import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { loginUser } from '../../currentUser/login'
+} from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import loginUser from "../../currentUser/login";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     padding: theme.spacing(4),
     maxWidth: 400,
   },
@@ -30,75 +30,75 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   button: {
-    width: '100%',
+    width: "100%",
     height: 40,
   },
   title: {
     marginBottom: theme.spacing(2),
     fontWeight: 800,
-    fontSize: '1.2rem',
-    color: '#222',
+    fontSize: "1.2rem",
+    color: "#222",
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: "center",
   },
   forgotPassword: {
     marginTop: theme.spacing(2),
     fontWeight: 400,
-    fontSize: '1rem',
-    color: '#222',
+    fontSize: "1rem",
+    color: "#222",
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: "center",
   },
-}))
+}));
 
-const Login = () => {
-  const classes = useStyles()
+const Login = function Login() {
+  const classes = useStyles();
 
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   // create state variables for each input
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState({
-    password: '',
+    password: "",
     showPassword: false,
-  })
+  });
 
   const handleCancel = (e) => {
-    e.preventDefault()
-    history.goBack()
-  }
+    e.preventDefault();
+    history.goBack();
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const params = {
       user: {
         email,
         password: password.password,
       },
-    }
+    };
 
-    const success = loginUser(dispatch, params)
+    const success = loginUser(dispatch, params);
     if (success) {
-      history.replace('/')
+      history.replace("/");
     }
-  }
+  };
 
   const handleChange = (prop) => (event) => {
-    setPassword({ ...password, [prop]: event.target.value })
-  }
+    setPassword({ ...password, [prop]: event.target.value });
+  };
 
   const handleClickShowPassword = () => {
     setPassword({
       ...password,
       showPassword: !password.showPassword,
-    })
-  }
+    });
+  };
 
   const handleMouseDownPassword = (event) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   return (
     <div>
@@ -129,10 +129,10 @@ const Login = () => {
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
-                type={password.showPassword ? 'text' : 'password'}
+                type={password.showPassword ? "text" : "password"}
                 name="password"
                 value={password.password}
-                onChange={handleChange('password')}
+                onChange={handleChange("password")}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -180,7 +180,7 @@ const Login = () => {
         </Link>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

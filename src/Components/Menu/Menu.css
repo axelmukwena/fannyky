@@ -16,12 +16,12 @@
 .logo,
 .logo a {
   text-decoration: none;
-  color: #444444;
+  color: #787878;
   margin-bottom: 20px;
 }
 
 .menu-item {
-  padding: 5px 0;
+  padding: 3px 0;
   color: #787878;
   font-weight: 400 !important;
 }

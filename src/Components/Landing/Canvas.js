@@ -1,47 +1,52 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
+import coverImage from "../../images/landing-background.png";
 
-function Canvas() {
-  const canvasRef = useRef(null)
-  const [x, setX] = useState(undefined)
-  const [y, setY] = useState(undefined)
-  const [height, setHeight] = useState(0)
-  const [width, setWidth] = useState(0)
+const Canvas = function Canvas() {
+  const canvasRef = useRef(null);
+  const [x, setX] = useState(undefined);
+  const [y, setY] = useState(undefined);
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
 
   function handleResize() {
-    const contentContainer = document.querySelector('.content-container')
-    // appBody.style.minHeight = `${bodyHeight.toString()}px`
-    setHeight(window.innerHeight - 115)
-    setWidth(contentContainer.offsetWidth - 70)
+    setHeight(window.innerHeight);
+    setWidth(window.innerWidth);
+
+    const container = document.getElementById("canvas-container");
+    container.style.backgroundImage = `url(${coverImage})`;
+    container.style.backgroundRepeat = "no-repeat";
+    container.style.backgroundPosition = "center";
+    container.style.backgroundSize = "cover";
   }
 
   useEffect(() => {
-    handleResize()
-    window.addEventListener('resize', handleResize)
-  }, [])
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   const handleMouseMove = (e) => {
-    const canvas = canvasRef.current
-    const context = canvas.getContext('2d')
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
 
-    context.strokeStyle = 'black'
-    context.lineJoin = 'round'
-    context.lineWidth = 5
-    context.lineCap = 'round'
+    context.strokeStyle = "black";
+    context.lineJoin = "round";
+    context.lineWidth = 5;
+    context.lineCap = "round";
 
-    context.beginPath()
-    context.moveTo(x, y)
-    context.lineTo(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop)
-    context.closePath()
+    context.beginPath();
+    context.moveTo(x, y);
+    context.lineTo(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop);
+    context.closePath();
 
-    context.stroke()
+    context.stroke();
 
-    setX(e.pageX - canvas.offsetLeft)
-    setY(e.pageY - canvas.offsetTop)
-  }
+    setX(e.pageX - canvas.offsetLeft);
+    setY(e.pageY - canvas.offsetTop);
+  };
 
   function clearDrawing() {
-    setX(undefined)
-    setY(undefined)
+    setX(undefined);
+    setY(undefined);
   }
 
   return (
@@ -53,7 +58,7 @@ function Canvas() {
       height={height}
       width={width}
     />
-  )
-}
+  );
+};
 
-export default Canvas
+export default Canvas;

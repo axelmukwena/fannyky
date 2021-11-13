@@ -1,22 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const currentMenuSlice = createSlice({
-  name: 'menu',
+  name: "menu",
   initialState: {
     menu: [],
-    siteName: ['buda fans', '/'],
+    siteName: ["Buda Fans", "/"],
   },
   reducers: {
     updateMenu: (state, action) => {
-      state.menu = action.payload
+      state.menu = action.payload;
     },
     updateSiteName: (state, action) => {
-      state.siteName = action.payload
+      state.siteName = action.payload;
     },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { updateMenu, updateSiteName } = currentMenuSlice.actions
+export const { updateMenu, updateSiteName } = currentMenuSlice.actions;
 
-export default currentMenuSlice.reducer
+export default currentMenuSlice.reducer;
