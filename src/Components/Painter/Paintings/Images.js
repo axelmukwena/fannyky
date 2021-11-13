@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardMedia } from "@material-ui/core";
+import { Card, CardMedia } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 
 const Images = function Images({ images }) {

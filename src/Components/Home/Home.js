@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardMedia, Grid } from "@material-ui/core";
+import { Card, CardMedia, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getPhotos, getPublicData } from "../../utils/Helpers";
 import { updateSiteName } from "../Menu/menuSlice/currentMenuSlice";

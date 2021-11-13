@@ -1,14 +1,8 @@
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  makeStyles,
-  Typography,
-  Box,
-} from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from "clsx";
 import React from "react";
-import { Menu as MenuIcon } from "@material-ui/icons";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import SideMenu from "./SideMenu";
@@ -78,7 +72,7 @@ const MainNav = function MainNav() {
               sx={{ mr: 2 }}
               style={{ marginTop: 3 }}
               onClick={handleOpen}
-            >
+              size="large">
               <MenuIcon />
             </IconButton>
           </Toolbar>

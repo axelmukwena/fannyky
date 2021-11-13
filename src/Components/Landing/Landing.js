@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Stack } from "@mui/material";
 import { getPublicData } from "../../utils/Helpers";
 import Canvas from "./Canvas";
 
@@ -24,9 +24,9 @@ const PaintersButtons = function PaintersButtons() {
       <Grid container spacing={1}>
         {painters.map((painter) => (
           <Grid key={painter.slug} item xs>
-            <Grid direction="row" justifyContent="center">
+            <Stack direction="row" justifyContent="center">
               <Button variant="contained">{painter.name}</Button>
-            </Grid>
+            </Stack>
           </Grid>
         ))}
       </Grid>

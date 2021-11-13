@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import Landing from "../Components/Landing/Landing";
 import authorizeUser from "../currentUser/authorize";
 import Painter from "../Components/Painter/Painter";

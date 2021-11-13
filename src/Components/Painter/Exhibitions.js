@@ -1,4 +1,4 @@
-import { Button, Card, Grid, Link, Typography } from "@material-ui/core";
+import { Button, Card, Grid, Link, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { getPublicData } from "../../utils/Helpers";

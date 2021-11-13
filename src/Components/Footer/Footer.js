@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from "clsx";
-import { Typography, Toolbar, AppBar } from "@material-ui/core";
+import { Typography, Toolbar, AppBar } from "@mui/material";
 
 const useStyless = makeStyles(() => ({
   appBar: {

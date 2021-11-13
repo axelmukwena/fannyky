@@ -149,3 +149,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Material UI Carousel
 
 - https://learus.github.io/react-material-ui-carousel/
+
+### MUI 4 to 5
+- https://dev.to/hasone/migrate-material-ui-4-to-mui-5-1g3i
+- https://mui.com/guides/migration-v4/#update-material-ui-version

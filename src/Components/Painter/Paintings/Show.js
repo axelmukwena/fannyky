@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { getPhotos, getPublicData } from "../../../utils/Helpers";
 import Images from "./Images";
 

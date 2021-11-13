@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Typography,
   TextField,
-  makeStyles,
   Button,
   Grid,
   Link,
@@ -11,8 +10,9 @@ import {
   InputLabel,
   OutlinedInput,
   IconButton,
-} from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import loginUser from "../../currentUser/login";
@@ -140,7 +140,7 @@ const Login = function Login() {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
-                    >
+                      size="large">
                       {password.showPassword ? (
                         <VisibilityOff />
                       ) : (
