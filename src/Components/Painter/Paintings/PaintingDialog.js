@@ -18,6 +18,7 @@ const PaintingDialog = function PaintingDialog({
   paintings,
   open,
   handleClose,
+  show,
 }) {
   const [current, setCurrent] = useState(0);
   const [height, setHeight] = useState(0);
@@ -28,16 +29,20 @@ const PaintingDialog = function PaintingDialog({
   };
 
   const showContent = () => {
-    const card = document.querySelector(".painting-dialog-image");
-    const cardWidth = getComputedStyle(card).width;
-    const content = document.querySelector(".painting-dialog-content");
-    content.style.width = cardWidth;
-    content.style.display = "block";
+    if (show) {
+      const card = document.querySelector(".painting-dialog-image");
+      const cardWidth = getComputedStyle(card).width;
+      const content = document.querySelector(".painting-dialog-content");
+      content.style.width = cardWidth;
+      content.style.display = "block";
+    }
   };
 
   const hideContent = () => {
-    const content = document.querySelector(".painting-dialog-content");
-    content.style.display = "none";
+    if (show) {
+      const content = document.querySelector(".painting-dialog-content");
+      content.style.display = "none";
+    }
   };
 
   useEffect(() => {
@@ -127,32 +132,7 @@ const PaintingDialog = function PaintingDialog({
                   height={height}
                 />
               </div>
-              <div className="painting-dialog-content">
-                <Link
-                  to={`${painting.painter.slug}/paintings/${painting.slug}`}
-                  className="painting-title-popup"
-                >
-                  {painting.title}
-                </Link>
-
-                <Typography
-                  style={{ marginTop: 10, fontStyle: "italic", fontSize: 14 }}
-                >
-                  {painting.painter.name}, {painting.date_created.split("-")[0]}
-                </Typography>
-                <Typography style={{ fontSize: 14 }}>
-                  {painting.abstract}
-                </Typography>
-                <Typography style={{ fontSize: 14 }}>
-                  {painting.dimension}
-                </Typography>
-
-                <hr className="horizontal" />
-
-                <Typography style={{ marginTop: 5, fontSize: 14 }}>
-                  {painting.description}
-                </Typography>
-              </div>
+              <PaintingsDialogContent show={show} painting={painting} />
             </Card>
           </Grid>
           <Grid item xs onClick={() => goForward()}>
@@ -169,6 +149,39 @@ const PaintingDialog = function PaintingDialog({
           </Grid>
         </Grid>
       </Dialog>
+    );
+  }
+  return "";
+};
+
+const PaintingsDialogContent = function PaintingsDialogContent({
+  show,
+  painting,
+}) {
+  if (show) {
+    return (
+      <div className="painting-dialog-content">
+        <Link
+          to={`${painting.painter.slug}/paintings/${painting.slug}`}
+          className="painting-title-popup"
+        >
+          {painting.title}
+        </Link>
+
+        <Typography
+          style={{ marginTop: 10, fontStyle: "italic", fontSize: 14 }}
+        >
+          {painting.painter.name}, {painting.date_created.split("-")[0]}
+        </Typography>
+        <Typography style={{ fontSize: 14 }}>{painting.abstract}</Typography>
+        <Typography style={{ fontSize: 14 }}>{painting.dimension}</Typography>
+
+        <hr className="horizontal" />
+
+        <Typography style={{ marginTop: 5, fontSize: 14 }}>
+          {painting.description}
+        </Typography>
+      </div>
     );
   }
   return "";

@@ -1,23 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { CardMedia, Typography } from "@mui/material";
 import { getPhotos, getPublicData } from "../../../utils/Helpers";
+import PaintingDialog from "./PaintingDialog";
 
 const Show = function Show({ match }) {
+  const { url } = match;
   const [painting, setPainting] = useState({});
   const [photos, setPhotos] = useState([]);
-  const { url } = match;
+  const [photosToPaintings, setPhotosToPaintings] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     getPublicData(setPainting, url);
     getPhotos(setPhotos, "painting");
   }, [url]);
 
+  const handleOpen = (paintingPhotos, title) => {
+    const p = [];
+    for (let i = 0; i < paintingPhotos.length; i += 1) {
+      p.push({ image: paintingPhotos[i].src.original, title });
+    }
+    setPhotosToPaintings(p);
+    // setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   if (painting.id && photos.length > 0) {
     return (
       <div>
         <div className="row">
-          <SetImages photos={photos.slice(0, 3)} title={painting.title} />
+          {photos.slice(0, 3).map((photo) => (
+            <CardMedia
+              key={photo.src.original}
+              src={`${photo.src.original}?w=700&h=700&fit=crop&auto=format`}
+              alt={painting.title}
+              loading="lazy"
+              component="img"
+              onClick={() => handleOpen(photos.slice(0, 3), painting.title)}
+              style={{ cursor: "pointer" }}
+              className="painting-image-show"
+            />
+          ))}
         </div>
+        <PaintingDialog
+          paintings={photosToPaintings}
+          open={open}
+          handleClose={handleClose}
+          show={false}
+        />
         <div className="painting-show-content">
           <Typography
             style={{
@@ -53,24 +86,6 @@ const Show = function Show({ match }) {
 const DateCreated = function DateCreated({ painting }) {
   if (painting.date_created) {
     return painting.date_created.split("-")[0];
-  }
-  return "";
-};
-
-const SetImages = function SetImages({ photos, title }) {
-  if (photos.length > 0) {
-    return photos.map((photo) => (
-      <CardMedia
-        key={photo.src.original}
-        src={`${photo.src.original}?w=700&h=700&fit=crop&auto=format`}
-        alt={title}
-        loading="lazy"
-        component="img"
-        // onClick={() => handleOpen(painting)}
-        style={{ cursor: "pointer" }}
-        className="painting-image-show"
-      />
-    ));
   }
   return "";
 };

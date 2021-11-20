@@ -12,23 +12,9 @@ const Index = function Index() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
 
-  // On screen width changes
-  const handleResize = () => {
-    if (window.innerWidth < 540) {
-      // setColumnQty(2);
-    } else if (window.innerWidth <= 1024) {
-      // setColumnQty(3);
-    } else {
-      // setColumnQty(4);
-    }
-  };
-
   useEffect(() => {
     getPhotos(setPhotos, "painting");
     getPublicData(setPaintings, `/${path}/paintings`);
-    // Initialize size
-    handleResize();
-    window.addEventListener("resize", handleResize);
   }, [path]);
 
   const handleOpen = (painting) => {
@@ -87,6 +73,7 @@ const Index = function Index() {
         paintings={selected}
         open={open}
         handleClose={handleClose}
+        show
       />
     </div>
   );

@@ -60,7 +60,7 @@
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
-  color: white;
+  color: #727272;
 }
 
 .row {
@@ -75,17 +75,16 @@
 .painting-dialog-content {
   padding: 20px;
   position: absolute;
-  background-color: black;
-  opacity: 0.8;
+  background-color: white;
+  opacity: 1;
   bottom: 16px;
   display: none;
-  color: white;
   width: 0;
 }
 
 .horizontal {
   margin-top: 10px;
-  border-top: "1px solid #787878";
+  border-top: 1px solid #d9d9d9;
   border-bottom: 0;
   border-left: 0;
   border-right: 0;
