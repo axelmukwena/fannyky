@@ -15,7 +15,18 @@
 }
 
 .painting {
-  margin: 15px;
+  margin: 25px;
+  width: 150px;
+}
+
+.painting-image-show {
+  margin: 20px;
+  width: 250px;
+  border-radius: 0;
+}
+
+.painting-show-content {
+  margin: 20px;
 }
 
 @media (max-width: 600px) {
@@ -25,7 +36,7 @@
 }
 
 .abstract {
-  padding-top: 15px;
+  padding-top: 5px;
 }
 
 .title {
@@ -34,7 +45,48 @@
   color: #646464 !important;
 }
 
-.index-image {
-  height: 200px;
-  width: 200px;
+.painting-title-index {
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  color: #727272;
+}
+
+.painting-title-index:hover, .painting-title-popup:hover {
+  text-decoration: underline;
+}
+
+.painting-title-popup {
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.painting-dialog-image {
+  position: relative;
+}
+
+.painting-dialog-content {
+  padding: 20px;
+  position: absolute;
+  background-color: black;
+  opacity: 0.8;
+  bottom: 16px;
+  display: none;
+  color: white;
+  width: 0;
+}
+
+.horizontal {
+  margin-top: 10px;
+  border-top: "1px solid #787878";
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
 }

@@ -11,7 +11,7 @@ import {
   OutlinedInput,
   IconButton,
 } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -140,7 +140,8 @@ const Login = function Login() {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
-                      size="large">
+                      size="large"
+                    >
                       {password.showPassword ? (
                         <VisibilityOff />
                       ) : (

@@ -29,15 +29,15 @@ const PaintersButtons = function PaintersButtons() {
         <Link to={`/${painters[0].slug}`}>
           <Button
             className="button-one"
-            variant="contained"
+            variant="outlined"
             size="large"
             style={{
-              borderRadius: 0,
+              borderRadius: 4,
               border: "2px solid #e7e7e7",
-              backgroundColor: "#e7e7e7",
+              // backgroundColor: "#e7e7e7",
             }}
           >
-            <Typography style={{ fontWeight: "bold", color: "#303030" }}>
+            <Typography style={{ fontWeight: "bold", color: "white" }}>
               {painters[0].name}
             </Typography>
           </Button>
@@ -45,15 +45,15 @@ const PaintersButtons = function PaintersButtons() {
         <Link to={`/${painters[1].slug}`}>
           <Button
             className="button-two"
-            variant="contained"
+            variant="outlined"
             size="large"
             style={{
-              borderRadius: 0,
+              borderRadius: 4,
               border: "2px solid #e7e7e7",
-              backgroundColor: "#e7e7e7",
+              // backgroundColor: "#e7e7e7",
             }}
           >
-            <Typography style={{ fontWeight: "bold", color: "#303030" }}>
+            <Typography style={{ fontWeight: "bold", color: "white" }}>
               {painters[1].name}
             </Typography>
           </Button>

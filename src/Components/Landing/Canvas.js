@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import coverImage from "../../images/landing-background.png";
+import coverImage from "../../images/landing-background-two.png";
 
 const Canvas = function Canvas() {
   const canvasRef = useRef(null);

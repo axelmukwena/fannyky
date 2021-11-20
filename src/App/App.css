@@ -17,17 +17,11 @@
 .app-container {
   min-height: 100vh;
   padding: 80px 80px 30px 80px;
-  background-color: #f1f1f1 !important;
-  /*background-image: url('../images/background.png') !important;*/
+  background-color: #f1f1f1;
 }
 
 @media (max-width: 800px) {
   .app-container {
     padding: 0;
   }
-}
-
-.MuiPaper-root {
-  background-color: #f1f1f1 !important;
-  /*background-image: url('../images/background.png') !important;*/
 }

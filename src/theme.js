@@ -34,17 +34,11 @@ const theme = createTheme({
       },
     },
     MuiPaper: {
-      root: {
-        padding: "20px 10px",
-        margin: "10px",
-        backgroundColor: "#fff", // 5d737e
-      },
-    },
-    MuiButton: {
-      root: {
-        margin: "5px",
-        textTransform: "none",
-        fontSize: "0.975rem",
+      styleOverrides: {
+        root: {
+          padding: "14px 10px",
+          backgroundColor: "#f1f1f1",
+        },
       },
     },
   },

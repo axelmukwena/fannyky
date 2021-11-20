@@ -1,27 +1,25 @@
-import { Button, Card, CardMedia, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, CardMedia } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import {
-  getPhotos,
-  getPublicData,
-  parsePexelImage,
-} from "../../../utils/Helpers";
+import { getPhotos, getPublicData } from "../../../utils/Helpers";
+import PaintingDialog from "./PaintingDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
   const [paintings, setPaintings] = useState([]);
   const [photos, setPhotos] = useState([]);
-  const [columnQty, setColumnQty] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   // On screen width changes
   const handleResize = () => {
     if (window.innerWidth < 540) {
-      setColumnQty(1);
+      // setColumnQty(2);
     } else if (window.innerWidth <= 1024) {
-      setColumnQty(2);
+      // setColumnQty(3);
     } else {
-      setColumnQty(4);
+      // setColumnQty(4);
     }
   };
 
@@ -33,85 +31,46 @@ const Index = function Index() {
     window.addEventListener("resize", handleResize);
   }, [path]);
 
-  const handleShowImages = () => {};
+  const handleOpen = (painting) => {
+    setSelected([painting, paintings[6]]);
+    setOpen(true);
+    // console.log(painting);
+  };
 
-  // sort Paintings into columns
-  const SortIntoColumns = () => {
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const AddPhotos = function AddPhotos() {
     if (paintings.length > 0 && photos.length > 0) {
-      // Check if correct rows to fill all paintings will
-      // be created per column. If not, add one more row
-      let rows = Math.round(paintings.length / columnQty);
-      const paintingsCountApprox = rows * columnQty;
-      if (paintingsCountApprox < paintings.length) {
-        rows += 1;
+      // console.log(photos[0].src);
+      for (let i = 0; i < paintings.length; i += 1) {
+        // const parsed = parsePexelImage(photos[i].src.tiny);
+        paintings[i].image = photos[i].src.original;
       }
 
-      const columns = [];
-      for (let i = 0; i < columnQty; i += 1) {
-        const col = [];
-        let index = i;
-
-        for (let j = 0; j < rows; j += 1) {
-          if (index < paintings.length) {
-            const parsed = parsePexelImage(photos[index].src.tiny);
-            paintings[index].image = parsed;
-            paintings[index].index = index;
-            col.push(paintings[index]);
-          }
-          index += columnQty;
-        }
-        if (col.length > 0) {
-          columns.push(col);
-        }
-      }
-
-      // console.log('Columns', columns)
-
-      return columns.map((column) => (
-        <div key={column[0].slug} className="paintings-column">
-          {column.map((painting) => (
-            <div key={painting.id} className="painting">
-              <Card
-                onClick={handleShowImages}
-                style={{
-                  width: "100%",
-                  borderRadius: 0,
-                  cursor: "pointer",
-                  boxShadow: "rgb(140 152 164 / 18%) 0px 0px 14px 0px",
-                  position: "relative",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  // className="index-image"
-                  src={painting.image}
-                  alt={painting.title}
-                />
-              </Card>
-              <div className="abstract">
-                <Link
-                  to={`${painting.painter.slug}/paintings/${painting.slug}`}
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 14,
-                    color: "#8b8b8b",
-                    textDecoration: "none",
-                  }}
-                >
-                  {painting.title}
-                </Link>
-                <Typography style={{ fontSize: "0.8rem" }}>
-                  {painting.date_created.split("-")[0]}
-                </Typography>
-                <Typography style={{ fontSize: "0.8rem" }}>
-                  {painting.abstract}
-                </Typography>
-                <Typography style={{ fontSize: "0.8rem" }}>
-                  {painting.dimension}
-                </Typography>
-              </div>
-            </div>
-          ))}
+      return paintings.map((painting) => (
+        <div key={painting.slug} className="painting">
+          <CardMedia
+            component="img"
+            src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
+            alt={painting.title}
+            loading="lazy"
+            className="painting-image"
+            onClick={() => handleOpen(painting)}
+            style={{ cursor: "pointer" }}
+          />
+          <div className="abstract">
+            <Link
+              to={`${painting.painter.slug}/paintings/${painting.slug}`}
+              className="painting-title-index"
+            >
+              {painting.title}
+            </Link>
+            <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
+              {painting.date_created.split("-")[0]} - {painting.abstract}
+            </Typography>
+          </div>
         </div>
       ));
     }
@@ -121,11 +80,14 @@ const Index = function Index() {
   return (
     <div className="paintings-containter">
       <IsLoggedIn />
-      <Grid container spacing={4}>
-        <div className="paintings">
-          <SortIntoColumns />
-        </div>
-      </Grid>
+      <div className="row">
+        <AddPhotos />
+      </div>
+      <PaintingDialog
+        paintings={selected}
+        open={open}
+        handleClose={handleClose}
+      />
     </div>
   );
 };

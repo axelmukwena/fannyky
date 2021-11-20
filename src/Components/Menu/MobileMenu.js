@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
 import React from "react";
 import { Menu as MenuIcon } from "@mui/icons-material";
@@ -72,7 +72,8 @@ const MainNav = function MainNav() {
               sx={{ mr: 2 }}
               style={{ marginTop: 3 }}
               onClick={handleOpen}
-              size="large">
+              size="large"
+            >
               <MenuIcon />
             </IconButton>
           </Toolbar>

@@ -1,9 +1,13 @@
 .canvas-container {
-position: relative;
+  position: relative;
 }
 
 .button-one, .button-two {
   z-index: 1;
   margin-top: -200px;
   position: absolute;
+}
+
+.button-one:hover, .button-two:hover {
+  background-color: #e7e7e75d;
 }
