@@ -4,11 +4,8 @@ import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Grid } from "@mui/material";
-import Landing from "../Components/Landing/Landing";
 import authorizeUser from "../currentUser/authorize";
 import Painter from "../Components/Painter/Painter";
-import Menu from "../Components/Menu/Menu";
 import Login from "../Components/Login/Login";
 import Home from "../Components/Home/Home";
 
@@ -29,26 +26,12 @@ const App = function App() {
     <Router className={clsx(classes.container)}>
       <Switch>
         <Route exact path="/">
-          <Landing />
+          <Home />
         </Route>
-        <div className="app-container">
-          <Grid container spacing={1}>
-            <Grid item xs="auto" style={{ width: 180 }}>
-              <Menu />
-            </Grid>
-            <Grid item xs>
-              <div className="content-container">
-                <Route exact path="/home">
-                  <Home />
-                </Route>
-                <Route exact path="/login">
-                  <Login />
-                </Route>
-                <Route path="/:painterID" component={Painter} key="painter" />
-              </div>
-            </Grid>
-          </Grid>
-        </div>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route path="/:painterID" component={Painter} key="painter" />
       </Switch>
     </Router>
   );

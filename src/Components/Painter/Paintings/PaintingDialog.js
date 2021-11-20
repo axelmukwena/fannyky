@@ -48,6 +48,11 @@ const PaintingDialog = function PaintingDialog({
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
+
+    // remove resize listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   function goBack() {

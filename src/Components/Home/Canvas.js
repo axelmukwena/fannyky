@@ -22,6 +22,10 @@ const Canvas = function Canvas() {
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
+    // remove resize listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const handleMouseMove = (e) => {

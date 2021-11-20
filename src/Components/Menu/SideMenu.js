@@ -36,7 +36,7 @@ const SideMenu = function SideMenu() {
           </Link>
         </div>
         <div className="menu-item">
-          <Link to="/home">
+          <Link to="/">
             <Typography>Home</Typography>
           </Link>
         </div>

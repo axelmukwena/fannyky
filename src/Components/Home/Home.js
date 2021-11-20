@@ -1,104 +1,95 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardMedia, Grid } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { getPhotos, getPublicData } from "../../utils/Helpers";
-import { updateSiteName } from "../Menu/menuSlice/currentMenuSlice";
-import { paintersMenu } from "../Menu/menuSlice/updateMenu";
+import { Link } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
+import { getPublicData } from "../../utils/Helpers";
+import Canvas from "./Canvas";
 import "./Home.css";
 
-const Home = function Home() {
-  const dispatch = useDispatch();
-  const [paintings, setPaintings] = useState([]);
-  const [photos, setPhotos] = useState([]);
-  const [columnQty, setColumnQty] = useState(1);
-
-  // On screen width changes
-  const handleResize = () => {
-    if (window.innerWidth < 540) {
-      setColumnQty(1);
-    } else if (window.innerWidth <= 1024) {
-      setColumnQty(2);
-    } else {
-      setColumnQty(3);
-    }
-  };
-
-  useEffect(() => {
-    getPhotos(setPhotos, "painting");
-    getPublicData(setPaintings, "/explorers");
-
-    paintersMenu(dispatch);
-    dispatch(updateSiteName(["Buda Fans", "/"]));
-
-    // Initialize size
-    handleResize();
-    window.addEventListener("resize", handleResize);
-  }, [dispatch]);
-
-  // sort Paintings into columns
-  const SortIntoColumns = () => {
-    if (paintings.length > 0 && photos.length > 0) {
-      // Check if correct rows to fill all paintings will
-      // be created per column. If not, add one more row
-      let rows = Math.round(paintings.length / columnQty);
-      const paintingsCountApprox = rows * columnQty;
-      if (paintingsCountApprox < paintings.length) {
-        rows += 1;
-      }
-
-      const columns = [];
-      for (let i = 0; i < columnQty; i += 1) {
-        const col = [];
-        let index = i;
-
-        for (let j = 0; j < rows; j += 1) {
-          if (index < paintings.length) {
-            paintings[index].image =
-              photos[photos.length - index - 1].src.large2x;
-            paintings[index].index = index;
-            col.push(paintings[index]);
-          }
-          index += columnQty;
-        }
-        if (col.length > 0) {
-          columns.push(col);
-        }
-      }
-
-      return columns.map((column) => (
-        <div key={column[0].slug} className="paintings_column">
-          {column.map((painting) => (
-            <div key={painting.id} className="painting-home">
-              <Card
-                style={{
-                  width: "100%",
-                  borderRadius: 8,
-                  boxShadow: "rgb(140 152 164 / 18%) 0px 0px 14px 0px",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  src={painting.image}
-                  alt={painting.title}
-                />
-              </Card>
-            </div>
-          ))}
-        </div>
-      ));
-    }
-    return "";
-  };
-
+const Landing = function Landing() {
   return (
-    <Grid container spacing={4}>
-      <div className="explorer">
-        <div className="explorers">
-          <SortIntoColumns />
-        </div>
-      </div>
-    </Grid>
+    <div className="canvas-container" id="canvas-container">
+      <Canvas />
+      <PaintersButtons />
+    </div>
   );
 };
 
-export default Home;
+const PaintersButtons = function PaintersButtons() {
+  const [painters, setPainters] = useState([]);
+  // const [positionOne, setPositionOne] = useState(undefined);
+  // const [positionTwo, setPositionTwo] = useState(undefined);
+
+  useEffect(() => {
+    getPublicData(setPainters, "/");
+  }, []);
+
+  if (painters.length > 0) {
+    return (
+      <div className="buttons-container">
+        <Link to={`/${painters[0].slug}`}>
+          <Button
+            className="button-one"
+            variant="outlined"
+            size="large"
+            style={{
+              borderRadius: 4,
+              border: "2px solid #e7e7e7",
+              // backgroundColor: "#e7e7e7",
+            }}
+          >
+            <Typography style={{ fontWeight: "bold", color: "white" }}>
+              {painters[0].name}
+            </Typography>
+          </Button>
+        </Link>
+        <Link to={`/${painters[1].slug}`}>
+          <Button
+            className="button-two"
+            variant="outlined"
+            size="large"
+            style={{
+              borderRadius: 4,
+              border: "2px solid #e7e7e7",
+              // backgroundColor: "#e7e7e7",
+            }}
+          >
+            <Typography style={{ fontWeight: "bold", color: "white" }}>
+              {painters[1].name}
+            </Typography>
+          </Button>
+        </Link>
+        <PositionButtons />
+      </div>
+    );
+  }
+  return "";
+};
+
+const PositionButtons = function PositionButtons() {
+  function handleResize() {
+    const height = window.innerHeight;
+    const width = window.innerWidth / 4;
+
+    const one = document.querySelector(".button-one");
+    one.style.marginTop = `-${height / 2}px`;
+    one.style.marginLeft = `${width - one.offsetWidth / 2}px`;
+
+    const two = document.querySelector(".button-two");
+    two.style.marginTop = `-${height / 2}px`;
+    two.style.marginLeft = `${3 * width - two.offsetWidth / 2}px`;
+  }
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // remove resize listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return "";
+};
+
+export default Landing;

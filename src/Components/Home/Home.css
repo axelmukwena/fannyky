@@ -1,25 +1,13 @@
-.explorer {
-  margin: 10px 50px;
-}
-
-@media (max-width: 600px) {
-  .explorer {
-    margin: 10px 15px;
-  }
-}
-
-.explorers {
-  display: flex;
-  width: 100%;
+.canvas-container {
   position: relative;
 }
 
-.painting-home {
-  margin: 15px;
+.button-one, .button-two {
+  z-index: 1;
+  margin-top: -200px;
+  position: absolute;
 }
 
-@media (max-width: 600px) {
-  .painting-home {
-    margin: 0 15px 15px 15px;
-  }
+.button-one:hover, .button-two:hover {
+  background-color: #e7e7e75d;
 }

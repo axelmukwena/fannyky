@@ -21,7 +21,6 @@ const Show = function Show({ match }) {
       p.push({ image: paintingPhotos[i].src.original, title });
     }
     setPhotosToPaintings(p);
-    // setOpen(true);
   };
 
   const handleClose = () => {
