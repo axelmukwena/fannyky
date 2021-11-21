@@ -14,7 +14,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link } from "react-router-dom";
 
-const PaintingDialog = function PaintingDialog({
+const ImageDialog = function ImageDialog({
   paintings,
   open,
   handleClose,
@@ -192,4 +192,4 @@ const PaintingsDialogContent = function PaintingsDialogContent({
   return "";
 };
 
-export default PaintingDialog;
+export default ImageDialog;

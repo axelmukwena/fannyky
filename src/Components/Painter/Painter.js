@@ -7,36 +7,26 @@ import {
   parsePainterMenu,
   updateMenuSlice,
 } from "../Menu/menuSlice/updateMenu";
-import Books from "./Books";
-import Exhibitions from "./Exhibitions";
+import Publications from "./Publications/Publications";
+import Exhibitions from "./Exhibitions/Exhibitions";
 import "./Painter.css";
 import { updatePainter } from "./painterSlice/currentPainterSlice";
 import { updateSiteName } from "../Menu/menuSlice/currentMenuSlice";
 import Paintings from "./Paintings/Paintings";
 import Menu from "../Menu/Menu";
+import Talks from "./Talks/Talks";
+import Awards from "./Awards/Awards";
+import Biography from "./Biography/Biography";
+import Contact from "./Contact/Contact";
 
 const Painter = function Painter({ match }) {
   const dispatch = useDispatch();
   const { url } = match;
 
-  // paths
-  // paintings => /painter
-  // exhibitions => /painter/exhibitions
-  // books => /painter/books
-  // about => /painter/about
-
-  // If painter updated, set painter menu
-  // parsePainterMenu(painterName, aboutSlug, paintingsSlug, exhibSlug, booksSlug)
-
   useEffect(() => {
     function setPainter(painter) {
       if (painter) {
-        const menu = parsePainterMenu(
-          `${url}`,
-          `${url}/exhibitions`,
-          `${url}/books`,
-          `${url}/about`
-        );
+        const menu = parsePainterMenu(painter, url);
         updateMenuSlice(dispatch, menu);
         dispatch(updatePainter(painter));
         dispatch(updateSiteName([painter.name, `/${painter.slug}`]));
@@ -60,7 +50,23 @@ const Painter = function Painter({ match }) {
                 component={Exhibitions}
                 key="exhibitions"
               />
-              <Route path={`${url}/books`} component={Books} key="books" />
+              <Route
+                path={`${url}/publications`}
+                component={Publications}
+                key="publications"
+              />
+              <Route path={`${url}/talks`} component={Talks} key="talks" />
+              <Route path={`${url}/awards`} component={Awards} key="awards" />
+              <Route
+                path={`${url}/biography`}
+                component={Biography}
+                key="biography"
+              />
+              <Route
+                path={`${url}/contact`}
+                component={Contact}
+                key="contact"
+              />
               <Route path={url} component={Paintings} key="paintings" />
             </Switch>
           </div>

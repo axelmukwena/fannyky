@@ -1,6 +1,11 @@
 import axios from "axios";
 import { BASE_URL } from "./constants";
 
+// Capitalize first letter
+export function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // Compose complete api url
 export function apiUrl(sub) {
   return BASE_URL + sub;

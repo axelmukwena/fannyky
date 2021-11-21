@@ -1,50 +1,36 @@
-import { Button, Card, Grid, Link, Typography } from "@mui/material";
+import { Card, Grid, Link, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
-import { getPublicData } from "../../utils/Helpers";
+import { getPublicData } from "../../../utils/Helpers";
 
-const Books = function Books() {
-  const [books, setBooks] = useState([]);
+const Exhibitions = function Exhibitions() {
+  const [exhibitions, setExhibitions] = useState([]);
   const { path } = useRouteMatch();
 
   useEffect(() => {
-    getPublicData(setBooks, path);
+    getPublicData(setExhibitions, path);
   }, [path]);
 
-  const handleOpen = () => {};
-
   return (
-    <div className="books" style={{}}>
-      <Grid container spacing={4} style={{ marginBottom: 10 }}>
-        <Grid item lg={3} md={6} xs={6}>
-          <Button
-            style={{ width: "100%", height: 40 }}
-            variant="contained"
-            color="primary"
-            onClick={handleOpen}
-          >
-            New Book
-          </Button>
-        </Grid>
-      </Grid>
+    <div className="exhibitions">
       <Grid container spacing={4}>
-        {books.map((book) => (
-          <Grid key={book.id} item lg={4} md={6} xs={12}>
+        {exhibitions.map((exhibition) => (
+          <Grid key={exhibition.id} item lg={4} md={6} xs={12}>
             <Card style={{ width: "100%", padding: 10 }}>
               <Typography
                 style={{
                   fontWeight: 300,
                 }}
               >
-                {book.painter.name}
+                {exhibition.painter.name}
               </Typography>
-              <Link href={`${path}/${book.slug}`}>
+              <Link href={`${path}/${exhibition.slug}`}>
                 <Typography
                   style={{
                     fontWeight: 300,
                   }}
                 >
-                  {book.title}
+                  {exhibition.title}
                 </Typography>
               </Link>
               <Typography
@@ -52,21 +38,21 @@ const Books = function Books() {
                   fontWeight: 300,
                 }}
               >
-                {book.decription}
+                {exhibition.start_date} {exhibition.end_date}
               </Typography>
               <Typography
                 style={{
                   fontWeight: 300,
                 }}
               >
-                {book.link}
+                {exhibition.link}
               </Typography>
               <Typography
                 style={{
                   fontWeight: 300,
                 }}
               >
-                {book.published_year}
+                {exhibition.location}
               </Typography>
             </Card>
           </Grid>
@@ -76,4 +62,4 @@ const Books = function Books() {
   );
 };
 
-export default Books;
+export default Exhibitions;

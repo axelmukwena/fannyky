@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CardMedia, Typography } from "@mui/material";
 import { getPhotos, getPublicData } from "../../../utils/Helpers";
-import PaintingDialog from "./PaintingDialog";
+import ImagesDialog from "./ImagesDialog";
 
 const Show = function Show({ match }) {
   const { url } = match;
@@ -44,7 +44,7 @@ const Show = function Show({ match }) {
             />
           ))}
         </div>
-        <PaintingDialog
+        <ImagesDialog
           paintings={photosToPaintings}
           open={open}
           handleClose={handleClose}

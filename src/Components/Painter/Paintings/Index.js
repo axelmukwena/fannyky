@@ -1,15 +1,16 @@
-import { Button, Grid, Typography, CardMedia } from "@mui/material";
+import { Button, Typography, CardMedia } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { getPhotos, getPublicData } from "../../../utils/Helpers";
-import PaintingDialog from "./PaintingDialog";
+import ImagesDialog from "./ImagesDialog";
+import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
   const [paintings, setPaintings] = useState([]);
   const [photos, setPhotos] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState([]);
 
   useEffect(() => {
@@ -17,14 +18,14 @@ const Index = function Index() {
     getPublicData(setPaintings, `/${path}/paintings`);
   }, [path]);
 
-  const handleOpen = (painting) => {
+  const handleOpenImages = (painting) => {
     setSelected([painting, paintings[6]]);
-    setOpen(true);
+    setOpenImages(true);
     // console.log(painting);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseImages = () => {
+    setOpenImages(false);
   };
 
   const AddPhotos = function AddPhotos() {
@@ -43,7 +44,7 @@ const Index = function Index() {
             alt={painting.title}
             loading="lazy"
             className="painting-image"
-            onClick={() => handleOpen(painting)}
+            onClick={() => handleOpenImages(painting)}
             style={{ cursor: "pointer" }}
           />
           <div className="abstract">
@@ -65,48 +66,64 @@ const Index = function Index() {
 
   return (
     <div className="paintings-containter">
-      <IsLoggedIn />
+      <IsLoggedIn path={path} />
       <div className="row">
         <AddPhotos />
       </div>
-      <PaintingDialog
+      <ImagesDialog
         paintings={selected}
-        open={open}
-        handleClose={handleClose}
+        open={openImages}
+        handleClose={handleCloseImages}
         show
       />
     </div>
   );
 };
 
-const IsLoggedIn = function IsLoggedIn() {
+const IsLoggedIn = function IsLoggedIn({ path }) {
   const currentUser = useSelector((state) => state.currentUser.user);
-  const handleOpen = () => {};
+  const [openNew, setOpenNew] = useState(false);
+  const [painter, setPainter] = useState(false);
 
-  if (currentUser) {
+  useEffect(() => {
+    getPublicData(setPainter, `/${path}`);
+  }, [path]);
+
+  const handleOpenNew = () => {
+    setOpenNew(true);
+  };
+
+  const handleCloseNew = () => {
+    setOpenNew(false);
+  };
+
+  const newOpenCategory = () => {};
+
+  if (currentUser && painter.id) {
     return (
-      <Grid container spacing={4} style={{ marginBottom: 10 }}>
-        <Grid item lg={3} md={6} xs={6}>
-          <Button
-            style={{ width: "100%", height: 40 }}
-            variant="contained"
-            color="primary"
-            onClick={handleOpen}
-          >
-            New Painting
-          </Button>
-        </Grid>
-        <Grid item lg={3} md={6} xs={6}>
-          <Button
-            style={{ width: "100%", height: 40 }}
-            variant="contained"
-            color="primary"
-            onClick={handleOpen}
-          >
-            New Category
-          </Button>
-        </Grid>
-      </Grid>
+      <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>
+        <Button
+          style={{ width: 200, height: 40, marginRight: 25 }}
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenNew()}
+        >
+          New Painting
+        </Button>
+        <Button
+          style={{ width: 200, height: 40 }}
+          variant="contained"
+          color="primary"
+          onClick={() => newOpenCategory()}
+        >
+          New Category
+        </Button>
+        <NewDialog
+          painter={painter}
+          open={openNew}
+          handleClose={handleCloseNew}
+        />
+      </div>
     );
   }
   return "";
