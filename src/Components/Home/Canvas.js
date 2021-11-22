@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import coverImage from "../../images/landing-background-two.png";
+// import background from "../../images/landing-background-one.png";
+import background from "../../images/landing-background-two.png";
+// import background from "../../images/landing-background-three.png";
 
 const Canvas = function Canvas() {
   const canvasRef = useRef(null);
@@ -13,7 +15,7 @@ const Canvas = function Canvas() {
     setWidth(window.innerWidth);
 
     const container = document.getElementById("canvas-container");
-    container.style.backgroundImage = `url(${coverImage})`;
+    container.style.backgroundImage = `url(${background})`;
     container.style.backgroundRepeat = "no-repeat";
     container.style.backgroundPosition = "center";
     container.style.backgroundSize = "cover";
