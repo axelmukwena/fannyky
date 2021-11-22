@@ -116,6 +116,7 @@ const Login = function Login() {
               variant="outlined"
               type="email"
               name="email"
+              autoComplete="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -131,6 +132,7 @@ const Login = function Login() {
                 id="outlined-adornment-password"
                 type={password.showPassword ? "text" : "password"}
                 name="password"
+                autoComplete="current-password"
                 value={password.password}
                 onChange={handleChange("password")}
                 endAdornment={

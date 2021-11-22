@@ -15,13 +15,12 @@ const Index = function Index() {
 
   useEffect(() => {
     getPhotos(setPhotos, "painting");
-    getPublicData(setPaintings, `/${path}/paintings`);
+    getPublicData(setPaintings, `${path}/paintings`);
   }, [path]);
 
   const handleOpenImages = (painting) => {
     setSelected([painting, paintings[6]]);
     setOpenImages(true);
-    // console.log(painting);
   };
 
   const handleCloseImages = () => {
@@ -66,7 +65,7 @@ const Index = function Index() {
 
   return (
     <div className="paintings-containter">
-      <IsLoggedIn path={path} />
+      <IsLoggedIn />
       <div className="row">
         <AddPhotos />
       </div>
@@ -80,14 +79,10 @@ const Index = function Index() {
   );
 };
 
-const IsLoggedIn = function IsLoggedIn({ path }) {
+const IsLoggedIn = function IsLoggedIn() {
   const currentUser = useSelector((state) => state.currentUser.user);
+  const painter = useSelector((state) => state.currentPainter.painter);
   const [openNew, setOpenNew] = useState(false);
-  const [painter, setPainter] = useState(false);
-
-  useEffect(() => {
-    getPublicData(setPainter, `/${path}`);
-  }, [path]);
 
   const handleOpenNew = () => {
     setOpenNew(true);

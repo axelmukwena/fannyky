@@ -3,11 +3,13 @@ import {
   Button,
   Dialog,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   TextField,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import UploadImages from "./UploadImages";
 
 const NewDialog = function NewDialog({ painter, open, handleClose }) {
   const [title, setTitle] = useState("");
@@ -15,6 +17,7 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
   const [dimensions, setDimensions] = useState("");
   const [abstract, setAbstract] = useState("");
   const [description, setDescription] = useState("");
+  const [images, setImages] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +25,7 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
   };
 
   return (
-    <Dialog fullScreen open={open} onClose={handleClose}>
+    <Dialog maxWidth="sm" open={open} scroll="body">
       <DialogActions
         style={{
           width: "fit-content",
@@ -35,14 +38,30 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
           <Close />
         </Button>
       </DialogActions>
-      <Grid container justifyContent="center" alignItems="center">
-        <form className="new-painting-form" onSubmit={handleSubmit}>
-          <Grid container justifyContent="center" alignItems="center">
-            <Grid>
-              <Typography>Admin Login Panel</Typography>
-            </Grid>
 
-            <Grid xs>
+      <DialogContent>
+        <form className="new-painting-form" onSubmit={handleSubmit}>
+          <Grid
+            justifyContent="flex-start"
+            alignItems="center"
+            container
+            spacing={2}
+          >
+            <Grid item xs={6} md={8}>
+              <DialogTitle
+                style={{
+                  padding: 0,
+                  fontWeight: 700,
+                  fontSize: "1.4rem",
+                  fontFamily: "Roboto",
+                  flex: 1,
+                  color: "#787878",
+                }}
+              >
+                Add new Painting
+              </DialogTitle>
+            </Grid>
+            <Grid item xs={6} md={8}>
               <TextField
                 fullWidth
                 autoFocus
@@ -55,64 +74,84 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <TextField
-              fullWidth
-              label="Date Created"
-              variant="outlined"
-              name="dateCreated"
-              required
-              value={dateCreated}
-              onChange={(e) => setDateCreated(e.target.value)}
-            />
+            <Grid item xs={6} md={4}>
+              <TextField
+                fullWidth
+                label="Date Created"
+                variant="outlined"
+                name="dateCreated"
+                required
+                value={dateCreated}
+                onChange={(e) => setDateCreated(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <TextField
+                fullWidth
+                label="Dimensions"
+                variant="outlined"
+                name="dimensions"
+                required
+                value={dimensions}
+                onChange={(e) => setDimensions(e.target.value)}
+              />
+            </Grid>
 
-            <TextField
-              fullWidth
-              label="Dimensions"
-              variant="outlined"
-              name="dimensions"
-              required
-              value={dimensions}
-              onChange={(e) => setDimensions(e.target.value)}
-            />
+            <Grid item xs={6} md={8}>
+              <TextField
+                fullWidth
+                label="Abstract"
+                variant="outlined"
+                name="abstract"
+                required
+                value={abstract}
+                onChange={(e) => setAbstract(e.target.value)}
+              />
+            </Grid>
 
-            <TextField
-              fullWidth
-              label="Abstract"
-              variant="outlined"
-              name="abstract"
-              required
-              value={abstract}
-              onChange={(e) => setAbstract(e.target.value)}
-            />
+            <Grid item xs={12}>
+              <TextField
+                multiline
+                minRows={4}
+                fullWidth
+                label="Description"
+                variant="outlined"
+                name="description"
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
 
-            <TextField
-              fullWidth
-              label="Description"
-              variant="outlined"
-              name="description"
-              required
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+            <Grid item xs={12}>
+              <UploadImages files={images} setFiles={setImages} />
+            </Grid>
 
-            <Button
-              style={{ width: "100%", height: 40 }}
-              variant="outlined"
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              style={{ width: "100%", height: 40 }}
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              Login
-            </Button>
+            <Grid item xs>
+              <Button
+                fullWidth
+                style={{ height: 45 }}
+                variant="outlined"
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs>
+              <Button
+                fullWidth
+                disableElevation
+                style={{ width: "100%", height: 45 }}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
+                Login
+              </Button>
+            </Grid>
           </Grid>
         </form>
-      </Grid>
+      </DialogContent>
     </Dialog>
   );
 };

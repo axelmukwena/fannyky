@@ -23,7 +23,7 @@ const PaintersButtons = function PaintersButtons() {
     getPublicData(setPainters, "/");
   }, []);
 
-  if (painters.length > 0) {
+  if (painters.length > 1) {
     return (
       <div className="buttons-container">
         <Link to={`/${painters[0].slug}`}>

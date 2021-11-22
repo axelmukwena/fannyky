@@ -13,3 +13,11 @@
 .Logo {
   max-width: 10px;
 }
+
+.btn {
+  background-color: gray;
+}
+
+.btn:hover {
+  background-color: lightgray;
+}

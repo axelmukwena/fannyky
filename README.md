@@ -153,3 +153,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### MUI 4 to 5
 - https://dev.to/hasone/migrate-material-ui-4-to-mui-5-1g3i
 - https://mui.com/guides/migration-v4/#update-material-ui-version
+
+### Force update a component
+- https://medium.com/@dev.cprice/wild-react-useforceupdate-e4459f2c1272
+- https://gist.github.com/frzi/c9de4fa77f59ff1fb465265e0b227761#gistcomment-3698295
