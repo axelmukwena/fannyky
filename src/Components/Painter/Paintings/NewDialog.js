@@ -22,6 +22,7 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(painter);
+    console.log(description);
   };
 
   return (
@@ -146,7 +147,7 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
                 variant="contained"
                 color="primary"
               >
-                Login
+                Create
               </Button>
             </Grid>
           </Grid>

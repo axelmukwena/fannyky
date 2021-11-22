@@ -157,3 +157,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Force update a component
 - https://medium.com/@dev.cprice/wild-react-useforceupdate-e4459f2c1272
 - https://gist.github.com/frzi/c9de4fa77f59ff1fb465265e0b227761#gistcomment-3698295
+
+### Upload files
+- https://codepen.io/tab4188/pen/mAyKJA
