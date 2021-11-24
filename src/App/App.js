@@ -25,7 +25,7 @@ const App = function App() {
   return (
     <Router className={clsx(classes.container)}>
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/foo">
           <Home />
         </Route>
         <Route exact path="/login">
