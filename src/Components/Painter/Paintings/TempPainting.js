@@ -2,7 +2,8 @@ import { Button, Card, CardMedia, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
-import { getPhotos, getPublicData } from "../../../utils/Helpers";
+import { getPhotos } from "../../../utils/helpers";
+import { getResource } from "../../../utils/requests";
 
 const Paintings = function Paintings() {
   const { path } = useRouteMatch();
@@ -23,7 +24,7 @@ const Paintings = function Paintings() {
 
   useEffect(() => {
     getPhotos(setPhotos, "painting");
-    getPublicData(setPaintings, `/${path}/paintings`);
+    getResource(`/${path}/paintings`, setPaintings);
     // Initialize size
     handleResize();
     window.addEventListener("resize", handleResize);

@@ -160,3 +160,22 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Upload files
 - https://codepen.io/tab4188/pen/mAyKJA
+
+### Date Picker
+- https://mui.com/components/pickers/
+- https://github.com/date-fns/date-fns/issues/1772
+
+      $ npm install @mui/lab
+      $ npm install @date-io/date-fns
+      $ npm i @date-io/date-fns@1.x date-fns --save
+
+### Images with rails and react AWS S3 Active Storage
+- Use DataForm to send FILE objects
+- `images[]`, multiple files, in order to send an array to API https://stackoverflow.com/a/67389523/8050183
+- No need to have `images` in required parameters, rails
+- `Unable to autoload constant ActiveStorage::Blob::Analyzable`?
+  - https://stackoverflow.com/a/65606185/8050183
+
+- Setting up AWS S3 https://www.youtube.com/watch?v=OWBWXOcx1rU&t=171s&ab_channel=SupeRails
+
+- If has many is removing files when updating https://stackoverflow.com/a/66994710/8050183

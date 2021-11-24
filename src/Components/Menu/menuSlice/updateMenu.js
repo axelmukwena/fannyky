@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiUrl, capitalize } from "../../../utils/Helpers";
+import { apiUrl, capitalize } from "../../../utils/helpers";
 import { updateMenu } from "./currentMenuSlice";
 
 function updateMenuSlice(dispatch, contents) {

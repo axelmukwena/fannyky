@@ -2,7 +2,7 @@ import axios from "axios";
 import { authorize } from "./currentUserSlice";
 import { setUserCookie } from "../utils/cookies";
 import { AUTHORIZE } from "../utils/constants";
-import { apiUrl } from "../utils/Helpers";
+import { apiUrl } from "../utils/helpers";
 
 function handleResponse(dispatch, data) {
   if (data.success === true) {

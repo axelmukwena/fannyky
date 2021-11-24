@@ -9,17 +9,22 @@ const useForceUpdate = () => {
 
 const UploadImages = function UploadImages({ files, setFiles }) {
   const forceUpdate = useForceUpdate();
-
-  const chooseFiles = () => {
-    const input = document.getElementById("choose-files-input");
-    input.click();
-  };
+  const [required, setRequired] = useState(true);
+  const [previews, setPreviews] = useState([]);
 
   const loadFiles = (e) => {
     const fileObjects = e.target.files;
     for (let i = 0; i < fileObjects.length; i += 1) {
       const url = URL.createObjectURL(fileObjects[i]);
-      setFiles((oldFiles) => [...oldFiles, url]);
+      setPreviews((oldPreviews) => [...oldPreviews, url]);
+      const file = fileObjects[i];
+      setFiles((oldFiles) => [...oldFiles, file]);
+    }
+
+    if (files.length > 0) {
+      setRequired(false);
+    } else {
+      setRequired(true);
     }
 
     forceUpdate();
@@ -27,9 +32,16 @@ const UploadImages = function UploadImages({ files, setFiles }) {
 
   const removeFile = (index) => {
     files.splice(index, 1);
+    previews.splice(index, 1);
 
     const input = document.getElementById("choose-files-input");
     input.value = "";
+
+    if (files.length > 0) {
+      setRequired(false);
+    } else {
+      setRequired(true);
+    }
     forceUpdate();
   };
 
@@ -37,8 +49,6 @@ const UploadImages = function UploadImages({ files, setFiles }) {
     <div className="files-upload-container">
       <div
         className="choose-files"
-        onClick={chooseFiles}
-        onKeyPress={chooseFiles}
         role="button"
         tabIndex="0"
         style={{
@@ -61,6 +71,8 @@ const UploadImages = function UploadImages({ files, setFiles }) {
           id="choose-files-input"
           onChange={loadFiles}
           multiple
+          accept=".jpg, .jpeg, .png"
+          required={required}
           style={{
             top: 0,
             position: "absolute",
@@ -72,7 +84,7 @@ const UploadImages = function UploadImages({ files, setFiles }) {
         />
       </div>
       <div id="loaded-files-container" className="row">
-        {files.map((url, index) => (
+        {previews.map((url, index) => (
           <Card
             id={url}
             className="loaded-files"

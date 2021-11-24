@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import { Grid } from "@mui/material";
-import { getPublicData } from "../../utils/Helpers";
 import {
   parsePainterMenu,
   updateMenuSlice,
@@ -18,6 +17,7 @@ import Talks from "./Talks/Talks";
 import Awards from "./Awards/Awards";
 import Biography from "./Biography/Biography";
 import Contact from "./Contact/Contact";
+import { getResource } from "../../utils/requests";
 
 const Painter = function Painter({ match }) {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const Painter = function Painter({ match }) {
       }
     }
 
-    getPublicData(setPainter, url);
+    getResource(url, setPainter);
   }, [url, dispatch]);
 
   return (

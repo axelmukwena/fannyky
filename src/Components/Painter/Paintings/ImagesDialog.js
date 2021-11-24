@@ -176,7 +176,8 @@ const PaintingsDialogContent = function PaintingsDialogContent({
         <Typography
           style={{ marginTop: 10, fontStyle: "italic", fontSize: 14 }}
         >
-          {painting.painter.name}, {painting.date_created.split("-")[0]}
+          {painting.painter.name}
+          <DateCreated />
         </Typography>
         <Typography style={{ fontSize: 14 }}>{painting.abstract}</Typography>
         <Typography style={{ fontSize: 14 }}>{painting.dimension}</Typography>
@@ -188,6 +189,13 @@ const PaintingsDialogContent = function PaintingsDialogContent({
         </Typography>
       </div>
     );
+  }
+  return "";
+};
+
+const DateCreated = function DateCreated({ painting }) {
+  if (painting && painting.date_created) {
+    return `, ${painting.date_created.split("-")[0]}`;
   }
   return "";
 };

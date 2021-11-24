@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CardMedia, Typography } from "@mui/material";
-import { getPhotos, getPublicData } from "../../../utils/Helpers";
+import { getPhotos } from "../../../utils/helpers";
 import ImagesDialog from "./ImagesDialog";
+import { getResource } from "../../../utils/requests";
 
 const Show = function Show({ match }) {
   const { url } = match;
@@ -11,7 +12,7 @@ const Show = function Show({ match }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getPublicData(setPainting, url);
+    getResource(url, setPainting);
     getPhotos(setPhotos, "painting");
   }, [url]);
 
@@ -21,6 +22,7 @@ const Show = function Show({ match }) {
       p.push({ image: paintingPhotos[i].src.original, title });
     }
     setPhotosToPaintings(p);
+    setOpen(true);
   };
 
   const handleClose = () => {

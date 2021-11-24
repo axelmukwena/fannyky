@@ -1,14 +1,14 @@
 import { Card, Grid, Link, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
-import { getPublicData } from "../../../utils/Helpers";
+import { getResource } from "../../../utils/requests";
 
 const Exhibitions = function Exhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
   const { path } = useRouteMatch();
 
   useEffect(() => {
-    getPublicData(setExhibitions, path);
+    getResource(path, setExhibitions);
   }, [path]);
 
   return (

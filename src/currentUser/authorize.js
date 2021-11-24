@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AUTHORIZE } from "../utils/constants";
 import { getUserCookie, setUserCookie } from "../utils/cookies";
-import { apiUrl } from "../utils/Helpers";
+import { apiUrl } from "../utils/helpers";
 import { authorize } from "./currentUserSlice";
 
 function handleResponse(dispatch, data) {

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { Close } from "@mui/icons-material";
 import {
   Button,
@@ -8,21 +9,62 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import React, { useState } from "react";
+import { useRouteMatch } from "react-router-dom";
+import { postResource } from "../../../../utils/requests";
 import UploadImages from "./UploadImages";
+import {
+  parsePaintingImages,
+  parsePaintingParams,
+} from "../../../../utils/helpers";
 
 const NewDialog = function NewDialog({ painter, open, handleClose }) {
   const [title, setTitle] = useState("");
-  const [dateCreated, setDateCreated] = useState("");
-  const [dimensions, setDimensions] = useState("");
+  const [dateCreated, setDateCreated] = useState(null);
+  const [dimension, setDimension] = useState("");
   const [abstract, setAbstract] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
+  const { path } = useRouteMatch();
+
+  const handleImagesResponse = (data) => {
+    console.log("Response", data);
+  };
+
+  const handlePaintingResponse = (data) => {
+    console.log("Response", data);
+    // Update paintings with images
+    const { id } = data.painting;
+    const params = parsePaintingImages(id, images);
+    console.log(Array.from(params.entries()));
+    postResource(
+      `${path}/paintings/${id}/images`,
+      params,
+      handleImagesResponse
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(painter);
-    console.log(description);
+
+    const data = {
+      title,
+      dateCreated,
+      dimension,
+      abstract,
+      description,
+      painter,
+    };
+
+    const params = parsePaintingParams(data);
+    // const params = { title, painter };
+
+    // console.log(Array.from(params.entries()));
+    // console.log(images);
+    postResource(`${path}/paintings`, params, handlePaintingResponse);
+    // console.log(handleResponse, path);
   };
 
   return (
@@ -69,32 +111,31 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
                 label="Title"
                 variant="outlined"
                 name="title"
-                required
                 value={title}
+                required
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Grid>
 
             <Grid item xs={6} md={4}>
-              <TextField
-                fullWidth
-                label="Date Created"
-                variant="outlined"
-                name="dateCreated"
-                required
-                value={dateCreated}
-                onChange={(e) => setDateCreated(e.target.value)}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Date Created"
+                  inputFormat="dd/MM/yyyy"
+                  value={dateCreated}
+                  onChange={(e) => setDateCreated(e)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={6} md={4}>
               <TextField
                 fullWidth
                 label="Dimensions"
                 variant="outlined"
-                name="dimensions"
-                required
-                value={dimensions}
-                onChange={(e) => setDimensions(e.target.value)}
+                name="dimension"
+                value={dimension}
+                onChange={(e) => setDimension(e.target.value)}
               />
             </Grid>
 
@@ -104,7 +145,6 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
                 label="Abstract"
                 variant="outlined"
                 name="abstract"
-                required
                 value={abstract}
                 onChange={(e) => setAbstract(e.target.value)}
               />
@@ -118,7 +158,6 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
                 label="Description"
                 variant="outlined"
                 name="description"
-                required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />

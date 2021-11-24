@@ -2,9 +2,10 @@ import { Button, Typography, CardMedia } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import { getPhotos, getPublicData } from "../../../utils/Helpers";
+import { getPhotos } from "../../../utils/helpers";
+import { getResource } from "../../../utils/requests";
 import ImagesDialog from "./ImagesDialog";
-import NewDialog from "./NewDialog";
+import NewDialog from "./New/NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
@@ -15,7 +16,7 @@ const Index = function Index() {
 
   useEffect(() => {
     getPhotos(setPhotos, "painting");
-    getPublicData(setPaintings, `${path}/paintings`);
+    getResource(`${path}/paintings`, setPaintings);
   }, [path]);
 
   const handleOpenImages = (painting) => {
@@ -29,7 +30,7 @@ const Index = function Index() {
 
   const AddPhotos = function AddPhotos() {
     if (paintings.length > 0 && photos.length > 0) {
-      // console.log(photos[0].src);
+      // console.log(paintings);
       for (let i = 0; i < paintings.length; i += 1) {
         // const parsed = parsePexelImage(photos[i].src.tiny);
         paintings[i].image = photos[i].src.original;
@@ -39,10 +40,13 @@ const Index = function Index() {
         <div key={painting.slug} className="painting">
           <CardMedia
             component="img"
-            src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
+            // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
+            src={`${painting.images[0]}?w=700&h=700&fit=crop&auto=format`}
             alt={painting.title}
             loading="lazy"
             className="painting-image"
+            width={150}
+            height={150}
             onClick={() => handleOpenImages(painting)}
             style={{ cursor: "pointer" }}
           />
@@ -53,9 +57,7 @@ const Index = function Index() {
             >
               {painting.title}
             </Link>
-            <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
-              {painting.date_created.split("-")[0]} - {painting.abstract}
-            </Typography>
+            <DateCreated painting={painting} />
           </div>
         </div>
       ));
@@ -76,6 +78,21 @@ const Index = function Index() {
         show
       />
     </div>
+  );
+};
+
+const DateCreated = function DateCreated({ painting }) {
+  if (painting.date_created) {
+    return (
+      <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
+        {painting.date_created.split("-")[0]} - {painting.abstract}
+      </Typography>
+    );
+  }
+  return (
+    <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
+      {painting.abstract}
+    </Typography>
   );
 };
 

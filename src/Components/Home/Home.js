@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
-import { getPublicData } from "../../utils/Helpers";
 import Canvas from "./Canvas";
 import "./Home.css";
+import { getResource } from "../../utils/requests";
 
 const Landing = function Landing() {
   return (
@@ -20,7 +20,7 @@ const PaintersButtons = function PaintersButtons() {
   // const [positionTwo, setPositionTwo] = useState(undefined);
 
   useEffect(() => {
-    getPublicData(setPainters, "/");
+    getResource("/", setPainters);
   }, []);
 
   if (painters.length > 1) {
