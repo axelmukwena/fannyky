@@ -179,3 +179,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - Setting up AWS S3 https://www.youtube.com/watch?v=OWBWXOcx1rU&t=171s&ab_channel=SupeRails
 
 - If has many is removing files when updating https://stackoverflow.com/a/66994710/8050183
+
+### `.env` with React
+- https://stackoverflow.com/a/68945430/8050183

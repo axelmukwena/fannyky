@@ -7,6 +7,7 @@ export function capitalize(string) {
 
 // Compose complete api url
 export function apiUrl(sub) {
+  console.log(BASE_URL);
   return BASE_URL + sub;
 }
 
