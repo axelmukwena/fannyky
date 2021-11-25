@@ -23,9 +23,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const [about, setAbout] = useState(() => EditorState.createEmpty());
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [twitter, setTwitter] = useState("");
-  const [instagram, setInstagram] = useState("");
+  const [link, setLink] = useState("");
   const [images, setImages] = useState([]);
   const [required, setRequired] = useState(true);
 
@@ -51,9 +49,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     setName(painterObject.name);
     setEmail(painterObject.email);
     setPhone(painterObject.phone);
-    setFacebook(painterObject.facebook);
-    setTwitter(painterObject.twitter);
-    setInstagram(painterObject.instagram);
+    setLink(painterObject.link);
 
     if (painter.images.length > 0) {
       setRequired(false);
@@ -88,9 +84,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
       about: stringAbout,
       email,
       phone,
-      facebook,
-      twitter,
-      instagram,
+      link,
     };
 
     const params = parsePainterParams(data);
@@ -176,36 +170,14 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Facebook"
+                label="Profile Link"
                 variant="outlined"
-                name="facebook"
-                value={facebook}
-                onChange={(e) => setFacebook(e.target.value)}
-              />
-            </Grid>
-
-            <Grid item xs={4}>
-              <TextField
-                fullWidth
-                label="Instagram"
-                variant="outlined"
-                name="instagram"
-                value={instagram}
-                onChange={(e) => setInstagram(e.target.value)}
-              />
-            </Grid>
-
-            <Grid item xs={4}>
-              <TextField
-                fullWidth
-                label="Twitter"
-                variant="outlined"
-                name="twitter"
-                value={twitter}
-                onChange={(e) => setTwitter(e.target.value)}
+                name="link"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
               />
             </Grid>
 
@@ -229,6 +201,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
 
             <Grid item xs={12}>
               <UploadImages
+                multiple={false}
                 required={required}
                 files={images}
                 setFiles={setImages}

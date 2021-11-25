@@ -7,7 +7,12 @@ const useForceUpdate = () => {
   return () => state[1]((s) => !s);
 };
 
-const UploadImages = function UploadImages({ required, files, setFiles }) {
+const UploadImages = function UploadImages({
+  multiple,
+  required,
+  files,
+  setFiles,
+}) {
   const forceUpdate = useForceUpdate();
   const [previews, setPreviews] = useState([]);
 
@@ -15,9 +20,15 @@ const UploadImages = function UploadImages({ required, files, setFiles }) {
     const fileObjects = e.target.files;
     for (let i = 0; i < fileObjects.length; i += 1) {
       const url = URL.createObjectURL(fileObjects[i]);
-      setPreviews((oldPreviews) => [...oldPreviews, url]);
       const file = fileObjects[i];
-      setFiles((oldFiles) => [...oldFiles, file]);
+
+      if (multiple) {
+        setPreviews((oldPreviews) => [...oldPreviews, url]);
+        setFiles((oldFiles) => [...oldFiles, file]);
+      } else {
+        setPreviews([url]);
+        setFiles([file]);
+      }
     }
 
     forceUpdate();
@@ -58,7 +69,7 @@ const UploadImages = function UploadImages({ required, files, setFiles }) {
           type="file"
           id="choose-files-input"
           onChange={loadFiles}
-          multiple
+          multiple={multiple}
           accept=".jpg, .jpeg, .png"
           required={required}
           style={{

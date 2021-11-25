@@ -113,7 +113,6 @@ const GetImage = function GetImage({ painter }) {
           width: "100%",
           marginLeft: 15,
           padding: 0,
-          margin: "15px 0",
           position: "relative",
           borderRadius: 0,
         }}
@@ -126,7 +125,7 @@ const GetImage = function GetImage({ painter }) {
           loading="lazy"
           className="painting-image"
         />
-        <DeleteImage painter={painter} />
+        <DeleteImage painter={painter} index={0} />
       </Card>
     );
   }

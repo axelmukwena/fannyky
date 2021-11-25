@@ -213,6 +213,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
 
             <Grid item xs={12}>
               <UploadImages
+                multiple
                 required={required}
                 files={images}
                 setFiles={setImages}
