@@ -3,6 +3,10 @@ import { AUTHORIZE } from "./constants";
 import { getUserCookie } from "./cookies";
 import { apiUrl } from "./helpers";
 
+function handleMissingRecords(message) {
+  console.log(message);
+}
+
 // Get data from api
 export async function getResource(path, handleResponse) {
   // Data
@@ -16,7 +20,11 @@ export async function getResource(path, handleResponse) {
   await axios
     .get(url, headers)
     .then(function foo(response) {
-      handleResponse(response.data);
+      if (response.data.record === false) {
+        handleMissingRecords(response.data);
+      } else {
+        handleResponse(response.data);
+      }
     })
     .catch(function foo(error) {
       console.log("Public Data Error");
@@ -42,12 +50,15 @@ export async function postResource(path, params, handleResponse) {
     axios
       .post(url, params, headers)
       .then(function foo(response) {
-        return handleResponse(response.data);
+        if (response.data.record === false) {
+          handleMissingRecords(response.data);
+        } else {
+          handleResponse(response.data);
+        }
       })
       .catch(function foo(error) {
         console.log("POST Resource Error");
         console.log(error);
-        return false;
       });
   }
 }
@@ -69,12 +80,15 @@ export async function putResource(path, params, handleResponse) {
     axios
       .put(url, params, headers)
       .then(function foo(response) {
-        return handleResponse(response.data);
+        if (response.data.record === false) {
+          handleMissingRecords(response.data);
+        } else {
+          handleResponse(response.data);
+        }
       })
       .catch(function foo(error) {
         console.log("POST Resource Error");
         console.log(error);
-        return false;
       });
   }
 }
@@ -96,12 +110,15 @@ export async function deleteResource(path, handleResponse) {
     axios
       .delete(url, headers)
       .then(function foo(response) {
-        return handleResponse(response.data);
+        if (response.data.record === false) {
+          handleMissingRecords(response.data);
+        } else {
+          handleResponse(response.data);
+        }
       })
       .catch(function foo(error) {
         console.log("Delete Resource Error");
         console.log(error);
-        return false;
       });
   }
 }

@@ -11,50 +11,53 @@ const SideMenu = function SideMenu() {
   );
   const currentYear = new Date().getFullYear();
 
-  return (
-    <div className="menu-container">
-      {/* eslint-disable-next-line */}
+  if (logoName) {
+    return (
+      <div className="menu-container">
+        {/* eslint-disable-next-line */}
       {/* <div id="back-layer" className="back-layer" onClick={handleClose} />*/}
-      <Paper
-        id="sidemenu"
-        elevation={0}
-        // style={{ boxShadow: 'rgb(140 152 164 / 18%) 0px 0px 14px 0px' }}
-        className="sidemenu"
-      >
-        <div className="logo">
-          <Link to={logoUrl} className="">
-            <Typography
-              style={{
-                fontWeight: 900,
-                fontSize: "1.4rem",
-                fontFamily: "Roboto",
-                flex: 1,
-              }}
-            >
-              {logoName.toLowerCase()}
-            </Typography>
-          </Link>
-        </div>
-        <div className="menu-item">
-          <Link to="/">
-            <Typography>Home</Typography>
-          </Link>
-        </div>
-        {currentMenu.map((item) => (
-          <div key={item.id} className="menu-item">
-            <Link to={item.slug}>
-              <Typography>{item.name}</Typography>
+        <Paper
+          id="sidemenu"
+          elevation={0}
+          // style={{ boxShadow: 'rgb(140 152 164 / 18%) 0px 0px 14px 0px' }}
+          className="sidemenu"
+        >
+          <div className="logo">
+            <Link to={logoUrl} className="">
+              <Typography
+                style={{
+                  fontWeight: 900,
+                  fontSize: "1.4rem",
+                  fontFamily: "Roboto",
+                  flex: 1,
+                }}
+              >
+                {logoName.toLowerCase()}
+              </Typography>
             </Link>
           </div>
-        ))}
-        <IsLoggedIn />
-        <div className="copyright">
-          <div>All rights reserved.</div>
-          <div>© {currentYear}</div>
-        </div>
-      </Paper>
-    </div>
-  );
+          <div className="menu-item">
+            <Link to="/">
+              <Typography>Home</Typography>
+            </Link>
+          </div>
+          {currentMenu.map((item) => (
+            <div key={item.id} className="menu-item">
+              <Link to={item.slug}>
+                <Typography>{item.name}</Typography>
+              </Link>
+            </div>
+          ))}
+          <IsLoggedIn />
+          <div className="copyright">
+            <div>All rights reserved.</div>
+            <div>© {currentYear}</div>
+          </div>
+        </Paper>
+      </div>
+    );
+  }
+  return null;
 };
 
 const IsLoggedIn = function IsLoggedIn() {

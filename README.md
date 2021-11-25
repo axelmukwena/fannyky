@@ -186,3 +186,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### `.env` with React
 - https://stackoverflow.com/a/68945430/8050183
 
+### Rich Text Editor
+- https://draftjs.org/docs/getting-started
+
+      $ npm install draft-js
+      $ npm install react-draft-wysiwyg
+      $ npm install draft-convert
+      $ npm install dompurify
+
+- https://blog.logrocket.com/building-rich-text-editors-in-react-using-draft-js-and-react-draft-wysiwyg/
+
+### Redirect trailing strokes on URLs
+- https://jasonwatmore.com/post/2020/03/23/react-router-remove-trailing-slash-from-urls
+

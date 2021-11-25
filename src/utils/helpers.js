@@ -10,7 +10,7 @@ export function apiUrl(sub) {
   return BASE_URL + sub;
 }
 
-export function parsePaintingImages(id, images) {
+export function parseImages(id, images) {
   const formData = new FormData();
   images.forEach((image) => {
     formData.append("images[]", image);
@@ -32,6 +32,22 @@ export function parsePaintingParams(data) {
         params[key] = data[key];
       }
     } else if (value === "" || value === undefined || value === null) {
+      // Don't append parameter
+    } else {
+      params[key] = data[key];
+    }
+  });
+
+  return params;
+}
+
+export function parsePainterParams(data) {
+  const params = {};
+
+  // eslint-disable-next-line no-restricted-syntax
+  Object.keys(data).forEach((key) => {
+    const value = data[key];
+    if (value === "" || value === undefined || value === null) {
       // Don't append parameter
     } else {
       params[key] = data[key];

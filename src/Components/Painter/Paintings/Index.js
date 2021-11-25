@@ -92,14 +92,14 @@ const CardImage = function CardImage({ painting, handleOpenImages }) {
           onClick={() => handleOpenImages(painting)}
           style={{ cursor: "pointer" }}
         />
-        <DeleteImage painting={painting} />
+        <DeletePainting painting={painting} />
       </Card>
     );
   }
   return null;
 };
 
-const DeleteImage = function DeleteImage({ painting }) {
+const DeletePainting = function DeletePainting({ painting }) {
   const currentUser = useSelector((state) => state.currentUser.user);
   const painter = useSelector((state) => state.currentPainter.painter);
 
@@ -107,8 +107,8 @@ const DeleteImage = function DeleteImage({ painting }) {
     console.log("Response", data);
   };
 
-  const deleteImg = () => {
-    const path = `/${painter.id}/paintings/${painting.id}/`;
+  const handleDeletePainting = () => {
+    const path = `/${painter.id}/paintings/${painting.id}`;
 
     deleteResource(`${path}`, handleImagesResponse);
   };
@@ -116,7 +116,7 @@ const DeleteImage = function DeleteImage({ painting }) {
   if (currentUser && painter.id) {
     return (
       <DeleteOutline
-        onClick={() => deleteImg()}
+        onClick={() => handleDeletePainting()}
         style={{
           position: "absolute",
           top: 10,

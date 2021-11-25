@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import { CardMedia, Typography, Button, Card } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
+import { convertToHTML } from "draft-convert";
+import { convertFromRaw } from "draft-js";
+import DOMPurify from "dompurify";
 import ImagesDialog from "./ImagesDialog";
-import { getResource, postResource } from "../../../utils/requests";
+import {
+  deleteResource,
+  getResource,
+  postResource,
+} from "../../../utils/requests";
 import NewDialog from "./New/NewDialog";
 
 const Show = function Show({ match }) {
@@ -16,6 +23,22 @@ const Show = function Show({ match }) {
     getResource(url, setPainting);
   }, [url]);
 
+  const convertContentToHTML = (content) => {
+    if (content) {
+      const object = JSON.parse(content);
+      const raw = convertFromRaw(object);
+      const html = convertToHTML(raw);
+      return html;
+    }
+    return null;
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+
   const handleOpen = (index) => {
     setCurrent(index);
     setOpen(true);
@@ -26,6 +49,8 @@ const Show = function Show({ match }) {
   };
 
   if (painting.id) {
+    let description = convertContentToHTML(painting.description);
+    description = createMarkup(description);
     const { images } = painting;
     return (
       <div>
@@ -90,9 +115,10 @@ const Show = function Show({ match }) {
           </Typography>
           <Typography>{painting.dimension}</Typography>
           <Typography>{painting.explorer}</Typography>
-          <Typography style={{ marginTop: 20 }}>
-            {painting.description}
-          </Typography>
+          <Typography
+            style={{ marginTop: 20 }}
+            dangerouslySetInnerHTML={description}
+          />
         </div>
       </div>
     );
@@ -108,18 +134,18 @@ const DeleteImage = function DeleteImage({ painting, index }) {
     console.log("Response", data);
   };
 
-  const deleteImg = () => {
+  const handleDeleteImage = () => {
     const path = `/${painter.id}/paintings/${painting.id}/image`;
     const imageId = painting.images[index].content.id;
     const params = { id: painting.id, image_id: imageId, painter };
 
-    postResource(`${path}`, params, handleImagesResponse);
+    postResource(path, params, handleImagesResponse);
   };
 
   if (currentUser && painter.id) {
     return (
       <DeleteOutline
-        onClick={() => deleteImg()}
+        onClick={() => handleDeleteImage()}
         style={{
           position: "absolute",
           top: 10,
@@ -150,6 +176,16 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
     setOpenNew(false);
   };
 
+  const handleDeleleResponse = (data) => {
+    console.log("Response", data);
+  };
+
+  const handleDeleteImage = () => {
+    const path = `/${painter.id}/paintings/${painting.id}`;
+
+    deleteResource(`${path}`, handleDeleleResponse);
+  };
+
   if (currentUser && painter.id) {
     return (
       <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>
@@ -160,6 +196,14 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
           onClick={() => handleOpenNew()}
         >
           Edit Painting
+        </Button>
+        <Button
+          style={{ width: 200, height: 40, marginRight: 25 }}
+          variant="contained"
+          color="primary"
+          onClick={() => handleDeleteImage()}
+        >
+          Delete Painting
         </Button>
         <NewDialog
           painting={painting}

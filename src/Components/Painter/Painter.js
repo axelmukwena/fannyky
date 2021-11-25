@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 import { Grid } from "@mui/material";
 import {
   parsePainterMenu,
@@ -21,6 +21,7 @@ import { getResource } from "../../utils/requests";
 
 const Painter = function Painter({ match }) {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const { url } = match;
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const Painter = function Painter({ match }) {
         <Grid item xs>
           <div className="content-container">
             <Switch>
+              <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
               <Route
                 path={`${url}/exhibitions`}
                 component={Exhibitions}

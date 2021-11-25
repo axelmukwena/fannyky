@@ -86,3 +86,28 @@
   border-left: 0;
   border-right: 0;
 }
+
+.rdw-editor-toolbar {
+  background: #f1f1f1 !important;
+}
+
+.rdw-option-wrapper {
+  background: #f1f1f1 !important;
+}
+
+.rdw-dropdown-selectedtext {
+  background: #f1f1f1 !important;
+}
+
+.DraftEditor-editorContainer {
+  border: 1px solid #b9b9b9 !important;
+  border-radius: 4px !important;
+  background-color: #f7f7f7;
+  padding: 0 10px;
+  margin: 10px;
+}
+
+.rdw-dropdown-optionwrapper {
+  background: #f7f7f7 !important;
+  border: 1px solid #b9b9b9 !important;
+}

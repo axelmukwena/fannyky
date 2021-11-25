@@ -22,8 +22,8 @@ const theme = createTheme({
     },
   },
   typography: {
-    // fontFamily: 'gill-sans, sans-serif',
-    fontFamily: "Titillium Web, sans-serif",
+    fontFamily: "gill-sans, sans-serif",
+    // fontFamily: "Titillium Web, sans-serif",
   },
   components: {
     MuiCssBaseline: {

@@ -1,25 +1,15 @@
 import { Close } from "@mui/icons-material";
 import { Card, CardMedia, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const useForceUpdate = () => {
   const state = useState(false);
   return () => state[1]((s) => !s);
 };
 
-const UploadImages = function UploadImages({ files, setFiles }) {
+const UploadImages = function UploadImages({ required, files, setFiles }) {
   const forceUpdate = useForceUpdate();
-  const [required, setRequired] = useState(true);
   const [previews, setPreviews] = useState([]);
-  const [uploadText, setUploadText] = useState("");
-
-  useEffect(() => {
-    if (files.length > 0) {
-      setUploadText("Drag or Click to Upload More");
-    } else {
-      setUploadText("Drag or Click to Upload");
-    }
-  }, [files]);
 
   const loadFiles = (e) => {
     const fileObjects = e.target.files;
@@ -28,12 +18,6 @@ const UploadImages = function UploadImages({ files, setFiles }) {
       setPreviews((oldPreviews) => [...oldPreviews, url]);
       const file = fileObjects[i];
       setFiles((oldFiles) => [...oldFiles, file]);
-    }
-
-    if (files.length > 0) {
-      setRequired(false);
-    } else {
-      setRequired(true);
     }
 
     forceUpdate();
@@ -46,11 +30,6 @@ const UploadImages = function UploadImages({ files, setFiles }) {
     const input = document.getElementById("choose-files-input");
     input.value = "";
 
-    if (files.length > 0) {
-      setRequired(false);
-    } else {
-      setRequired(true);
-    }
     forceUpdate();
   };
 
@@ -73,7 +52,7 @@ const UploadImages = function UploadImages({ files, setFiles }) {
             textAlign: "center",
           }}
         >
-          {uploadText}
+          Drag or Click to Add Images
         </Typography>
         <input
           type="file"

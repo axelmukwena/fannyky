@@ -4,6 +4,7 @@ import "./index.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App/App";
 import theme from "./theme";
 import * as serviceWorker from "./others/serviceWorker";
@@ -16,7 +17,9 @@ ReactDOM.render(
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     </ThemeProvider>
   </StyledEngineProvider>,

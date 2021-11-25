@@ -21,3 +21,7 @@
 .btn:hover {
   background-color: lightgray;
 }
+
+p {
+  margin: 10px 0;
+}

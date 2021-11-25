@@ -13,6 +13,9 @@ import { Close } from "@mui/icons-material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link } from "react-router-dom";
+import { convertFromRaw } from "draft-js";
+import { convertToHTML } from "draft-convert";
+import DOMPurify from "dompurify";
 
 const ImageDialog = function ImageDialog({
   painting,
@@ -42,7 +45,7 @@ const ImageDialog = function ImageDialog({
   const hideContent = () => {
     if (show) {
       const content = document.querySelector(".painting-dialog-content");
-      content.style.display = "none";
+      content.style.display = "block";
     }
   };
 
@@ -164,7 +167,25 @@ const PaintingsDialogContent = function PaintingsDialogContent({
   show,
   painting,
 }) {
+  const convertContentToHTML = (content) => {
+    if (content) {
+      const object = JSON.parse(content);
+      const raw = convertFromRaw(object);
+      const html = convertToHTML(raw);
+      return html;
+    }
+    return null;
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+
   if (show) {
+    let description = convertContentToHTML(painting.description);
+    description = createMarkup(description);
     return (
       <div className="painting-dialog-content">
         <Link
@@ -185,9 +206,10 @@ const PaintingsDialogContent = function PaintingsDialogContent({
 
         <hr className="horizontal" />
 
-        <Typography style={{ marginTop: 5, fontSize: 14 }}>
-          {painting.description}
-        </Typography>
+        <Typography
+          style={{ marginTop: 5, fontSize: 14 }}
+          dangerouslySetInnerHTML={description}
+        />
       </div>
     );
   }
