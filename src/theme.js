@@ -21,10 +21,6 @@ const theme = createTheme({
       default: "#ffffff",
     },
   },
-  typography: {
-    fontFamily: "gill-sans, sans-serif",
-    // fontFamily: "Titillium Web, sans-serif",
-  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -38,6 +34,16 @@ const theme = createTheme({
         root: {
           padding: "14px 10px",
           backgroundColor: "#f1f1f1",
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontWeight: 400,
+          fontSize: "0.9rem",
+          fontFamily: "gill-sans, sans-serif",
+          // fontFamily: "Titillium Web, sans-serif",
         },
       },
     },

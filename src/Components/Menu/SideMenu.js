@@ -11,6 +11,15 @@ const SideMenu = function SideMenu() {
   );
   const currentYear = new Date().getFullYear();
 
+  const handleClick = (e) => {
+    const items = document.getElementsByClassName("menu-item");
+    for (let i = 0; i < items.length; i += 1) {
+      items[i].className = "menu-item";
+    }
+    const parent = e.target.parentElement.parentElement;
+    parent.className = "menu-item active";
+  };
+
   if (logoName) {
     return (
       <div className="menu-container">
@@ -42,7 +51,14 @@ const SideMenu = function SideMenu() {
             </Link>
           </div>
           {currentMenu.map((item) => (
-            <div key={item.id} className="menu-item">
+            <div
+              key={item.id}
+              className="menu-item"
+              role="button"
+              onClick={handleClick}
+              onKeyPress={handleClick}
+              tabIndex={0}
+            >
               <Link to={item.slug}>
                 <Typography>{item.name}</Typography>
               </Link>

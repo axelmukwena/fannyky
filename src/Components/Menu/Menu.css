@@ -33,6 +33,11 @@
   font-weight: 400 !important;
 }
 
+.menu-item.active a p {
+  font-weight: 600 !important;
+  color: #a5a5a5;
+}
+
 .copyright {
   margin-top: 20px;
   color: #787878;

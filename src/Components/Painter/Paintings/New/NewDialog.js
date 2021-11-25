@@ -31,11 +31,13 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [images, setImages] = useState([]);
   const [required, setRequired] = useState(true);
   let formTitle = "";
+  let submitButton = "";
 
   if (painting) {
     formTitle = "Edit Painting";
+    submitButton = "Update";
   } else {
-    formTitle = "Add New Painting";
+    submitButton = "Create";
   }
 
   // If Editing
@@ -239,7 +241,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
                 variant="contained"
                 color="primary"
               >
-                Create
+                {submitButton}
               </Button>
             </Grid>
           </Grid>

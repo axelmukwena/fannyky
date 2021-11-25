@@ -62,10 +62,11 @@ function parsePainterMenu(painter, url) {
     slug: `${url}/biography`,
   });
 
+  // Momentarily, just point contact to biography
   menu.push({
     id: "contact",
     name: "Contact",
-    slug: `${url}/contact`,
+    slug: `${url}/biography`,
   });
   return menu;
 }

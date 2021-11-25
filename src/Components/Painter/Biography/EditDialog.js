@@ -227,7 +227,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
                 variant="contained"
                 color="primary"
               >
-                Create
+                Update
               </Button>
             </Grid>
           </Grid>
