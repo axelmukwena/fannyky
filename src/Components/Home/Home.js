@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
-import Canvas from "./Canvas";
 import "./Home.css";
 import { getResource } from "../../utils/requests";
+import BackGround from "./BackGround";
 
 const Landing = function Landing() {
   return (
     <div className="canvas-container" id="canvas-container">
-      <Canvas />
+      <BackGround />
       <PaintersButtons />
     </div>
   );
@@ -16,8 +16,6 @@ const Landing = function Landing() {
 
 const PaintersButtons = function PaintersButtons() {
   const [painters, setPainters] = useState([]);
-  // const [positionOne, setPositionOne] = useState(undefined);
-  // const [positionTwo, setPositionTwo] = useState(undefined);
 
   useEffect(() => {
     getResource("/", setPainters);

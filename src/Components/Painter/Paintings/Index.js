@@ -1,26 +1,25 @@
-import { Button, Typography, CardMedia } from "@mui/material";
+import { DeleteOutline } from "@mui/icons-material";
+import { Button, Typography, CardMedia, Card } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import { getPhotos } from "../../../utils/helpers";
-import { getResource } from "../../../utils/requests";
+import { deleteResource, getResource } from "../../../utils/requests";
 import ImagesDialog from "./ImagesDialog";
 import NewDialog from "./New/NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
   const [paintings, setPaintings] = useState([]);
-  const [photos, setPhotos] = useState([]);
   const [openImages, setOpenImages] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState();
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    getPhotos(setPhotos, "painting");
     getResource(`${path}/paintings`, setPaintings);
   }, [path]);
 
   const handleOpenImages = (painting) => {
-    setSelected([painting, paintings[6]]);
+    setSelected(painting);
     setOpenImages(true);
   };
 
@@ -29,27 +28,11 @@ const Index = function Index() {
   };
 
   const AddPhotos = function AddPhotos() {
-    if (paintings.length > 0 && photos.length > 0) {
+    if (paintings.length > 0) {
       // console.log(paintings);
-      for (let i = 0; i < paintings.length; i += 1) {
-        // const parsed = parsePexelImage(photos[i].src.tiny);
-        paintings[i].image = photos[i].src.original;
-      }
-
       return paintings.map((painting) => (
         <div key={painting.slug} className="painting">
-          <CardMedia
-            component="img"
-            // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
-            src={`${painting.images[0]}?w=700&h=700&fit=crop&auto=format`}
-            alt={painting.title}
-            loading="lazy"
-            className="painting-image"
-            width={150}
-            height={150}
-            onClick={() => handleOpenImages(painting)}
-            style={{ cursor: "pointer" }}
-          />
+          <CardImage painting={painting} handleOpenImages={handleOpenImages} />
           <div className="abstract">
             <Link
               to={`${painting.painter.slug}/paintings/${painting.slug}`}
@@ -72,13 +55,83 @@ const Index = function Index() {
         <AddPhotos />
       </div>
       <ImagesDialog
-        paintings={selected}
+        painting={selected}
+        current={current}
+        setCurrent={setCurrent}
         open={openImages}
         handleClose={handleCloseImages}
         show
       />
     </div>
   );
+};
+
+const CardImage = function CardImage({ painting, handleOpenImages }) {
+  if (painting.images.length > 0) {
+    return (
+      <Card
+        id={painting.images[0].url}
+        className="loaded-files"
+        elevation={0}
+        style={{
+          padding: 0,
+          margin: 0,
+          position: "relative",
+          borderRadius: 0,
+        }}
+      >
+        <CardMedia
+          component="img"
+          // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
+          src={`${painting.images[0].url}?w=700&h=700&fit=crop&auto=format`}
+          alt={painting.title}
+          loading="lazy"
+          className="painting-image"
+          width={150}
+          height={150}
+          onClick={() => handleOpenImages(painting)}
+          style={{ cursor: "pointer" }}
+        />
+        <DeleteImage painting={painting} />
+      </Card>
+    );
+  }
+  return null;
+};
+
+const DeleteImage = function DeleteImage({ painting }) {
+  const currentUser = useSelector((state) => state.currentUser.user);
+  const painter = useSelector((state) => state.currentPainter.painter);
+
+  const handleImagesResponse = (data) => {
+    console.log("Response", data);
+  };
+
+  const deleteImg = () => {
+    const path = `/${painter.id}/paintings/${painting.id}/`;
+
+    deleteResource(`${path}`, handleImagesResponse);
+  };
+
+  if (currentUser && painter.id) {
+    return (
+      <DeleteOutline
+        onClick={() => deleteImg()}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          padding: 0,
+          cursor: "pointer",
+          color: "black",
+          fontSize: 21,
+          backgroundColor: "rgb(255 255 255 / 28%)",
+          borderRadius: "2px",
+        }}
+      />
+    );
+  }
+  return null;
 };
 
 const DateCreated = function DateCreated({ painting }) {
@@ -131,6 +184,7 @@ const IsLoggedIn = function IsLoggedIn() {
           New Category
         </Button>
         <NewDialog
+          painting={false}
           painter={painter}
           open={openNew}
           handleClose={handleCloseNew}

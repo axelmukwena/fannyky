@@ -180,5 +180,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 - If has many is removing files when updating https://stackoverflow.com/a/66994710/8050183
 
+- Purge Images?
+  - https://nicholasshirley.com/several-strategies-to-delete-activestorage-attachments/
+
 ### `.env` with React
 - https://stackoverflow.com/a/68945430/8050183
+

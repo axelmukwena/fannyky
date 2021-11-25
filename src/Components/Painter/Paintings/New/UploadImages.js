@@ -1,6 +1,6 @@
 import { Close } from "@mui/icons-material";
 import { Card, CardMedia, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const useForceUpdate = () => {
   const state = useState(false);
@@ -11,6 +11,15 @@ const UploadImages = function UploadImages({ files, setFiles }) {
   const forceUpdate = useForceUpdate();
   const [required, setRequired] = useState(true);
   const [previews, setPreviews] = useState([]);
+  const [uploadText, setUploadText] = useState("");
+
+  useEffect(() => {
+    if (files.length > 0) {
+      setUploadText("Drag or Click to Upload More");
+    } else {
+      setUploadText("Drag or Click to Upload");
+    }
+  }, [files]);
 
   const loadFiles = (e) => {
     const fileObjects = e.target.files;
@@ -64,7 +73,7 @@ const UploadImages = function UploadImages({ files, setFiles }) {
             textAlign: "center",
           }}
         >
-          Drag or Click to Upload
+          {uploadText}
         </Typography>
         <input
           type="file"

@@ -11,23 +11,48 @@ import {
 } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import React, { useState } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { postResource } from "../../../../utils/requests";
+import React, { useEffect, useState } from "react";
+import { postResource, putResource } from "../../../../utils/requests";
 import UploadImages from "./UploadImages";
 import {
   parsePaintingImages,
   parsePaintingParams,
 } from "../../../../utils/helpers";
 
-const NewDialog = function NewDialog({ painter, open, handleClose }) {
+const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [title, setTitle] = useState("");
   const [dateCreated, setDateCreated] = useState(null);
   const [dimension, setDimension] = useState("");
   const [abstract, setAbstract] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
-  const { path } = useRouteMatch();
+  let formTitle = "";
+
+  if (painting) {
+    formTitle = "Edit Painting";
+  } else {
+    formTitle = "Add New Painting";
+  }
+
+  // If Editing
+  useEffect(() => {
+    if (painting) {
+      Object.keys(painting).forEach((key) => {
+        if (!painting[key] && key !== "date_created") {
+          painting[key] = undefined;
+        }
+      });
+
+      if (painting.dateCreated) {
+        setDateCreated(painting.dateCreated);
+      }
+
+      setTitle(painting.title);
+      setDimension(painting.dimension);
+      setAbstract(painting.abstract);
+      setDescription(painting.description);
+    }
+  }, [painting]);
 
   const handleImagesResponse = (data) => {
     console.log("Response", data);
@@ -38,12 +63,9 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
     // Update paintings with images
     const { id } = data.painting;
     const params = parsePaintingImages(id, images);
-    console.log(Array.from(params.entries()));
-    postResource(
-      `${path}/paintings/${id}/images`,
-      params,
-      handleImagesResponse
-    );
+    const path = `/${painter.id}/paintings/${painting.id}/images`;
+
+    postResource(path, params, handleImagesResponse);
   };
 
   const handleSubmit = (e) => {
@@ -59,12 +81,13 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
     };
 
     const params = parsePaintingParams(data);
-    // const params = { title, painter };
-
-    // console.log(Array.from(params.entries()));
-    // console.log(images);
-    postResource(`${path}/paintings`, params, handlePaintingResponse);
-    // console.log(handleResponse, path);
+    if (painting) {
+      const path = `/${painter.id}/paintings/${painting.id}`;
+      putResource(path, params, handlePaintingResponse);
+    } else {
+      const path = `/${painter.id}/paintings`;
+      postResource(path, params, handlePaintingResponse);
+    }
   };
 
   return (
@@ -101,7 +124,7 @@ const NewDialog = function NewDialog({ painter, open, handleClose }) {
                   color: "#787878",
                 }}
               >
-                Add new Painting
+                {formTitle}
               </DialogTitle>
             </Grid>
             <Grid item xs={6} md={8}>

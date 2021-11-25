@@ -15,12 +15,13 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link } from "react-router-dom";
 
 const ImageDialog = function ImageDialog({
-  paintings,
+  painting,
+  current,
+  setCurrent,
   open,
   handleClose,
   show,
 }) {
-  const [current, setCurrent] = useState(0);
   const [height, setHeight] = useState(0);
 
   // On screen width changes
@@ -55,24 +56,24 @@ const ImageDialog = function ImageDialog({
     };
   }, []);
 
-  function goBack() {
+  function goBack(images) {
     if (current > 0) {
       setCurrent(current - 1);
     } else if (current === 0) {
-      setCurrent(paintings.length - 1);
+      setCurrent(images.length - 1);
     }
   }
 
-  function goForward() {
-    if (current < paintings.length - 1) {
+  function goForward(images) {
+    if (current < images.length - 1) {
       setCurrent(current + 1);
-    } else if (current === paintings.length - 1) {
+    } else if (current === images.length - 1) {
       setCurrent(0);
     }
   }
 
-  if (paintings.length > 0) {
-    const painting = paintings[current];
+  // console.log(painting);
+  if (painting && painting.images.length > 0) {
     return (
       <Dialog
         fullScreen
@@ -109,7 +110,7 @@ const ImageDialog = function ImageDialog({
           </Button>
         </DialogActions>
         <Grid container spacing={0}>
-          <Grid item xs onClick={() => goBack()}>
+          <Grid item xs onClick={() => goBack(painting.images)}>
             <Button
               style={{
                 color: "#cfcfcf",
@@ -132,7 +133,7 @@ const ImageDialog = function ImageDialog({
               <div className="painting-dialog-image">
                 <CardMedia
                   component="img"
-                  src={`${painting.image}`}
+                  src={painting.images[current].url}
                   alt={painting.title}
                   height={height}
                 />
@@ -140,7 +141,7 @@ const ImageDialog = function ImageDialog({
               <PaintingsDialogContent show={show} painting={painting} />
             </Card>
           </Grid>
-          <Grid item xs onClick={() => goForward()}>
+          <Grid item xs onClick={() => goForward(painting.images)}>
             <Button
               style={{
                 color: "#cfcfcf",
