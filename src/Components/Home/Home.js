@@ -5,7 +5,7 @@ import "./Home.css";
 import { getResource } from "../../utils/requests";
 import BackGround from "./BackGround";
 
-const Landing = function Landing() {
+const Home = function Home() {
   return (
     <div className="canvas-container" id="canvas-container">
       <BackGround />
@@ -90,4 +90,4 @@ const PositionButtons = function PositionButtons() {
   return "";
 };
 
-export default Landing;
+export default Home;

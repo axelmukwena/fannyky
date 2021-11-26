@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import backgroundTwo from "../../images/landing-background-one.png";
-import backgroundOne from "../../images/landing-background-two.png";
+import backgroundOne from "../../images/landing-background-one.png";
+import backgroundTwo from "../../images/landing-background-two.png";
 
-const BackGround = function BackGround() {
+const AnotherBackground = function AnotherBackground() {
   const [height, setHeight] = useState(0);
   // const [width, setWidth] = useState(0);
   const [halfWidth, setHalfWidth] = useState(0);
@@ -52,4 +52,4 @@ const BackGround = function BackGround() {
   );
 };
 
-export default BackGround;
+export default AnotherBackground;
