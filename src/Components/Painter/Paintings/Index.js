@@ -40,7 +40,7 @@ const Index = function Index() {
           <CardImage painting={painting} handleOpenImages={handleOpenImages} />
           <div className="abstract">
             <Link
-              to={`${painting.painter.slug}/paintings/${painting.slug}`}
+              to={`${painting.painter.slug}/works/${painting.slug}`}
               className="painting-title-index"
             >
               {painting.title}
@@ -184,7 +184,7 @@ const IsLoggedIn = function IsLoggedIn() {
 
   if (currentUser && painter.id) {
     return (
-      <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>
+      <div className="row" style={{ marginTop: 25 }}>
         <Button
           style={{ width: 200, height: 40, marginRight: 25 }}
           variant="contained"

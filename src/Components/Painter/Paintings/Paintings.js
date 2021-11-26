@@ -9,11 +9,7 @@ const Paintings = function Paintings({ match }) {
   return (
     <Switch>
       <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-      <Route
-        path={`${url}/paintings/:paintingID`}
-        component={Show}
-        key="show"
-      />
+      <Route path={`${url}/works/:paintingID`} component={Show} key="show" />
       <Route path={url} component={Index} key="index" />
     </Switch>
   );

@@ -203,29 +203,32 @@ const IsLoggedIn = function IsLoggedIn({ publication }) {
 
   if (currentUser && painter.id) {
     return (
-      <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>
-        <Button
-          style={{ width: 200, height: 40, marginRight: 25 }}
-          variant="contained"
-          color="primary"
-          onClick={() => handleOpenNew()}
-        >
-          Edit Publication
-        </Button>
-        <Button
-          style={{ width: 200, height: 40, marginRight: 25 }}
-          variant="contained"
-          color="primary"
-          onClick={() => handleDeletePublication()}
-        >
-          Delete Publication
-        </Button>
-        <NewDialog
-          publication={publication}
-          painter={painter}
-          open={openNew}
-          handleClose={handleCloseNew}
-        />
+      <div>
+        <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>
+          <Button
+            style={{ width: 200, height: 40, marginRight: 25 }}
+            variant="contained"
+            color="primary"
+            onClick={() => handleOpenNew()}
+          >
+            Edit Publication
+          </Button>
+          <Button
+            style={{ width: 200, height: 40, marginRight: 25 }}
+            variant="contained"
+            color="primary"
+            onClick={() => handleDeletePublication()}
+          >
+            Delete Publication
+          </Button>
+          <NewDialog
+            publication={publication}
+            painter={painter}
+            open={openNew}
+            handleClose={handleCloseNew}
+          />
+        </div>
+        <CustomHorizontal />
       </div>
     );
   }

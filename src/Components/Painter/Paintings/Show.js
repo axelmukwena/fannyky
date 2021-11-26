@@ -12,15 +12,18 @@ import {
   postResource,
 } from "../../../utils/requests";
 import NewDialog from "./NewDialog";
+import CustomHorizontal from "../CustomHorizontal";
 
 const Show = function Show({ match }) {
   const { url } = match;
   const [painting, setPainting] = useState({});
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
+  // const painter = useSelector((state) => state.currentPainter.painter);
 
   useEffect(() => {
-    getResource(url, setPainting);
+    const path = url.replace("works", "paintings");
+    getResource(path, setPainting);
   }, [url]);
 
   const convertContentToHTML = (content) => {
@@ -93,7 +96,7 @@ const Show = function Show({ match }) {
           handleClose={handleClose}
           show={false}
         />
-        <div className="show-content">
+        <div className="show-content" style={{ width: "80%" }}>
           <Typography
             style={{
               fontWeight: 900,
@@ -104,17 +107,17 @@ const Show = function Show({ match }) {
           >
             {painting.title}
           </Typography>
-          <Typography
-            style={{ fontSize: "1rem", fontStyle: "italic", marginBottom: 20 }}
-          >
-            <DateCreated painting={painting} /> - {painting.painter.name}
-          </Typography>
 
-          <Typography style={{ fontSize: "1rem" }}>
-            {painting.abstract}
-          </Typography>
-          <Typography>{painting.dimension}</Typography>
-          <Typography>{painting.explorer}</Typography>
+          <Typography>Artist: {painting.painter.name}</Typography>
+
+          <CustomHorizontal />
+
+          <DateCreated painting={painting} />
+          <Abstract painting={painting} />
+          <Dimension painting={painting} />
+
+          <CustomHorizontal />
+
           <Typography
             style={{ marginTop: 20 }}
             dangerouslySetInnerHTML={description}
@@ -219,7 +222,23 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
 
 const DateCreated = function DateCreated({ painting }) {
   if (painting.date_created) {
-    return painting.date_created.split("-")[0];
+    return (
+      <Typography>Created: {painting.date_created.split("-")[0]}</Typography>
+    );
+  }
+  return "";
+};
+
+const Abstract = function Abstract({ painting }) {
+  if (painting.abstract) {
+    return <Typography>Type: {painting.abstract}</Typography>;
+  }
+  return "";
+};
+
+const Dimension = function Dimension({ painting }) {
+  if (painting.dimension) {
+    return <Typography>Dimension: {painting.dimension}</Typography>;
   }
   return "";
 };
