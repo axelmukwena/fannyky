@@ -1,64 +1,17 @@
-import { Card, Grid, Link, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { getResource } from "../../../utils/requests";
+import React from "react";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import Index from "./Index";
+import Show from "./Show";
 
-const Exhibitions = function Exhibitions() {
-  const [exhibitions, setExhibitions] = useState([]);
-  const { path } = useRouteMatch();
-
-  useEffect(() => {
-    getResource(path, setExhibitions);
-  }, [path]);
-
+const Exhibitions = function Exhibitions({ match }) {
+  const { pathname } = useLocation();
+  const { url } = match;
   return (
-    <div className="exhibitions">
-      <Grid container spacing={4}>
-        {exhibitions.map((exhibition) => (
-          <Grid key={exhibition.id} item lg={4} md={6} xs={12}>
-            <Card style={{ width: "100%", padding: 10 }}>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {exhibition.painter.name}
-              </Typography>
-              <Link href={`${path}/${exhibition.slug}`}>
-                <Typography
-                  style={{
-                    fontWeight: 300,
-                  }}
-                >
-                  {exhibition.title}
-                </Typography>
-              </Link>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {exhibition.start_date} {exhibition.end_date}
-              </Typography>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {exhibition.link}
-              </Typography>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {exhibition.location}
-              </Typography>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+    <Switch>
+      <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+      <Route path={`${url}/:exhibitionID`} component={Show} key="show" />
+      <Route path={url} component={Index} key="index" />
+    </Switch>
   );
 };
 

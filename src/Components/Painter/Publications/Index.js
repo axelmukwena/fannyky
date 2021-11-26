@@ -62,7 +62,7 @@ const Index = function Index() {
   };
 
   return (
-    <div className="publications-container" style={{ width: "80%" }}>
+    <div className="resource-container" style={{ width: "80%" }}>
       <Typography
         style={{
           fontWeight: 600,
@@ -84,7 +84,7 @@ const Index = function Index() {
   );
 };
 
-const TrimDescription = function TrimDescriptio({ publication }) {
+const TrimDescription = function TrimDescription({ publication }) {
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html),
@@ -128,7 +128,6 @@ const TrimDescription = function TrimDescriptio({ publication }) {
         />
       );
     }
-    description[html] = `${description[html]}...`;
     return (
       <Typography
         style={{ marginTop: 20 }}

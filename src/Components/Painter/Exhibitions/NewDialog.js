@@ -6,12 +6,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -20,67 +22,74 @@ import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 
-const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
+const NewDialog = function NewDialog({
+  exhibition,
+  painter,
+  open,
+  handleClose,
+}) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
-  const [dateCreated, setDateCreated] = useState("");
-  const [dimension, setDimension] = useState("");
-  const [abstract, setAbstract] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [which, setWhich] = useState("");
+  const [link, setLink] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
   const [images, setImages] = useState([]);
-  const [required, setRequired] = useState(true);
+  const required = false;
   let formTitle = "";
   let submitButton = "";
 
-  if (painting) {
-    formTitle = "Edit Painting";
+  if (exhibition) {
+    formTitle = "Edit Exhibition";
     submitButton = "Update";
   } else {
-    formTitle = "Create Painting";
+    formTitle = "Create Exhibition";
     submitButton = "Create";
   }
 
   // If Editing
   useEffect(() => {
-    if (painting) {
-      Object.keys(painting).forEach((key) => {
-        if (!painting[key] && key) {
-          painting[key] = "";
+    if (exhibition) {
+      Object.keys(exhibition).forEach((key) => {
+        if (!exhibition[key]) {
+          exhibition[key] = "";
         }
       });
 
-      if (painting.description) {
-        const object = JSON.parse(painting.description);
+      if (exhibition.description) {
+        const object = JSON.parse(exhibition.description);
         const raw = convertFromRaw(object);
         const editorState = EditorState.createWithContent(raw);
         setDescription(editorState);
       }
 
-      setPagelink(painting.pagelink);
-      setTitle(painting.title);
-      setDateCreated(painting.date_created);
-      setDimension(painting.dimension);
-      setAbstract(painting.abstract);
+      setTitle(exhibition.title);
+      setPagelink(exhibition.pagelink);
+      setStartDate(exhibition.start_date);
+      setEndDate(exhibition.end_date);
+      setWhich(exhibition.which);
+      setLink(exhibition.link);
+      setOrganization(exhibition.organization);
+      setLocation(exhibition.location);
     }
-
-    if (painting && painting.images.length > 0) {
-      setRequired(false);
-    }
-  }, [painting]);
+  }, [exhibition]);
 
   const handleImagesResponse = (data) => {
     console.log("Response", data);
   };
 
-  const handlePaintingResponse = (data) => {
+  const handleExhibitionResponse = (data) => {
     console.log("Response", data);
-    // Update paintings with images
+    // Update exhibitions with images
     if (data.success && images.length > 0) {
-      const { id } = data.painting;
+      const { id } = data.exhibition;
       const params = parseImages(id, images);
-      const path = `/${painter.id}/paintings/${id}/images`;
+      const path = `/${painter.id}/exhibitions/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
     }
@@ -94,21 +103,24 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
 
     const data = {
       title,
-      date_created: dateCreated,
       pagelink,
-      dimension,
-      abstract,
+      start_date: startDate,
+      end_date: endDate,
+      which,
+      link,
+      organization,
+      location,
       description: stringDescription,
       painter,
     };
 
     const params = parseGeneralParams(data);
-    if (painting) {
-      const path = `/${painter.id}/paintings/${painting.id}`;
-      putResource(path, params, handlePaintingResponse);
+    if (exhibition) {
+      const path = `/${painter.id}/exhibitions/${exhibition.id}`;
+      putResource(path, params, handleExhibitionResponse);
     } else {
-      const path = `/${painter.id}/paintings`;
-      postResource(path, params, handlePaintingResponse);
+      const path = `/${painter.id}/exhibitions`;
+      postResource(path, params, handleExhibitionResponse);
     }
   };
 
@@ -127,8 +139,8 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
         </Button>
       </DialogActions>
 
-      <DialogContent>
-        <form className="new-painting-form" onSubmit={handleSubmit}>
+      <DialogContent style={{ paddingTop: 30 }}>
+        <form className="new-exhibition-form" onSubmit={handleSubmit}>
           <Grid
             justifyContent="flex-start"
             alignItems="center"
@@ -163,7 +175,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Page Link"
@@ -175,37 +187,75 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={4}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  label="Date Created"
-                  inputFormat="dd/MM/yyyy"
-                  value={dateCreated}
-                  onChange={(e) => setDateCreated(e)}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </Grid>
-
-            <Grid item xs={6} md={4}>
+            <Grid item xs={4}>
               <TextField
                 fullWidth
-                label="Dimensions"
+                label="Start Date"
                 variant="outlined"
-                name="dimension"
-                value={dimension}
-                onChange={(e) => setDimension(e.target.value)}
+                name="start_date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={4}>
               <TextField
                 fullWidth
-                label="Abstract"
+                label="End Date"
                 variant="outlined"
-                name="abstract"
-                value={abstract}
-                onChange={(e) => setAbstract(e.target.value)}
+                name="end_date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={4}>
+              <FormControl fullWidth>
+                <InputLabel id="exhibition-type-select-label">Type</InputLabel>
+                <Select
+                  labelId="exhibition-type-select-label"
+                  id="exhibition-type-select"
+                  value={which}
+                  label="Type"
+                  onChange={(e) => setWhich(e.target.value)}
+                >
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="solo">Solo</MenuItem>
+                  <MenuItem value="group">Group</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={6} md={7}>
+              <TextField
+                fullWidth
+                label="Organization"
+                variant="outlined"
+                name="organization"
+                value={organization}
+                onChange={(e) => setOrganization(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={6} md={5}>
+              <TextField
+                fullWidth
+                label="Location"
+                variant="outlined"
+                name="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="External Link"
+                variant="outlined"
+                name="link"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
               />
             </Grid>
 

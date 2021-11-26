@@ -54,7 +54,7 @@ const Index = function Index() {
   };
 
   return (
-    <div className="paintings-container">
+    <div className="resource-container">
       <Typography
         style={{
           fontWeight: 600,

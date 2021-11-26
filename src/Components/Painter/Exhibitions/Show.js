@@ -13,15 +13,16 @@ import {
 } from "../../../utils/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
+import { capitalize } from "../../../utils/helpers";
 
 const Show = function Show({ match }) {
   const { url } = match;
-  const [publication, setPublication] = useState({});
+  const [exhibition, setExhibition] = useState({});
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    getResource(url, setPublication);
+    getResource(url, setExhibition);
   }, [url]);
 
   const convertContentToHTML = (content) => {
@@ -49,10 +50,10 @@ const Show = function Show({ match }) {
     setOpen(false);
   };
 
-  if (publication.id) {
-    let description = convertContentToHTML(publication.description);
+  if (exhibition.id) {
+    let description = convertContentToHTML(exhibition.description);
     description = createMarkup(description);
-    const { images } = publication;
+    const { images } = exhibition;
     let width = "45%";
     let padding = "16px 0 0 16px";
     if (images.length === 0) {
@@ -61,7 +62,7 @@ const Show = function Show({ match }) {
     }
     return (
       <div style={{}}>
-        <IsLoggedIn publication={publication} />
+        <IsLoggedIn exhibition={exhibition} />
         <Grid container spacing={2}>
           <Grid item style={{ width, padding }}>
             <div className="row">
@@ -80,7 +81,7 @@ const Show = function Show({ match }) {
                 >
                   <CardMedia
                     src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
-                    alt={publication.title}
+                    alt={exhibition.title}
                     loading="lazy"
                     component="img"
                     onClick={() => handleOpen(index)}
@@ -88,12 +89,12 @@ const Show = function Show({ match }) {
                       cursor: "pointer",
                     }}
                   />
-                  <DeleteImage publication={publication} index={index} />
+                  <DeleteImage exhibition={exhibition} index={index} />
                 </Card>
               ))}
             </div>
             <ImagesDialog
-              publication={publication}
+              exhibition={exhibition}
               current={current}
               setCurrent={setCurrent}
               open={open}
@@ -110,23 +111,29 @@ const Show = function Show({ match }) {
                   flex: 1,
                 }}
               >
-                {publication.title}
+                {exhibition.title}
               </Typography>
 
               <CustomHorizontal />
 
               <Typography style={{}}>
-                Author: {publication.painter.name}
+                Artist: {exhibition.painter.name}
               </Typography>
+              <Typography style={{}}>
+                Type: {capitalize(exhibition.which)}
+              </Typography>
+              <Typography style={{}}>
+                Date: {exhibition.start_date}
+                <EndDate exhibition={exhibition} />
+              </Typography>
+
+              <FormatLink exhibition={exhibition} />
 
               <CustomHorizontal />
 
               <Typography style={{}}>
-                {publication.organization}, {publication.location}
+                {exhibition.organization} {exhibition.location}
               </Typography>
-              <Typography>Published: {publication.year}</Typography>
-              <FormatLink publication={publication} />
-              <CustomHorizontal />
 
               <Typography
                 style={{ marginTop: 20 }}
@@ -141,8 +148,8 @@ const Show = function Show({ match }) {
   return "";
 };
 
-const FormatLink = function FormatLink({ publication }) {
-  if (publication.link) {
+const FormatLink = function FormatLink({ exhibition }) {
+  if (exhibition.link) {
     return (
       <a
         style={{
@@ -151,7 +158,7 @@ const FormatLink = function FormatLink({ publication }) {
           alignItems: "center",
           color: "#787878",
         }}
-        href={publication.link}
+        href={exhibition.link}
         target="_blank"
         rel="noreferrer"
       >
@@ -164,7 +171,14 @@ const FormatLink = function FormatLink({ publication }) {
   return null;
 };
 
-const DeleteImage = function DeleteImage({ publication, index }) {
+const EndDate = function EndDate({ exhibition }) {
+  if (exhibition.start_date && exhibition.end_date) {
+    return ` - ${exhibition.end_date}`;
+  }
+  return exhibition.end_date;
+};
+
+const DeleteImage = function DeleteImage({ exhibition, index }) {
   const currentUser = useSelector((state) => state.currentUser.user);
   const painter = useSelector((state) => state.currentPainter.painter);
 
@@ -173,9 +187,9 @@ const DeleteImage = function DeleteImage({ publication, index }) {
   };
 
   const handleDeleteImage = () => {
-    const path = `/${painter.id}/publications/${publication.id}/image`;
-    const imageId = publication.images[index].content.id;
-    const params = { id: publication.id, image_id: imageId, painter };
+    const path = `/${painter.id}/exhibitions/${exhibition.id}/image`;
+    const imageId = exhibition.images[index].content.id;
+    const params = { id: exhibition.id, image_id: imageId, painter };
 
     postResource(path, params, handleImagesResponse);
   };
@@ -201,7 +215,7 @@ const DeleteImage = function DeleteImage({ publication, index }) {
   return null;
 };
 
-const IsLoggedIn = function IsLoggedIn({ publication }) {
+const IsLoggedIn = function IsLoggedIn({ exhibition }) {
   const currentUser = useSelector((state) => state.currentUser.user);
   const painter = useSelector((state) => state.currentPainter.painter);
   const [openNew, setOpenNew] = useState(false);
@@ -218,8 +232,8 @@ const IsLoggedIn = function IsLoggedIn({ publication }) {
     console.log("Response", data);
   };
 
-  const handleDeletePublication = () => {
-    const path = `/${painter.id}/publications/${publication.id}`;
+  const handleDeleteExhibition = () => {
+    const path = `/${painter.id}/exhibitions/${exhibition.id}`;
 
     deleteResource(`${path}`, handleDeleleResponse);
   };
@@ -234,18 +248,18 @@ const IsLoggedIn = function IsLoggedIn({ publication }) {
             color="primary"
             onClick={() => handleOpenNew()}
           >
-            Edit Publication
+            Edit Exhibition
           </Button>
           <Button
             style={{ width: 200, height: 40, marginRight: 25 }}
             variant="contained"
             color="primary"
-            onClick={() => handleDeletePublication()}
+            onClick={() => handleDeleteExhibition()}
           >
-            Delete Publication
+            Delete Exhibition
           </Button>
           <NewDialog
-            publication={publication}
+            exhibition={exhibition}
             painter={painter}
             open={openNew}
             handleClose={handleCloseNew}

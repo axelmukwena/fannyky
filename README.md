@@ -199,3 +199,21 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Redirect trailing strokes on URLs
 - https://jasonwatmore.com/post/2020/03/23/react-router-remove-trailing-slash-from-urls
 
+### Date picker example
+
+
+    import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+    import AdapterDateFns from "@mui/lab/AdapterDateFns";
+
+    <Grid item xs={6} md={4}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DesktopDatePicker
+          label="Date Created"
+          inputFormat="dd/MM/yyyy"
+          value={dateCreated}
+          onChange={(e) => setDateCreated(e)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+      </LocalizationProvider>
+    </Grid>
+

@@ -30,6 +30,7 @@ const NewDialog = function NewDialog({
 }) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
+  const [link, setLink] = useState("");
   const [year, setYear] = useState("");
   const [organization, setOrganization] = useState("");
   const [location, setLocation] = useState("");
@@ -65,8 +66,10 @@ const NewDialog = function NewDialog({
         setDescription(editorState);
       }
 
+      console.log(publication);
       setTitle(publication.title);
       setPagelink(publication.pagelink);
+      setLink(publication.link);
       setYear(publication.year);
       setOrganization(publication.organization);
       setLocation(publication.location);
@@ -98,6 +101,7 @@ const NewDialog = function NewDialog({
     const data = {
       title,
       pagelink,
+      link,
       year,
       organization,
       location,
@@ -199,6 +203,17 @@ const NewDialog = function NewDialog({
                 name="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="External Link"
+                variant="outlined"
+                name="link"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
               />
             </Grid>
 

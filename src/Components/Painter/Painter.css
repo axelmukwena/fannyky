@@ -56,7 +56,21 @@
   color: #727272;
 }
 
-.painting-title-index:hover, .painting-title-popup:hover, .publication-title-index:hover {
+.exhibition-title-index{
+  text-decoration: none;
+  color: #727272;
+  font-style: italic;
+}
+
+.exhibition-title-index-all {
+  text-decoration: none;
+  color: #727272;
+}
+
+.painting-title-index:hover, 
+.painting-title-popup:hover, 
+.publication-title-index:hover, 
+.exhibition-title-index:hover {
   text-decoration: underline;
 }
 
@@ -119,11 +133,15 @@
   border: 1px solid #b9b9b9 !important;
 }
 
-.publications-container, .paintings-container {
+.resource-container  {
   margin: 20px;
 }
 
 .publication {
+  margin: 12px 0px;
+}
+
+.exhibition {
   margin: 12px 0px;
 }
 
