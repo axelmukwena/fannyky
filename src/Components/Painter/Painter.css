@@ -62,7 +62,7 @@
   font-style: italic;
 }
 
-.exhibition-title-index-all {
+.exhibition-title-index-all, .talk-title-index-all {
   text-decoration: none;
   color: #727272;
 }
@@ -70,7 +70,8 @@
 .painting-title-index:hover, 
 .painting-title-popup:hover, 
 .publication-title-index:hover, 
-.exhibition-title-index:hover {
+.exhibition-title-index:hover,
+.talk-title-index:hover {
   text-decoration: underline;
 }
 

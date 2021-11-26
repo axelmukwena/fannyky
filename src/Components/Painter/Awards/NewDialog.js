@@ -9,84 +9,60 @@ import {
   FormControl,
   Grid,
   InputLabel,
+  MenuItem,
   Select,
   TextField,
-  Typography,
-  MenuItem,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 
-const NewDialog = function NewDialog({
-  publication,
-  painter,
-  open,
-  handleClose,
-}) {
-  const [title, setTitle] = useState("");
+const NewDialog = function NewDialog({ award, painter, open, handleClose }) {
+  const [prize, setPrize] = useState("");
   const [pagelink, setPagelink] = useState("");
-  const [link, setLink] = useState("");
   const [year, setYear] = useState("");
-  const [organization, setOrganization] = useState("");
-  const [location, setLocation] = useState("");
-  const [description, setDescription] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const required = false;
   let formTitle = "";
   let submitButton = "";
 
-  if (publication) {
-    formTitle = "Edit Publication";
+  if (award) {
+    formTitle = "Edit Award";
     submitButton = "Update";
   } else {
-    formTitle = "Create Publication";
+    formTitle = "Create Award";
     submitButton = "Create";
   }
 
   // If Editing
   useEffect(() => {
-    if (publication) {
-      Object.keys(publication).forEach((key) => {
-        if (!publication[key]) {
-          publication[key] = "";
+    if (award) {
+      Object.keys(award).forEach((key) => {
+        if (!award[key]) {
+          award[key] = "";
         }
       });
 
-      if (publication.description) {
-        const object = JSON.parse(publication.description);
-        const raw = convertFromRaw(object);
-        const editorState = EditorState.createWithContent(raw);
-        setDescription(editorState);
-      }
-
-      console.log(publication);
-      setTitle(publication.title);
-      setPagelink(publication.pagelink);
-      setLink(publication.link);
-      setYear(publication.year);
-      setOrganization(publication.organization);
-      setLocation(publication.location);
+      setPrize(award.prize);
+      setPagelink(award.pagelink);
+      setYear(award.year);
+      setDescription(award.description);
     }
-  }, [publication]);
+  }, [award]);
 
   const handleImagesResponse = (data) => {
     console.log("Response", data);
   };
 
-  const handlePublicationResponse = (data) => {
+  const handleAwardResponse = (data) => {
     console.log("Response", data);
-    // Update publications with images
+    // Update awards with images
     if (data.success && images.length > 0) {
-      const { id } = data.publication;
+      const { id } = data.award;
       const params = parseImages(id, images);
-      const path = `/${painter.id}/publications/${id}/images`;
+      const path = `/${painter.id}/awards/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
     }
@@ -95,27 +71,21 @@ const NewDialog = function NewDialog({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const rawDescription = convertToRaw(description.getCurrentContent());
-    const stringDescription = JSON.stringify(rawDescription);
-
     const data = {
-      title,
+      prize,
       pagelink,
-      link,
       year,
-      organization,
-      location,
-      description: stringDescription,
+      description,
       painter,
     };
 
     const params = parseGeneralParams(data);
-    if (publication) {
-      const path = `/${painter.id}/publications/${publication.id}`;
-      putResource(path, params, handlePublicationResponse);
+    if (award) {
+      const path = `/${painter.id}/awards/${award.id}`;
+      putResource(path, params, handleAwardResponse);
     } else {
-      const path = `/${painter.id}/publications`;
-      postResource(path, params, handlePublicationResponse);
+      const path = `/${painter.id}/awards`;
+      postResource(path, params, handleAwardResponse);
     }
   };
 
@@ -135,7 +105,7 @@ const NewDialog = function NewDialog({
       </DialogActions>
 
       <DialogContent style={{ paddingTop: 30 }}>
-        <form className="new-publication-form" onSubmit={handleSubmit}>
+        <form className="new-award-form" onSubmit={handleSubmit}>
           <Grid
             justifyContent="flex-start"
             alignItems="center"
@@ -157,20 +127,22 @@ const NewDialog = function NewDialog({
               </DialogTitle>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <TextField
                 fullWidth
                 autoFocus
-                label="Title"
+                label="Prize"
                 variant="outlined"
-                name="title"
-                value={title}
+                name="prize"
+                value={prize}
                 required
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setPrize(e.target.value)}
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <PopulateYear year={year} setYear={setYear} />
+
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Page Link"
@@ -182,57 +154,17 @@ const NewDialog = function NewDialog({
               />
             </Grid>
 
-            <PopulateYear year={year} setYear={setYear} />
-
-            <Grid item xs={6} md={7}>
-              <TextField
-                fullWidth
-                label="Organization"
-                variant="outlined"
-                name="organization"
-                value={organization}
-                onChange={(e) => setOrganization(e.target.value)}
-              />
-            </Grid>
-
-            <Grid item xs={6} md={5}>
-              <TextField
-                fullWidth
-                label="Location"
-                variant="outlined"
-                name="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </Grid>
-
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="External Link"
+                minRows={3}
+                multiline
+                label="Description"
                 variant="outlined"
-                name="link"
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
+                name="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography style={{ margin: 9, color: "#626262" }}>
-                Description
-              </Typography>
-              <div
-                style={{
-                  border: "1px solid rgb(185, 185, 185)",
-                  borderRadius: 4,
-                }}
-              >
-                <Editor
-                  fullWidth
-                  editorState={description}
-                  onEditorStateChange={setDescription}
-                />
-              </div>
             </Grid>
 
             <Grid item xs={12}>
@@ -279,7 +211,7 @@ const PopulateYear = function PopulateYear({ year, setYear }) {
   const years = Array.from(new Array(60), (val, index) => startYear - index);
 
   return (
-    <Grid item xs={6} md={4}>
+    <Grid item xs={4}>
       <FormControl fullWidth>
         <InputLabel id="publication-year-select-label">Year</InputLabel>
         <Select

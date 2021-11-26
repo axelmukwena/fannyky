@@ -18,67 +18,65 @@ import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 
-const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
+const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
-  const [dateCreated, setDateCreated] = useState("");
-  const [dimension, setDimension] = useState("");
-  const [abstract, setAbstract] = useState("");
+  const [date, setDate] = useState("");
+  const [link, setLink] = useState("");
+  const [organizer, setOrganizer] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
   const [images, setImages] = useState([]);
-  const [required, setRequired] = useState(true);
+  const required = false;
   let formTitle = "";
   let submitButton = "";
 
-  if (painting) {
-    formTitle = "Edit Painting";
+  if (talk) {
+    formTitle = "Edit Talk";
     submitButton = "Update";
   } else {
-    formTitle = "Create Painting";
+    formTitle = "Create Talk";
     submitButton = "Create";
   }
 
   // If Editing
   useEffect(() => {
-    if (painting) {
-      Object.keys(painting).forEach((key) => {
-        if (!painting[key] && key) {
-          painting[key] = "";
+    if (talk) {
+      Object.keys(talk).forEach((key) => {
+        if (!talk[key]) {
+          talk[key] = "";
         }
       });
 
-      if (painting.description) {
-        const object = JSON.parse(painting.description);
+      if (talk.description) {
+        const object = JSON.parse(talk.description);
         const raw = convertFromRaw(object);
         const editorState = EditorState.createWithContent(raw);
         setDescription(editorState);
       }
 
-      setPagelink(painting.pagelink);
-      setTitle(painting.title);
-      setDateCreated(painting.date_created);
-      setDimension(painting.dimension);
-      setAbstract(painting.abstract);
+      setTitle(talk.title);
+      setPagelink(talk.pagelink);
+      setDate(talk.date);
+      setLink(talk.link);
+      setOrganizer(talk.organizer);
+      setLocation(talk.location);
     }
-
-    if (painting && painting.images.length > 0) {
-      setRequired(false);
-    }
-  }, [painting]);
+  }, [talk]);
 
   const handleImagesResponse = (data) => {
     console.log("Response", data);
   };
 
-  const handlePaintingResponse = (data) => {
+  const handleTalkResponse = (data) => {
     console.log("Response", data);
-    // Update paintings with images
+    // Update talks with images
     if (data.success && images.length > 0) {
-      const { id } = data.painting;
+      const { id } = data.talk;
       const params = parseImages(id, images);
-      const path = `/${painter.id}/paintings/${id}/images`;
+      const path = `/${painter.id}/talks/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
     }
@@ -92,21 +90,22 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
 
     const data = {
       title,
-      date_created: dateCreated,
       pagelink,
-      dimension,
-      abstract,
+      date,
+      link,
+      organizer,
+      location,
       description: stringDescription,
       painter,
     };
 
     const params = parseGeneralParams(data);
-    if (painting) {
-      const path = `/${painter.id}/paintings/${painting.id}`;
-      putResource(path, params, handlePaintingResponse);
+    if (talk) {
+      const path = `/${painter.id}/talks/${talk.id}`;
+      putResource(path, params, handleTalkResponse);
     } else {
-      const path = `/${painter.id}/paintings`;
-      postResource(path, params, handlePaintingResponse);
+      const path = `/${painter.id}/talks`;
+      postResource(path, params, handleTalkResponse);
     }
   };
 
@@ -125,8 +124,8 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
         </Button>
       </DialogActions>
 
-      <DialogContent>
-        <form className="new-painting-form" onSubmit={handleSubmit}>
+      <DialogContent style={{ paddingTop: 30 }}>
+        <form className="new-talk-form" onSubmit={handleSubmit}>
           <Grid
             justifyContent="flex-start"
             alignItems="center"
@@ -148,7 +147,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               </DialogTitle>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <TextField
                 fullWidth
                 autoFocus
@@ -161,7 +160,18 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={4}>
+              <TextField
+                fullWidth
+                label="Date"
+                variant="outlined"
+                name="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Page Link"
@@ -173,36 +183,36 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={7}>
               <TextField
                 fullWidth
-                label="Date Created"
+                label="Organizer"
                 variant="outlined"
-                name="date_created"
-                value={dateCreated}
-                onChange={(e) => setDateCreated(e.target.value)}
+                name="organizer"
+                value={organizer}
+                onChange={(e) => setOrganizer(e.target.value)}
               />
             </Grid>
 
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={5}>
               <TextField
                 fullWidth
-                label="Dimensions"
+                label="Location"
                 variant="outlined"
-                name="dimension"
-                value={dimension}
-                onChange={(e) => setDimension(e.target.value)}
+                name="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Abstract"
+                label="External Link"
                 variant="outlined"
-                name="abstract"
-                value={abstract}
-                onChange={(e) => setAbstract(e.target.value)}
+                name="link"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
               />
             </Grid>
 

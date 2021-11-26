@@ -36,99 +36,103 @@ const Index = function Index() {
     getResource(path, setExhibitions);
   }, [path]);
 
-  const GetExhibitions = function GetExhibitions({ exhibitions }) {
-    if (exhibitions.length > 0) {
-      return exhibitions.map((exhibition) => (
-        <div
-          key={exhibition.slug}
-          className="exhibition"
-          style={{
-            borderRadius: 4,
-            padding: 0,
-            width: "100%",
-            margin: "10px 0",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "100%" }}>
-            <Typography style={{ paddingLeft: 40, textIndent: -40 }}>
-              <Link
-                className="exhibition-title-index-all"
-                to={`exhibitions/${exhibition.slug}`}
-              >
-                {exhibition.start_date}
-                <EndDate exhibition={exhibition} />
-                &nbsp;&nbsp;
-                <span
-                  className="exhibition-title-index"
-                  style={{ fontStyle: "italic" }}
-                >
-                  {exhibition.title}{" "}
-                </span>
-                {exhibition.organization} {exhibition.location}{" "}
-                <TrimDescription exhibition={exhibition} />
-              </Link>
-            </Typography>
-
-            <DeleteExhibition exhibition={exhibition} />
-          </div>
-        </div>
-      ));
-    }
-    return "";
-  };
-
   return (
     <div className="resource-container" style={{ width: "70%" }}>
-      <Typography
-        style={{
-          fontWeight: 600,
-          fontSize: "1rem",
-          fontFamily: "Roboto",
-          marginBottom: 20,
-        }}
-      >
-        Solo Exhibitions
-      </Typography>
-      <CustomHorizontal />
       <IsLoggedIn />
-      <div className="row" style={{ marginTop: 15 }}>
-        <GetExhibitions exhibitions={solo} />
-      </div>
-
-      <Typography
-        style={{
-          fontWeight: 600,
-          fontSize: "1rem",
-          fontFamily: "Roboto",
-          marginTop: 30,
-          marginBottom: 20,
-        }}
-      >
-        Group Exhibitions
-      </Typography>
-      <CustomHorizontal />
-      <div className="row" style={{ marginTop: 15 }}>
-        <GetExhibitions exhibitions={group} />
-      </div>
-
-      <Typography
-        style={{
-          fontWeight: 600,
-          fontSize: "1rem",
-          fontFamily: "Roboto",
-          marginTop: 30,
-          marginBottom: 20,
-        }}
-      >
-        Other Exhibitions
-      </Typography>
-      <CustomHorizontal />
-      <div className="row" style={{ marginTop: 15 }}>
-        <GetExhibitions exhibitions={others} />
-      </div>
+      <Placeholder solo={solo} group={group} others={others} />
+      <MiddleExhibitions title="Solo Exhibitions" exhibitions={solo} />
+      <MiddleExhibitions title="Group Exhibitions" exhibitions={group} />
+      <MiddleExhibitions title="Other Exhibitions" exhibitions={others} />
     </div>
   );
+};
+
+const Placeholder = function Placeholder({ solo, group, others }) {
+  if (solo.length === 0 && group.length === 0 && others.length === 0) {
+    return (
+      <div>
+        <Typography
+          style={{
+            fontWeight: 600,
+            fontSize: "1rem",
+            fontFamily: "Roboto",
+            marginBottom: 20,
+          }}
+        >
+          Exhibitions
+        </Typography>
+        <CustomHorizontal />
+      </div>
+    );
+  }
+  return null;
+};
+
+const MiddleExhibitions = function MiddleExhibitions({ title, exhibitions }) {
+  if (exhibitions.length > 0) {
+    return (
+      <div>
+        <Typography
+          style={{
+            fontWeight: 600,
+            fontSize: "1rem",
+            fontFamily: "Roboto",
+            marginBottom: 20,
+          }}
+        >
+          {title}
+        </Typography>
+        <CustomHorizontal />
+
+        <div className="row" style={{ marginTop: 15, marginBottom: 10 }}>
+          <GetExhibitions exhibitions={exhibitions} />
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+const GetExhibitions = function GetExhibitions({ exhibitions }) {
+  if (exhibitions.length > 0) {
+    return exhibitions.map((exhibition) => (
+      <div
+        key={exhibition.slug}
+        className="exhibition"
+        style={{
+          borderRadius: 4,
+          padding: 0,
+          width: "100%",
+          margin: "10px 0",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ width: "100%" }}>
+          <Typography style={{ paddingLeft: 40, textIndent: -40 }}>
+            <Link
+              className="exhibition-title-index-all"
+              to={`exhibitions/${exhibition.slug}`}
+            >
+              {exhibition.start_date}
+              <EndDate exhibition={exhibition} />
+              &nbsp;&nbsp;
+              <span
+                className="exhibition-title-index"
+                style={{ fontStyle: "italic" }}
+              >
+                {exhibition.title}{" "}
+              </span>
+              {exhibition.organization} {exhibition.location}{" "}
+              <TrimDescription exhibition={exhibition} />
+            </Link>
+          </Typography>
+
+          <DeleteExhibition exhibition={exhibition} />
+        </div>
+      </div>
+    ));
+  }
+  return "";
 };
 
 const EndDate = function EndDate({ exhibition }) {
@@ -236,7 +240,7 @@ const IsLoggedIn = function IsLoggedIn() {
 
   if (currentUser && painter.id) {
     return (
-      <div className="row" style={{ marginTop: 25 }}>
+      <div className="row" style={{ marginTop: 25, marginBottom: 15 }}>
         <Button
           style={{ width: 200, height: 40, marginRight: 25 }}
           variant="contained"
