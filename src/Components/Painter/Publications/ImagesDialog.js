@@ -7,46 +7,23 @@ import {
   Dialog,
   DialogActions,
   Grid,
-  Typography,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Link } from "react-router-dom";
-import { convertFromRaw } from "draft-js";
-import { convertToHTML } from "draft-convert";
-import DOMPurify from "dompurify";
 
 const ImageDialog = function ImageDialog({
-  painting,
+  publication,
   current,
   setCurrent,
   open,
   handleClose,
-  show,
 }) {
   const [height, setHeight] = useState(0);
 
   // On screen width changes
   const handleResize = () => {
     setHeight(window.innerHeight - 30);
-  };
-
-  const showContent = () => {
-    if (show) {
-      const card = document.querySelector(".dialog-image");
-      const cardWidth = getComputedStyle(card).width;
-      const content = document.querySelector(".painting-dialog-content");
-      content.style.width = cardWidth;
-      content.style.display = "block";
-    }
-  };
-
-  const hideContent = () => {
-    if (show) {
-      const content = document.querySelector(".painting-dialog-content");
-      content.style.display = "none";
-    }
   };
 
   useEffect(() => {
@@ -75,8 +52,8 @@ const ImageDialog = function ImageDialog({
     }
   }
 
-  // console.log(painting);
-  if (painting && painting.images.length > 0) {
+  // console.log(publication);
+  if (publication && publication.images.length > 0) {
     return (
       <Dialog
         fullScreen
@@ -117,7 +94,7 @@ const ImageDialog = function ImageDialog({
             item
             xs
             style={{ cursor: "pointer" }}
-            onClick={() => goBack(painting.images)}
+            onClick={() => goBack(publication.images)}
           >
             <Button
               style={{
@@ -131,29 +108,22 @@ const ImageDialog = function ImageDialog({
             </Button>
           </Grid>
           <Grid item xs="auto" style={{ maxWidth: "80%" }}>
-            <Card
-              onMouseOver={() => showContent()}
-              onMouseEnter={() => showContent()}
-              onMouseLeave={() => hideContent()}
-              elevation={0}
-              style={{ padding: 0, borderRadius: 0 }}
-            >
+            <Card elevation={0} style={{ padding: 0, borderRadius: 0 }}>
               <div className="dialog-image">
                 <CardMedia
                   component="img"
-                  src={painting.images[current].url}
-                  alt={painting.title}
+                  src={publication.images[current].url}
+                  alt={publication.title}
                   height={height}
                 />
               </div>
-              <PaintingsDialogContent show={show} painting={painting} />
             </Card>
           </Grid>
           <Grid
             item
             xs
             style={{ cursor: "pointer" }}
-            onClick={() => goForward(painting.images)}
+            onClick={() => goForward(publication.images)}
           >
             <Button
               style={{
@@ -169,66 +139,6 @@ const ImageDialog = function ImageDialog({
         </Grid>
       </Dialog>
     );
-  }
-  return "";
-};
-
-const PaintingsDialogContent = function PaintingsDialogContent({
-  show,
-  painting,
-}) {
-  const convertContentToHTML = (content) => {
-    if (content) {
-      const object = JSON.parse(content);
-      const raw = convertFromRaw(object);
-      const html = convertToHTML(raw);
-      return html;
-    }
-    return null;
-  };
-
-  const createMarkup = (html) => {
-    return {
-      __html: DOMPurify.sanitize(html),
-    };
-  };
-
-  if (show) {
-    let description = convertContentToHTML(painting.description);
-    description = createMarkup(description);
-    return (
-      <div className="painting-dialog-content">
-        <Link
-          to={`${painting.painter.slug}/paintings/${painting.slug}`}
-          className="painting-title-popup"
-        >
-          {painting.title}
-        </Link>
-
-        <Typography
-          style={{ marginTop: 10, fontStyle: "italic", fontSize: 14 }}
-        >
-          {painting.painter.name}
-          <DateCreated />
-        </Typography>
-        <Typography style={{ fontSize: 14 }}>{painting.abstract}</Typography>
-        <Typography style={{ fontSize: 14 }}>{painting.dimension}</Typography>
-
-        <hr className="horizontal" />
-
-        <Typography
-          style={{ marginTop: 5, fontSize: 14 }}
-          dangerouslySetInnerHTML={description}
-        />
-      </div>
-    );
-  }
-  return "";
-};
-
-const DateCreated = function DateCreated({ painting }) {
-  if (painting && painting.date_created) {
-    return `, ${painting.date_created.split("-")[0]}`;
   }
   return "";
 };

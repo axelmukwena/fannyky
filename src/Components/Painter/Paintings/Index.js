@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
+import CustomHorizontal from "../CustomHorizontal";
 import ImagesDialog from "./ImagesDialog";
-import NewDialog from "./New/NewDialog";
+import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
@@ -14,6 +15,10 @@ const Index = function Index() {
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
 
+  // You need to add `/paintings` to path
+  // because `/paintings` is root for a painter
+  // If you see in publications, no need
+  // to add `/publications` to `path`
   useEffect(() => {
     getResource(`${path}/paintings`, setPaintings);
   }, [path]);
@@ -49,7 +54,20 @@ const Index = function Index() {
   };
 
   return (
-    <div className="paintings-containter">
+    <div className="paintings-container">
+      <Typography
+        style={{
+          fontWeight: 600,
+          fontSize: "1rem",
+          fontFamily: "Roboto",
+          marginBottom: 20,
+        }}
+      >
+        Works
+      </Typography>
+
+      <CustomHorizontal />
+
       <IsLoggedIn />
       <div className="row">
         <AddPhotos />

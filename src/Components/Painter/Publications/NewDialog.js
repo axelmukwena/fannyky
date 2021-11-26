@@ -6,80 +6,84 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  Select,
   TextField,
   Typography,
+  MenuItem,
 } from "@mui/material";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { postResource, putResource } from "../../../../utils/requests";
-import UploadImages from "../../UploadImages";
-import { parseImages, parsePaintingParams } from "../../../../utils/helpers";
+import { postResource, putResource } from "../../../utils/requests";
+import UploadImages from "../UploadImages";
+import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 
-const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
+const NewDialog = function NewDialog({
+  publication,
+  painter,
+  open,
+  handleClose,
+}) {
   const [title, setTitle] = useState("");
-  const [dateCreated, setDateCreated] = useState(null);
-  const [dimension, setDimension] = useState("");
-  const [abstract, setAbstract] = useState("");
+  const [pagelink, setPagelink] = useState("");
+  const [year, setYear] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
   const [images, setImages] = useState([]);
-  const [required, setRequired] = useState(true);
+  const required = false;
   let formTitle = "";
   let submitButton = "";
 
-  if (painting) {
-    formTitle = "Edit Painting";
+  if (publication) {
+    formTitle = "Edit Publication";
     submitButton = "Update";
   } else {
+    formTitle = "Create Publication";
     submitButton = "Create";
   }
 
   // If Editing
   useEffect(() => {
-    if (painting) {
-      Object.keys(painting).forEach((key) => {
-        if (!painting[key] && key !== "date_created") {
-          painting[key] = "";
+    if (publication) {
+      Object.keys(publication).forEach((key) => {
+        if (!publication[key]) {
+          publication[key] = "";
         }
       });
 
-      if (painting.dateCreated) {
-        setDateCreated(painting.dateCreated);
-      }
-      if (painting.description) {
-        const object = JSON.parse(painting.description);
+      if (publication.description) {
+        const object = JSON.parse(publication.description);
         const raw = convertFromRaw(object);
         const editorState = EditorState.createWithContent(raw);
         setDescription(editorState);
       }
 
-      setTitle(painting.title);
-      setDimension(painting.dimension);
-      setAbstract(painting.abstract);
+      setTitle(publication.title);
+      setPagelink(publication.pagelink);
+      setYear(publication.year);
+      setOrganization(publication.organization);
+      setLocation(publication.location);
     }
-
-    if (painting && painting.images.length > 0) {
-      setRequired(false);
-    }
-  }, [painting]);
+  }, [publication]);
 
   const handleImagesResponse = (data) => {
     console.log("Response", data);
   };
 
-  const handlePaintingResponse = (data) => {
+  const handlePublicationResponse = (data) => {
     console.log("Response", data);
-    // Update paintings with images
+    // Update publications with images
     if (data.success && images.length > 0) {
-      const { id } = data.painting;
+      const { id } = data.publication;
       const params = parseImages(id, images);
-      const path = `/${painter.id}/paintings/${id}/images`;
+      const path = `/${painter.id}/publications/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
     }
@@ -93,20 +97,21 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
 
     const data = {
       title,
-      dateCreated,
-      dimension,
-      abstract,
+      pagelink,
+      year,
+      organization,
+      location,
       description: stringDescription,
       painter,
     };
 
-    const params = parsePaintingParams(data);
-    if (painting) {
-      const path = `/${painter.id}/paintings/${painting.id}`;
-      putResource(path, params, handlePaintingResponse);
+    const params = parseGeneralParams(data);
+    if (publication) {
+      const path = `/${painter.id}/publications/${publication.id}`;
+      putResource(path, params, handlePublicationResponse);
     } else {
-      const path = `/${painter.id}/paintings`;
-      postResource(path, params, handlePaintingResponse);
+      const path = `/${painter.id}/publications`;
+      postResource(path, params, handlePublicationResponse);
     }
   };
 
@@ -125,8 +130,8 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
         </Button>
       </DialogActions>
 
-      <DialogContent>
-        <form className="new-painting-form" onSubmit={handleSubmit}>
+      <DialogContent style={{ paddingTop: 30 }}>
+        <form className="new-publication-form" onSubmit={handleSubmit}>
           <Grid
             justifyContent="flex-start"
             alignItems="center"
@@ -148,7 +153,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               </DialogTitle>
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 autoFocus
@@ -161,37 +166,39 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={4}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  label="Date Created"
-                  inputFormat="dd/MM/yyyy"
-                  value={dateCreated}
-                  onChange={(e) => setDateCreated(e)}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </Grid>
-
-            <Grid item xs={6} md={4}>
-              <TextField
-                fullWidth
-                label="Dimensions"
-                variant="outlined"
-                name="dimension"
-                value={dimension}
-                onChange={(e) => setDimension(e.target.value)}
-              />
-            </Grid>
-
             <Grid item xs={6} md={8}>
               <TextField
                 fullWidth
-                label="Abstract"
+                label="Page Link"
                 variant="outlined"
-                name="abstract"
-                value={abstract}
-                onChange={(e) => setAbstract(e.target.value)}
+                name="pagelink"
+                value={pagelink}
+                required
+                onChange={(e) => setPagelink(e.target.value)}
+              />
+            </Grid>
+
+            <PopulateYear year={year} setYear={setYear} />
+
+            <Grid item xs={6} md={7}>
+              <TextField
+                fullWidth
+                label="Organization"
+                variant="outlined"
+                name="organization"
+                value={organization}
+                onChange={(e) => setOrganization(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={6} md={5}>
+              <TextField
+                fullWidth
+                label="Location"
+                variant="outlined"
+                name="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
             </Grid>
 
@@ -248,6 +255,33 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
         </form>
       </DialogContent>
     </Dialog>
+  );
+};
+
+const PopulateYear = function PopulateYear({ year, setYear }) {
+  const now = new Date();
+  const startYear = now.getFullYear() + 10;
+  const years = Array.from(new Array(40), (val, index) => startYear - index);
+
+  return (
+    <Grid item xs={6} md={4}>
+      <FormControl fullWidth>
+        <InputLabel id="publication-year-select-label">Year</InputLabel>
+        <Select
+          labelId="publication-year-select-label"
+          id="publication-year-select"
+          value={year}
+          label="Year"
+          onChange={(e) => setYear(e.target.value)}
+        >
+          {years.map((item) => (
+            <MenuItem key={item} value={item}>
+              {item}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
   );
 };
 

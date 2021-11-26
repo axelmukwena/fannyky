@@ -11,7 +11,7 @@ import {
   getResource,
   postResource,
 } from "../../../utils/requests";
-import NewDialog from "./New/NewDialog";
+import NewDialog from "./NewDialog";
 
 const Show = function Show({ match }) {
   const { url } = match;
@@ -93,7 +93,7 @@ const Show = function Show({ match }) {
           handleClose={handleClose}
           show={false}
         />
-        <div className="painting-show-content">
+        <div className="show-content">
           <Typography
             style={{
               fontWeight: 900,
@@ -180,7 +180,7 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
     console.log("Response", data);
   };
 
-  const handleDeleteImage = () => {
+  const handleDeletePainting = () => {
     const path = `/${painter.id}/paintings/${painting.id}`;
 
     deleteResource(`${path}`, handleDeleleResponse);
@@ -201,7 +201,7 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
           style={{ width: 200, height: 40, marginRight: 25 }}
           variant="contained"
           color="primary"
-          onClick={() => handleDeleteImage()}
+          onClick={() => handleDeletePainting()}
         >
           Delete Painting
         </Button>

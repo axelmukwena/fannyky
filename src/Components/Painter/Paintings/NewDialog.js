@@ -10,62 +10,79 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
+import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 
-const EditDialog = function EditDialog({ painter, open, handleClose }) {
-  const [name, setName] = useState("");
+const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
+  const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
-  const [about, setAbout] = useState(() => EditorState.createEmpty());
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [link, setLink] = useState("");
+  const [dateCreated, setDateCreated] = useState(null);
+  const [dimension, setDimension] = useState("");
+  const [abstract, setAbstract] = useState("");
+  const [description, setDescription] = useState(() =>
+    EditorState.createEmpty()
+  );
   const [images, setImages] = useState([]);
-  const required = false;
+  const [required, setRequired] = useState(true);
+  let formTitle = "";
+  let submitButton = "";
 
+  if (painting) {
+    formTitle = "Edit Painting";
+    submitButton = "Update";
+  } else {
+    formTitle = "Create Painting";
+    submitButton = "Create";
+  }
+
+  // If Editing
   useEffect(() => {
-    // New painter object because I
-    // can not edit the Painter Slice Redux
-    const painterObject = {};
+    if (painting) {
+      Object.keys(painting).forEach((key) => {
+        if (!painting[key] && key !== "date_created") {
+          painting[key] = "";
+        }
+      });
 
-    Object.keys(painter).forEach((key) => {
-      if (!painter[key]) {
-        painterObject[key] = "";
-      } else {
-        painterObject[key] = painter[key];
+      if (painting.dateCreated) {
+        setDateCreated(painting.dateCreated);
       }
-    });
+      if (painting.description) {
+        const object = JSON.parse(painting.description);
+        const raw = convertFromRaw(object);
+        const editorState = EditorState.createWithContent(raw);
+        setDescription(editorState);
+      }
 
-    if (painter.about) {
-      const object = JSON.parse(painterObject.about);
-      const raw = convertFromRaw(object);
-      const editorState = EditorState.createWithContent(raw);
-      setAbout(editorState);
+      setPagelink(painting.pagelink);
+      setTitle(painting.title);
+      setDimension(painting.dimension);
+      setAbstract(painting.abstract);
     }
 
-    setName(painterObject.name);
-    setPagelink(painterObject.pagelink);
-    setEmail(painterObject.email);
-    setPhone(painterObject.phone);
-    setLink(painterObject.link);
-  }, [painter]);
+    if (painting && painting.images.length > 0) {
+      setRequired(false);
+    }
+  }, [painting]);
 
   const handleImagesResponse = (data) => {
     console.log("Response", data);
   };
 
-  const handlePainterResponse = (data) => {
+  const handlePaintingResponse = (data) => {
     console.log("Response", data);
     // Update paintings with images
     if (data.success && images.length > 0) {
-      const { id } = data.painter;
+      const { id } = data.painting;
       const params = parseImages(id, images);
-      const path = `/${painter.id}/images`;
+      const path = `/${painter.id}/paintings/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
     }
@@ -74,32 +91,31 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const rawAbout = convertToRaw(about.getCurrentContent());
-    const stringAbout = JSON.stringify(rawAbout);
+    const rawDescription = convertToRaw(description.getCurrentContent());
+    const stringDescription = JSON.stringify(rawDescription);
 
     const data = {
-      id: painter.id,
-      name,
+      title,
+      dateCreated,
       pagelink,
-      about: stringAbout,
-      email,
-      phone,
-      link,
+      dimension,
+      abstract,
+      description: stringDescription,
+      painter,
     };
 
     const params = parseGeneralParams(data);
-    console.log(params);
-    const path = `/${painter.id}`;
-    putResource(path, params, handlePainterResponse);
+    if (painting) {
+      const path = `/${painter.id}/paintings/${painting.id}`;
+      putResource(path, params, handlePaintingResponse);
+    } else {
+      const path = `/${painter.id}/paintings`;
+      postResource(path, params, handlePaintingResponse);
+    }
   };
 
   return (
-    <Dialog
-      maxWidth={false}
-      PaperProps={{ style: { width: "47%" } }}
-      open={open}
-      scroll="body"
-    >
+    <Dialog maxWidth="sm" open={open} scroll="body">
       <DialogActions
         style={{
           width: "fit-content",
@@ -132,24 +148,24 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
                   color: "#787878",
                 }}
               >
-                Edit Painter
+                {formTitle}
               </DialogTitle>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 autoFocus
-                label="Name"
+                label="Title"
                 variant="outlined"
-                name="name"
-                value={name}
+                name="title"
+                value={title}
                 required
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={6} md={8}>
               <TextField
                 fullWidth
                 label="Page Link"
@@ -161,42 +177,43 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={6} md={4}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Date Created"
+                  inputFormat="dd/MM/yyyy"
+                  value={dateCreated}
+                  onChange={(e) => setDateCreated(e)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Grid>
+
+            <Grid item xs={6} md={4}>
               <TextField
                 fullWidth
-                label="Email"
+                label="Dimensions"
                 variant="outlined"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="dimension"
+                value={dimension}
+                onChange={(e) => setDimension(e.target.value)}
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={6} md={8}>
               <TextField
                 fullWidth
-                label="Phone"
+                label="Abstract"
                 variant="outlined"
-                name="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Profile Link"
-                variant="outlined"
-                name="link"
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
+                name="abstract"
+                value={abstract}
+                onChange={(e) => setAbstract(e.target.value)}
               />
             </Grid>
 
             <Grid item xs={12}>
               <Typography style={{ margin: 9, color: "#626262" }}>
-                About
+                Description
               </Typography>
               <div
                 style={{
@@ -206,15 +223,15 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               >
                 <Editor
                   fullWidth
-                  editorState={about}
-                  onEditorStateChange={setAbout}
+                  editorState={description}
+                  onEditorStateChange={setDescription}
                 />
               </div>
             </Grid>
 
             <Grid item xs={12}>
               <UploadImages
-                multiple={false}
+                multiple
                 required={required}
                 files={images}
                 setFiles={setImages}
@@ -240,7 +257,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
                 variant="contained"
                 color="primary"
               >
-                Update
+                {submitButton}
               </Button>
             </Grid>
           </Grid>
@@ -250,4 +267,4 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   );
 };
 
-export default EditDialog;
+export default NewDialog;

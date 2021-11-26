@@ -16,7 +16,6 @@ export async function getResource(path, handleResponse) {
       "Content-Type": "application/json",
     },
   };
-
   await axios
     .get(url, headers)
     .then(function foo(response) {

@@ -19,10 +19,10 @@
 }
 
 .painting {
-  margin: 25px;
+  margin: 18px 25px 0 0;
 }
 
-.painting-show-content {
+.show-content {
   margin: 20px;
 }
 
@@ -49,7 +49,14 @@
   color: #727272;
 }
 
-.painting-title-index:hover, .painting-title-popup:hover {
+.publication-title-index {
+  font-weight: 600;
+  font-size: 18px;
+  text-decoration: none;
+  color: #727272;
+}
+
+.painting-title-index:hover, .painting-title-popup:hover, .publication-title-index:hover {
   text-decoration: underline;
 }
 
@@ -65,7 +72,7 @@
   flex-wrap: wrap;
 }
 
-.painting-dialog-image {
+.dialog-image {
   position: relative;
 }
 
@@ -111,3 +118,12 @@
   background: #f7f7f7 !important;
   border: 1px solid #b9b9b9 !important;
 }
+
+.publications-container, .paintings-container {
+  margin: 20px;
+}
+
+.publication {
+  margin: 12px 0px;
+}
+

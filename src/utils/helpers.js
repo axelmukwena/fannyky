@@ -21,33 +21,18 @@ export function parseImages(id, images) {
 }
 
 // Only submit the necessary params
-export function parsePaintingParams(data) {
+export function parseGeneralParams(data) {
   const params = {};
 
   // eslint-disable-next-line no-restricted-syntax
   Object.keys(data).forEach((key) => {
     const value = data[key];
+    // If painter present, verify content, not only object
     if (key === "painter") {
       if (data[key].id) {
         params[key] = data[key];
       }
     } else if (value === "" || value === undefined || value === null) {
-      // Don't append parameter
-    } else {
-      params[key] = data[key];
-    }
-  });
-
-  return params;
-}
-
-export function parsePainterParams(data) {
-  const params = {};
-
-  // eslint-disable-next-line no-restricted-syntax
-  Object.keys(data).forEach((key) => {
-    const value = data[key];
-    if (value === "" || value === undefined || value === null) {
       // Don't append parameter
     } else {
       params[key] = data[key];

@@ -1,64 +1,17 @@
-import { Card, Grid, Link, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { getResource } from "../../../utils/requests";
+import React from "react";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import Index from "./Index";
+import Show from "./Show";
 
-const Publications = function Publications() {
-  const [publications, setPublications] = useState([]);
-  const { path } = useRouteMatch();
-
-  useEffect(() => {
-    getResource(path, setPublications);
-  }, [path]);
-
+const Publications = function Publications({ match }) {
+  const { pathname } = useLocation();
+  const { url } = match;
   return (
-    <div className="publications" style={{}}>
-      <Grid container spacing={4}>
-        {publications.map((publication) => (
-          <Grid key={publication.id} item lg={4} md={6} xs={12}>
-            <Card style={{ width: "100%", padding: 10 }}>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {publication.painter.name}
-              </Typography>
-              <Link href={`${path}/${publication.slug}`}>
-                <Typography
-                  style={{
-                    fontWeight: 300,
-                  }}
-                >
-                  {publication.title}
-                </Typography>
-              </Link>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {publication.decription}
-              </Typography>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {publication.link}
-              </Typography>
-              <Typography
-                style={{
-                  fontWeight: 300,
-                }}
-              >
-                {publication.published_year}
-              </Typography>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+    <Switch>
+      <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+      <Route path={`${url}/:publicationID`} component={Show} key="show" />
+      <Route path={url} component={Index} key="index" />
+    </Switch>
   );
 };
 
