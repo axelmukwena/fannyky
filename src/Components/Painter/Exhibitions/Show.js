@@ -119,9 +119,7 @@ const Show = function Show({ match }) {
               <Typography style={{}}>
                 Artist: {exhibition.painter.name}
               </Typography>
-              <Typography style={{}}>
-                Type: {capitalize(exhibition.which)}
-              </Typography>
+              <Capitalize exhibition={exhibition} />
               <Typography style={{}}>
                 Date: {exhibition.start_date}
                 <EndDate exhibition={exhibition} />
@@ -146,6 +144,15 @@ const Show = function Show({ match }) {
     );
   }
   return "";
+};
+
+const Capitalize = function Capitalize({ exhibition }) {
+  if (exhibition.which) {
+    return (
+      <Typography style={{}}>Type: {capitalize(exhibition.which)}</Typography>
+    );
+  }
+  return null;
 };
 
 const FormatLink = function FormatLink({ exhibition }) {

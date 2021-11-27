@@ -117,7 +117,7 @@ const TrimDescription = function TrimDescription({ publication }) {
       description[html] = text;
     }
 
-    if (description[html].length > 300) {
+    if (description[html].length > 80) {
       description[html] = `${description[html].substring(0, 300)}...`;
       return (
         <div>
