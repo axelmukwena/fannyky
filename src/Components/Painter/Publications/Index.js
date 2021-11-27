@@ -49,8 +49,6 @@ const Index = function Index() {
               {publication.year}
             </Typography>
 
-            <CustomHorizontal />
-
             <TrimDescription publication={publication} />
 
             <DeletePublication publication={publication} />
@@ -122,10 +120,13 @@ const TrimDescription = function TrimDescription({ publication }) {
     if (description[html].length > 300) {
       description[html] = `${description[html].substring(0, 300)}...`;
       return (
-        <Typography
-          style={{ marginTop: 20 }}
-          dangerouslySetInnerHTML={description}
-        />
+        <div>
+          <CustomHorizontal />
+          <Typography
+            style={{ marginTop: 20 }}
+            dangerouslySetInnerHTML={description}
+          />
+        </div>
       );
     }
     return (
