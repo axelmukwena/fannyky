@@ -24,12 +24,12 @@ const Index = function Index() {
           key={publication.slug}
           className="publication row"
           style={{
-            border: "1px solid #e5e5e5",
+            // border: "1px solid #e5e5e5",
             borderRadius: 4,
             padding: 0,
             width: "100%",
             alignItems: "center",
-            backgroundColor: "#e7e7e7",
+            boxShadow: "rgb(28 28 28 / 7%) 0px 0px 6px 1px",
           }}
         >
           <Link to={`publications/${publication.slug}`}>

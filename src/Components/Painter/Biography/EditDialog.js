@@ -88,7 +88,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     };
 
     const params = parseGeneralParams(data);
-    console.log(params);
+    // console.log(params);
     const path = `/${painter.id}`;
     putResource(path, params, handlePainterResponse);
   };
