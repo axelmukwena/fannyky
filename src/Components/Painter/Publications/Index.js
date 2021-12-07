@@ -29,6 +29,7 @@ const Index = function Index() {
             padding: 0,
             width: "100%",
             alignItems: "center",
+            backgroundColor: "#e7e7e7",
           }}
         >
           <Link to={`publications/${publication.slug}`}>
