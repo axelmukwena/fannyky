@@ -24,22 +24,6 @@ const Show = function Show({ match }) {
     getResource(url, setPublication);
   }, [url]);
 
-  const convertContentToHTML = (content) => {
-    if (content) {
-      const object = JSON.parse(content);
-      const raw = convertFromRaw(object);
-      const html = convertToHTML(raw);
-      return html;
-    }
-    return null;
-  };
-
-  const createMarkup = (html) => {
-    return {
-      __html: DOMPurify.sanitize(html),
-    };
-  };
-
   const handleOpen = (index) => {
     setCurrent(index);
     setOpen(true);
@@ -50,8 +34,6 @@ const Show = function Show({ match }) {
   };
 
   if (publication.id) {
-    let description = convertContentToHTML(publication.description);
-    description = createMarkup(description);
     const { images } = publication;
     let width = "45%";
     let padding = "16px 0 0 16px";
@@ -113,25 +95,18 @@ const Show = function Show({ match }) {
                 {publication.title}
               </Typography>
 
-              <CustomHorizontal />
-
-              <Typography style={{}}>
-                Author: {publication.painter.name}
-              </Typography>
+              <Typography style={{}}>By {publication.painter.name}</Typography>
 
               <CustomHorizontal />
 
               <Typography style={{}}>
                 {publication.organization}, {publication.location}
               </Typography>
-              <Typography>Published: {publication.year}</Typography>
-              <FormatLink publication={publication} />
-              <CustomHorizontal />
 
-              <Typography
-                style={{ marginTop: 20 }}
-                dangerouslySetInnerHTML={description}
-              />
+              <FormatLink publication={publication} />
+              <GetYear publication={publication} />
+
+              <GetDescription publication={publication} />
             </div>
           </Grid>
         </Grid>
@@ -139,6 +114,47 @@ const Show = function Show({ match }) {
     );
   }
   return "";
+};
+
+const GetYear = function GetYear({ publication }) {
+  if (publication.year) {
+    return <Typography>Published: {publication.year}</Typography>;
+  }
+  return null;
+};
+
+const GetDescription = function GetDescription({ publication }) {
+  const convertContentToHTML = (content) => {
+    if (content) {
+      const object = JSON.parse(content);
+      const raw = convertFromRaw(object);
+      const html = convertToHTML(raw);
+      return html;
+    }
+    return null;
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+  let description = convertContentToHTML(publication.description);
+  const tempDes = description.replace("<p></p>", "");
+  if (tempDes) {
+    description = createMarkup(description);
+    return (
+      <div>
+        <CustomHorizontal />
+
+        <Typography
+          style={{ marginTop: 20 }}
+          dangerouslySetInnerHTML={description}
+        />
+      </div>
+    );
+  }
+  return null;
 };
 
 const FormatLink = function FormatLink({ publication }) {

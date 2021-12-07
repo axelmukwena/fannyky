@@ -27,7 +27,11 @@ const Biography = function Biography() {
     };
   };
 
+  // Create html markup for about section
   let about = convertContentToHTML(painter.about);
+  if (about) {
+    about = about.replace("###", "<br>");
+  }
   about = createMarkup(about);
 
   return (
@@ -45,6 +49,7 @@ const Biography = function Biography() {
               fontSize: "1rem",
               fontFamily: "Roboto",
             }}
+            className="page-title"
           >
             Biography
           </Typography>
@@ -124,7 +129,7 @@ const GetLink = function GetLink({ painter }) {
         <a
           href={painter.link}
           target="_blank"
-          style={{ color: "#787878" }}
+          className="text-color"
           rel="noreferrer"
         >
           <Typography>Professional Profile</Typography>
@@ -158,6 +163,7 @@ const GetImage = function GetImage({ painter }) {
           alt={painter.name}
           loading="lazy"
           className="painting-image"
+          style={{ borderRadius: "100%" }}
         />
         <DeleteImage painter={painter} index={0} />
       </Card>

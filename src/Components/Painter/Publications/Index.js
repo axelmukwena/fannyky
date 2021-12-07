@@ -68,6 +68,7 @@ const Index = function Index() {
           fontFamily: "Roboto",
           marginBottom: 20,
         }}
+        className="page-title"
       >
         Publications
       </Typography>
@@ -94,16 +95,20 @@ const TrimDescription = function TrimDescription({ publication }) {
       const object = JSON.parse(content);
       const raw = convertFromRaw(object);
       const html = convertToHTML(raw);
-      const markUp = createMarkup(html);
-      return markUp;
+      const tempDes = html.replace("<p></p>", "");
+      if (tempDes) {
+        const markUp = createMarkup(html);
+        return markUp;
+      }
+      return null;
     }
     return null;
   };
 
   // {des.substring(0, 300)}...
   let { description } = publication;
+  description = convertContentToHTML(description);
   if (description) {
-    description = convertContentToHTML(description);
     const html = "__html";
     const items = description[html].split("</p>");
     if (items.length > 2) {
@@ -121,7 +126,6 @@ const TrimDescription = function TrimDescription({ publication }) {
       description[html] = `${description[html].substring(0, 300)}...`;
       return (
         <div>
-          <CustomHorizontal />
           <Typography
             style={{ marginTop: 20 }}
             dangerouslySetInnerHTML={description}

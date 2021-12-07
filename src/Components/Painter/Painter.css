@@ -32,10 +32,6 @@
   }
 }
 
-.abstract {
-  padding-top: 5px;
-}
-
 .title {
   font-weight: 600 !important;
   font-size: 13px !important;
@@ -43,7 +39,7 @@
 }
 
 .painting-title-index {
-  font-weight: 600;
+  font-weight: 400;
   font-size: 12px;
   text-decoration: none;
   color: #727272;
@@ -144,5 +140,9 @@
 
 .exhibition {
   margin: 12px 0px;
+}
+
+.page-title {
+  color: #787878;
 }
 

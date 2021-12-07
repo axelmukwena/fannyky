@@ -63,6 +63,7 @@ const Index = function Index() {
           fontFamily: "Roboto",
           marginBottom: 20,
         }}
+        className="page-title"
       >
         Talks
       </Typography>

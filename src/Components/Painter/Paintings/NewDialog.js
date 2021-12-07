@@ -14,6 +14,8 @@ import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
@@ -22,6 +24,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
   const [dateCreated, setDateCreated] = useState("");
+  const [rankdate, setRankdate] = useState(null);
   const [dimension, setDimension] = useState("");
   const [abstract, setAbstract] = useState("");
   const [description, setDescription] = useState(() =>
@@ -44,10 +47,14 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   useEffect(() => {
     if (painting) {
       Object.keys(painting).forEach((key) => {
-        if (!painting[key] && key) {
+        if (!painting[key] && key !== "rankdate") {
           painting[key] = "";
         }
       });
+
+      if (painting.rankdate) {
+        setRankdate(painting.rankdate);
+      }
 
       if (painting.description) {
         const object = JSON.parse(painting.description);
@@ -94,6 +101,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       title,
       date_created: dateCreated,
       pagelink,
+      rankdate,
       dimension,
       abstract,
       description: stringDescription,
@@ -161,7 +169,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={8}>
               <TextField
                 fullWidth
                 label="Page Link"
@@ -174,6 +182,18 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
             </Grid>
 
             <Grid item xs={6} md={4}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Rank Date"
+                  inputFormat="dd/MM/yyyy"
+                  value={rankdate}
+                  onChange={(e) => setRankdate(e)}
+                  renderInput={(params) => <TextField required {...params} />}
+                />
+              </LocalizationProvider>
+            </Grid>
+
+            <Grid item xs={5}>
               <TextField
                 fullWidth
                 label="Date Created"
@@ -184,7 +204,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={4}>
+            <Grid item xs={7}>
               <TextField
                 fullWidth
                 label="Dimensions"
@@ -195,7 +215,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6} md={8}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Abstract"

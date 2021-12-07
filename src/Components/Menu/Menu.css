@@ -22,25 +22,25 @@
 
 .menu-item {
   padding: 3px 0;
-  color: #787878;
+  color: #525252;
   font-weight: 400 !important;
 }
 
 .menu-item a,
 .menu-item a p {
   text-decoration: none;
-  color: #787878;
+  color: #525252;
   font-weight: 400 !important;
 }
 
 .menu-item.active a p {
   font-weight: 600 !important;
-  color: #a5a5a5;
+  color: #787878;
 }
 
 .copyright {
   margin-top: 20px;
-  color: #787878;
+  color: #525252;
   font-size: 12px;
 }
 

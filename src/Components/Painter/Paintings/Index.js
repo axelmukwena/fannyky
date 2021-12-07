@@ -1,19 +1,66 @@
 import { DeleteOutline } from "@mui/icons-material";
-import { Button, Typography, CardMedia, Card } from "@mui/material";
+import {
+  Button,
+  Typography,
+  CardMedia,
+  Card,
+  ImageList,
+  ImageListItem,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
-import CustomHorizontal from "../CustomHorizontal";
 import ImagesDialog from "./ImagesDialog";
 import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
-  const [paintings, setPaintings] = useState([]);
+  const [groupOne, setGroupOne] = useState([]);
+  const [groupTwo, setGroupTwo] = useState([]);
+  const [groupThree, setGroupThree] = useState([]);
+  const [groupFour, setGroupFour] = useState([]);
+  const [groupFive, setGroupFive] = useState([]);
   const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
+
+  function setPaintings(paintings) {
+    setGroupOne([]);
+    setGroupTwo([]);
+    setGroupThree([]);
+    setGroupFour([]);
+    setGroupFive([]);
+    if (paintings.length > 0) {
+      const currentYear = new Date().getFullYear();
+      const startDate = new Date("2000-01-01");
+      const diff = currentYear - 2000;
+      const groupSize = Math.floor(diff / 5);
+
+      const years = [];
+      for (let i = 0; i < diff; i += groupSize) {
+        const yearRoof = startDate.getFullYear() + i;
+        years.push(yearRoof);
+      }
+
+      // console.log(years);
+      for (let i = 0; i < paintings.length; i += 1) {
+        const paintingYear = paintings[i].rankdate.split("-")[0];
+
+        if (paintingYear <= years[1]) {
+          setGroupFive((old) => [...old, paintings[i]]);
+        } else if (paintingYear <= years[2]) {
+          setGroupFour((old) => [...old, paintings[i]]);
+        } else if (paintingYear <= years[3]) {
+          setGroupThree((old) => [...old, paintings[i]]);
+        } else if (paintingYear <= years[4]) {
+          setGroupTwo((old) => [...old, paintings[i]]);
+        } else if (paintingYear > years[4]) {
+          setGroupOne((old) => [...old, paintings[i]]);
+        }
+      }
+    }
+  }
 
   // You need to add `/paintings` to path
   // because `/paintings` is root for a painter
@@ -32,46 +79,14 @@ const Index = function Index() {
     setOpenImages(false);
   };
 
-  const AddPhotos = function AddPhotos() {
-    if (paintings.length > 0) {
-      // console.log(paintings);
-      return paintings.map((painting) => (
-        <div key={painting.slug} className="painting">
-          <CardImage painting={painting} handleOpenImages={handleOpenImages} />
-          <div className="abstract">
-            <Link
-              to={`${painting.painter.slug}/works/${painting.slug}`}
-              className="painting-title-index"
-            >
-              {painting.title}
-            </Link>
-            <DateCreated painting={painting} />
-          </div>
-        </div>
-      ));
-    }
-    return "";
-  };
-
   return (
     <div className="resource-container">
-      <Typography
-        style={{
-          fontWeight: 600,
-          fontSize: "1rem",
-          fontFamily: "Roboto",
-          marginBottom: 20,
-        }}
-      >
-        Works
-      </Typography>
-
-      <CustomHorizontal />
-
       <IsLoggedIn />
-      <div className="row">
-        <AddPhotos />
-      </div>
+      <Group paintings={groupOne} handleOpenImages={handleOpenImages} />
+      <Group paintings={groupTwo} handleOpenImages={handleOpenImages} />
+      <Group paintings={groupThree} handleOpenImages={handleOpenImages} />
+      <Group paintings={groupFour} handleOpenImages={handleOpenImages} />
+      <Group paintings={groupFive} handleOpenImages={handleOpenImages} />
       <ImagesDialog
         painting={selected}
         current={current}
@@ -82,6 +97,83 @@ const Index = function Index() {
       />
     </div>
   );
+};
+
+const Group = function Group({ paintings, handleOpenImages }) {
+  if (paintings.length > 0) {
+    const year = paintings[0].rankdate.split("-")[0];
+    return (
+      <div style={{ marginBottom: 70 }}>
+        <Typography
+          style={{
+            fontWeight: 600,
+            fontSize: "1rem",
+            fontFamily: "Roboto",
+            margin: "0 0 50px",
+          }}
+          className="page-title"
+        >
+          {year}
+        </Typography>
+
+        <div className="row">
+          <AddPhotos
+            paintings={paintings}
+            handleOpenImages={handleOpenImages}
+          />
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
+  if (paintings.length > 0) {
+    // console.log(paintings);
+    return (
+      <ImageList cols={4} style={{ gap: "50px 150px" }}>
+        {paintings.map((painting) => (
+          <ImageListItem key={painting.slug}>
+            <CardMedia
+              component="img"
+              src={`${painting.images[0].url}`}
+              alt={painting.title}
+              loading="lazy"
+              style={{ height: 150, width: 150, cursor: "pointer" }}
+              onClick={() => handleOpenImages(painting)}
+            />
+            <DeletePainting painting={painting} />
+            <div style={{ margin: "15px 0" }}>
+              <Link
+                to={`${painting.painter.slug}/works/${painting.slug}`}
+                className="painting-title-index"
+              >
+                {painting.title}
+              </Link>
+            </div>
+          </ImageListItem>
+        ))}
+      </ImageList>
+    );
+  }
+  return paintings.map((painting) => (
+    <div key={painting.slug} className="painting">
+      <CardImage painting={painting} handleOpenImages={handleOpenImages} />
+      <div className="abstract">
+        <Link
+          to={`${painting.painter.slug}/works/${painting.slug}`}
+          className="painting-title-index"
+        >
+          {painting.title}
+        </Link>
+
+        <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
+          <DateCreated painting={painting} /> {painting.abstract}
+        </Typography>
+      </div>
+    </div>
+  ));
 };
 
 const CardImage = function CardImage({ painting, handleOpenImages }) {
@@ -153,18 +245,13 @@ const DeletePainting = function DeletePainting({ painting }) {
 };
 
 const DateCreated = function DateCreated({ painting }) {
-  if (painting.date_created) {
-    return (
-      <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
-        {painting.date_created.split("-")[0]} - {painting.abstract}
-      </Typography>
-    );
+  if (painting.date_created && painting.abstract) {
+    return `${painting.date_created.split("-")[0]} - `;
   }
-  return (
-    <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
-      {painting.abstract}
-    </Typography>
-  );
+  if (painting.date_created) {
+    return painting.date_created.split("-")[0];
+  }
+  return null;
 };
 
 const IsLoggedIn = function IsLoggedIn() {

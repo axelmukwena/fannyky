@@ -25,3 +25,7 @@
 p {
   margin: 8px 0;
 }
+
+.text-color {
+  color: #525252 !important;
+}

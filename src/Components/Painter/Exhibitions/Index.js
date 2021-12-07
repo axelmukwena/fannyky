@@ -58,6 +58,7 @@ const Placeholder = function Placeholder({ solo, group, others }) {
             fontFamily: "Roboto",
             marginBottom: 20,
           }}
+          className="page-title"
         >
           Exhibitions
         </Typography>
@@ -79,6 +80,7 @@ const MiddleExhibitions = function MiddleExhibitions({ title, exhibitions }) {
             fontFamily: "Roboto",
             marginBottom: 20,
           }}
+          className="page-title"
         >
           {title}
         </Typography>

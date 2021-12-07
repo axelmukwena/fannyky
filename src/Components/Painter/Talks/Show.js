@@ -115,8 +115,9 @@ const Show = function Show({ match }) {
 
               <CustomHorizontal />
 
-              <Typography style={{}}>Presenter: {talk.painter.name}</Typography>
-              <Typography style={{}}>Date: {talk.date}</Typography>
+              <Typography style={{}}>By {talk.painter.name}</Typography>
+
+              <GetDate talk={talk} />
 
               <FormatLink talk={talk} />
 
@@ -137,6 +138,13 @@ const Show = function Show({ match }) {
     );
   }
   return "";
+};
+
+const GetDate = function GetDate({ talk }) {
+  if (talk.date) {
+    return <Typography style={{}}>Date: {talk.date}</Typography>;
+  }
+  return null;
 };
 
 const FormatLink = function FormatLink({ talk }) {

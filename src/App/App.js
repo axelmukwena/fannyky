@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux";
 import authorizeUser from "../currentUser/authorize";
 import Painter from "../Components/Painter/Painter";
 import Login from "../Components/Login/Login";
-// import Home from "../Components/Home/Home";
-import Second from "../Components/Home/Second";
+import Home from "../Components/Home/Home";
+// import Second from "../Components/Home/Second";
 
 const App = function App() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const App = function App() {
     <Switch>
       <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
       <Route exact path="/">
-        <Second />
+        <Home />
       </Route>
       <Route exact path="/login">
         <Login />

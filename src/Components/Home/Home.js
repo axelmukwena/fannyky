@@ -24,7 +24,7 @@ const PaintersButtons = function PaintersButtons() {
   if (painters.length > 1) {
     return (
       <div className="buttons-container">
-        <Link to={`/${painters[0].slug}`}>
+        <Link to={`/${painters[1].slug}`}>
           <Button
             className="button-one"
             variant="outlined"
@@ -36,11 +36,11 @@ const PaintersButtons = function PaintersButtons() {
             }}
           >
             <Typography style={{ fontWeight: "bold", color: "white" }}>
-              {painters[0].name}
+              {painters[1].name}
             </Typography>
           </Button>
         </Link>
-        <Link to={`/${painters[1].slug}`}>
+        <Link to={`/${painters[0].slug}`}>
           <Button
             className="button-two"
             variant="outlined"
@@ -52,7 +52,7 @@ const PaintersButtons = function PaintersButtons() {
             }}
           >
             <Typography style={{ fontWeight: "bold", color: "white" }}>
-              {painters[1].name}
+              {painters[0].name}
             </Typography>
           </Button>
         </Link>

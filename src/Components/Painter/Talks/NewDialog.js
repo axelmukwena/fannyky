@@ -14,6 +14,8 @@ import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
@@ -21,6 +23,7 @@ import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
+  const [rankdate, setRankdate] = useState(null);
   const [date, setDate] = useState("");
   const [link, setLink] = useState("");
   const [organizer, setOrganizer] = useState("");
@@ -45,10 +48,14 @@ const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
   useEffect(() => {
     if (talk) {
       Object.keys(talk).forEach((key) => {
-        if (!talk[key]) {
+        if (!talk[key] && key !== "rankdate") {
           talk[key] = "";
         }
       });
+
+      if (talk.rankdate) {
+        setRankdate(talk.rankdate);
+      }
 
       if (talk.description) {
         const object = JSON.parse(talk.description);
@@ -91,6 +98,7 @@ const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
     const data = {
       title,
       pagelink,
+      rankdate,
       date,
       link,
       organizer,
@@ -171,7 +179,7 @@ const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <TextField
                 fullWidth
                 label="Page Link"
@@ -181,6 +189,18 @@ const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
                 required
                 onChange={(e) => setPagelink(e.target.value)}
               />
+            </Grid>
+
+            <Grid item xs={4}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Rank Date"
+                  inputFormat="dd/MM/yyyy"
+                  value={rankdate}
+                  onChange={(e) => setRankdate(e)}
+                  renderInput={(params) => <TextField required {...params} />}
+                />
+              </LocalizationProvider>
             </Grid>
 
             <Grid item xs={6} md={7}>

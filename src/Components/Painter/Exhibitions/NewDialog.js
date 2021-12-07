@@ -18,6 +18,8 @@ import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
@@ -30,6 +32,7 @@ const NewDialog = function NewDialog({
 }) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
+  const [rankdate, setRankdate] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [which, setWhich] = useState("");
@@ -56,10 +59,14 @@ const NewDialog = function NewDialog({
   useEffect(() => {
     if (exhibition) {
       Object.keys(exhibition).forEach((key) => {
-        if (!exhibition[key]) {
+        if (!exhibition[key] && key !== "rankdate") {
           exhibition[key] = "";
         }
       });
+
+      if (exhibition.rankdate) {
+        setRankdate(exhibition.rankdate);
+      }
 
       if (exhibition.description) {
         const object = JSON.parse(exhibition.description);
@@ -68,6 +75,7 @@ const NewDialog = function NewDialog({
         setDescription(editorState);
       }
 
+      setPagelink(exhibition.pagelink);
       setTitle(exhibition.title);
       setPagelink(exhibition.pagelink);
       setStartDate(exhibition.start_date);
@@ -104,6 +112,7 @@ const NewDialog = function NewDialog({
     const data = {
       title,
       pagelink,
+      rankdate,
       start_date: startDate,
       end_date: endDate,
       which,
@@ -187,29 +196,7 @@ const NewDialog = function NewDialog({
               />
             </Grid>
 
-            <Grid item xs={4}>
-              <TextField
-                fullWidth
-                label="Start Date"
-                variant="outlined"
-                name="start_date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </Grid>
-
-            <Grid item xs={4}>
-              <TextField
-                fullWidth
-                label="End Date"
-                variant="outlined"
-                name="end_date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </Grid>
-
-            <Grid item xs={4}>
+            <Grid item xs={8}>
               <FormControl fullWidth>
                 <InputLabel id="exhibition-type-select-label">Type</InputLabel>
                 <Select
@@ -224,6 +211,41 @@ const NewDialog = function NewDialog({
                   <MenuItem value="group">Group</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+
+            <Grid item xs={4}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  fullWidth
+                  label="Rank Date"
+                  inputFormat="dd/MM/yyyy"
+                  value={rankdate}
+                  onChange={(e) => setRankdate(e)}
+                  renderInput={(params) => <TextField required {...params} />}
+                />
+              </LocalizationProvider>
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                label="Start Date"
+                variant="outlined"
+                name="start_date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                label="End Date"
+                variant="outlined"
+                name="end_date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </Grid>
 
             <Grid item xs={6} md={7}>

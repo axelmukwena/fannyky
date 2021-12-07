@@ -26,22 +26,6 @@ const Show = function Show({ match }) {
     getResource(path, setPainting);
   }, [url]);
 
-  const convertContentToHTML = (content) => {
-    if (content) {
-      const object = JSON.parse(content);
-      const raw = convertFromRaw(object);
-      const html = convertToHTML(raw);
-      return html;
-    }
-    return null;
-  };
-
-  const createMarkup = (html) => {
-    return {
-      __html: DOMPurify.sanitize(html),
-    };
-  };
-
   const handleOpen = (index) => {
     setCurrent(index);
     setOpen(true);
@@ -52,8 +36,6 @@ const Show = function Show({ match }) {
   };
 
   if (painting.id) {
-    let description = convertContentToHTML(painting.description);
-    description = createMarkup(description);
     const { images } = painting;
     return (
       <div>
@@ -108,7 +90,7 @@ const Show = function Show({ match }) {
             {painting.title}
           </Typography>
 
-          <Typography>Artist: {painting.painter.name}</Typography>
+          <Typography>By {painting.painter.name}</Typography>
 
           <CustomHorizontal />
 
@@ -116,17 +98,46 @@ const Show = function Show({ match }) {
           <Abstract painting={painting} />
           <Dimension painting={painting} />
 
-          <CustomHorizontal />
-
-          <Typography
-            style={{ marginTop: 20 }}
-            dangerouslySetInnerHTML={description}
-          />
+          <GetDescription painting={painting} />
         </div>
       </div>
     );
   }
   return "";
+};
+
+const GetDescription = function GetDescription({ painting }) {
+  const convertContentToHTML = (content) => {
+    if (content) {
+      const object = JSON.parse(content);
+      const raw = convertFromRaw(object);
+      const html = convertToHTML(raw);
+      return html;
+    }
+    return null;
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+  let description = convertContentToHTML(painting.description);
+  const tempDes = description.replace("<p></p>", "");
+  if (tempDes) {
+    description = createMarkup(description);
+    return (
+      <div>
+        <CustomHorizontal />
+
+        <Typography
+          style={{ marginTop: 20 }}
+          dangerouslySetInnerHTML={description}
+        />
+      </div>
+    );
+  }
+  return null;
 };
 
 const DeleteImage = function DeleteImage({ painting, index }) {
@@ -222,23 +233,21 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
 
 const DateCreated = function DateCreated({ painting }) {
   if (painting.date_created) {
-    return (
-      <Typography>Created: {painting.date_created.split("-")[0]}</Typography>
-    );
+    return <Typography>{painting.date_created.split("-")[0]}</Typography>;
   }
   return "";
 };
 
 const Abstract = function Abstract({ painting }) {
   if (painting.abstract) {
-    return <Typography>Type: {painting.abstract}</Typography>;
+    return <Typography>{painting.abstract}</Typography>;
   }
   return "";
 };
 
 const Dimension = function Dimension({ painting }) {
   if (painting.dimension) {
-    return <Typography>Dimension: {painting.dimension}</Typography>;
+    return <Typography>{painting.dimension}</Typography>;
   }
   return "";
 };

@@ -18,6 +18,8 @@ import React, { useEffect, useState } from "react";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
@@ -30,6 +32,7 @@ const NewDialog = function NewDialog({
 }) {
   const [title, setTitle] = useState("");
   const [pagelink, setPagelink] = useState("");
+  const [rankdate, setRankdate] = useState(null);
   const [link, setLink] = useState("");
   const [year, setYear] = useState("");
   const [organization, setOrganization] = useState("");
@@ -54,10 +57,14 @@ const NewDialog = function NewDialog({
   useEffect(() => {
     if (publication) {
       Object.keys(publication).forEach((key) => {
-        if (!publication[key]) {
+        if (!publication[key] && key !== "rankdate") {
           publication[key] = "";
         }
       });
+
+      if (publication.rankdate) {
+        setRankdate(publication.rankdate);
+      }
 
       if (publication.description) {
         const object = JSON.parse(publication.description);
@@ -66,7 +73,6 @@ const NewDialog = function NewDialog({
         setDescription(editorState);
       }
 
-      console.log(publication);
       setTitle(publication.title);
       setPagelink(publication.pagelink);
       setLink(publication.link);
@@ -101,6 +107,7 @@ const NewDialog = function NewDialog({
     const data = {
       title,
       pagelink,
+      rankdate,
       link,
       year,
       organization,
@@ -182,9 +189,19 @@ const NewDialog = function NewDialog({
               />
             </Grid>
 
-            <PopulateYear year={year} setYear={setYear} />
+            <Grid item xs={4}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Rank Date"
+                  inputFormat="dd/MM/yyyy"
+                  value={rankdate}
+                  onChange={(e) => setRankdate(e)}
+                  renderInput={(params) => <TextField required {...params} />}
+                />
+              </LocalizationProvider>
+            </Grid>
 
-            <Grid item xs={6} md={7}>
+            <Grid item xs={4}>
               <TextField
                 fullWidth
                 label="Organization"
@@ -195,7 +212,7 @@ const NewDialog = function NewDialog({
               />
             </Grid>
 
-            <Grid item xs={6} md={5}>
+            <Grid item xs={4}>
               <TextField
                 fullWidth
                 label="Location"
@@ -205,6 +222,8 @@ const NewDialog = function NewDialog({
                 onChange={(e) => setLocation(e.target.value)}
               />
             </Grid>
+
+            <PopulateYear year={year} setYear={setYear} />
 
             <Grid item xs={12}>
               <TextField
