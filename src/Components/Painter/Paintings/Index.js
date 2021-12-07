@@ -45,18 +45,20 @@ const Index = function Index() {
 
       // console.log(years);
       for (let i = 0; i < paintings.length; i += 1) {
-        const paintingYear = paintings[i].rankdate.split("-")[0];
+        if (paintings[i].rankdate) {
+          const paintingYear = paintings[i].rankdate.split("-")[0];
 
-        if (paintingYear <= years[1]) {
-          setGroupFive((old) => [...old, paintings[i]]);
-        } else if (paintingYear <= years[2]) {
-          setGroupFour((old) => [...old, paintings[i]]);
-        } else if (paintingYear <= years[3]) {
-          setGroupThree((old) => [...old, paintings[i]]);
-        } else if (paintingYear <= years[4]) {
-          setGroupTwo((old) => [...old, paintings[i]]);
-        } else if (paintingYear > years[4]) {
-          setGroupOne((old) => [...old, paintings[i]]);
+          if (paintingYear <= years[1]) {
+            setGroupFive((old) => [...old, paintings[i]]);
+          } else if (paintingYear <= years[2]) {
+            setGroupFour((old) => [...old, paintings[i]]);
+          } else if (paintingYear <= years[3]) {
+            setGroupThree((old) => [...old, paintings[i]]);
+          } else if (paintingYear <= years[4]) {
+            setGroupTwo((old) => [...old, paintings[i]]);
+          } else if (paintingYear > years[4]) {
+            setGroupOne((old) => [...old, paintings[i]]);
+          }
         }
       }
     }
