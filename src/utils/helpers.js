@@ -32,7 +32,7 @@ export function parseGeneralParams(data) {
       if (data[key].id) {
         params[key] = data[key];
       }
-    } else if (value === "" || value === undefined || value === null) {
+    } else if (!value) {
       params[key] = "";
     } else {
       params[key] = data[key];
