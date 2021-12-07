@@ -205,14 +205,16 @@ const PaintingsDialogContent = function PaintingsDialogContent({
           {painting.title}
         </Link>
 
-        <Typography
-          style={{ marginTop: 10, fontStyle: "italic", fontSize: 14 }}
-        >
-          {painting.painter.name}
+        <Typography style={{ marginTop: 10, fontSize: 14, color: "#525252" }}>
+          By {painting.painter.name}
           <DateCreated />
         </Typography>
-        <Typography style={{ fontSize: 14 }}>{painting.abstract}</Typography>
-        <Typography style={{ fontSize: 14 }}>{painting.dimension}</Typography>
+        <Typography style={{ fontSize: 14, color: "#525252" }}>
+          {painting.abstract}
+        </Typography>
+        <Typography style={{ fontSize: 14, color: "#525252" }}>
+          {painting.dimension}
+        </Typography>
 
         <hr className="horizontal" />
 
