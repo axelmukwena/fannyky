@@ -13,19 +13,17 @@ const App = function App() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
+  // Since the app is hosted on heroku on free servers,
+  // this request's main purpose is to wake the app up
   // eslint-disable-next-line no-unused-vars
   function wakeUpApp(data) {
-    console.log("Wake up:", data);
     if (!data) {
       getResource("/", wakeUpApp);
       window.location.reload();
     }
-    // console.log(data);
   }
 
   useEffect(() => {
-    // Since the app is hosted on heroku on free servers,
-    // this request's main purpose is to wake the app up
     getResource("/", wakeUpApp);
     authorizeUser(dispatch);
   }, [dispatch]);
