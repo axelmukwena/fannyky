@@ -15,6 +15,9 @@ const App = function App() {
 
   // eslint-disable-next-line no-unused-vars
   function wakeUpApp(data) {
+    while (!data) {
+      getResource("/", wakeUpApp);
+    }
     // console.log(data);
   }
 
