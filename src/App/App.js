@@ -15,8 +15,10 @@ const App = function App() {
 
   // eslint-disable-next-line no-unused-vars
   function wakeUpApp(data) {
-    while (!data) {
+    console.log("Wake up:", data);
+    if (!data) {
       getResource("/", wakeUpApp);
+      window.location.reload();
     }
     // console.log(data);
   }
