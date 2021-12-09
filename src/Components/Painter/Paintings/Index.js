@@ -146,7 +146,7 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
               onClick={() => handleOpenImages(painting)}
             />
             <DeletePainting painting={painting} />
-            <Typography style={{ margin: "8px 0", width: 160 }}>
+            <Typography style={{ margin: 8, width: 150 }}>
               <Link
                 to={`${painting.painter.slug}/works/${painting.slug}`}
                 className="painting-title-index"
