@@ -52,6 +52,8 @@ const Show = function Show({ match }) {
                 margin: 20,
                 position: "relative",
                 borderRadius: 0,
+                border: "7px solid #e3e3e3",
+                boxShadow: "rgb(28 28 28 / 24%) 1px 1px 1px 0px",
               }}
             >
               <CardMedia
@@ -62,8 +64,8 @@ const Show = function Show({ match }) {
                 onClick={() => handleOpen(index)}
                 style={{
                   cursor: "pointer",
-                  width: 250,
-                  height: 250,
+                  width: 260,
+                  height: 260,
                 }}
               />
               <DeleteImage painting={painting} index={index} />

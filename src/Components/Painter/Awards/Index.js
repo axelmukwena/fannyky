@@ -43,10 +43,16 @@ const Index = function Index() {
               </Typography>
             </div>
 
-            <div style={{ padding: 10 }}>
+            <div style={{ color: "#525252", padding: 10 }}>
               <Typography>{award.description}</Typography>
             </div>
-            <div style={{ fontStyle: "italic", padding: "0 10px 10px 10px" }}>
+            <div
+              style={{
+                fontStyle: "italic",
+                color: "#525252",
+                padding: "0 10px 10px 10px",
+              }}
+            >
               <Typography>— {award.year}</Typography>
             </div>
           </Card>

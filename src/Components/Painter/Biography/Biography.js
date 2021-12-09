@@ -35,10 +35,7 @@ const Biography = function Biography() {
   about = createMarkup(about);
 
   return (
-    <div
-      className="biography-container"
-      style={{ margin: "20px 15px", width: "100%" }}
-    >
+    <div style={{ margin: "20px 15px", width: "100%" }}>
       <Grid container spacing={2} style={{ width: "70%" }}>
         <IsLoggedIn />
 

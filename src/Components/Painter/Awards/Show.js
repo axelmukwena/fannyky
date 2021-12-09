@@ -96,8 +96,8 @@ const Show = function Show({ match }) {
 
               <Typography>Artist: {award.painter.name}</Typography>
 
-              <Typography>
-                {award.year}—{award.description}
+              <Typography style={{ marginTop: 8 }}>
+                {award.year} — {award.description}
               </Typography>
             </div>
           </Grid>

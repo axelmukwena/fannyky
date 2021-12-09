@@ -134,7 +134,7 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
   if (paintings.length > 0) {
     // console.log(paintings);
     return (
-      <ImageList cols={4} style={{ gap: "50px 130px" }}>
+      <ImageList cols={4} style={{ gap: "50px 120px" }}>
         {paintings.map((painting) => (
           <ImageListItem key={painting.slug}>
             <CardMedia
@@ -142,13 +142,7 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
               src={`${painting.images[0].url}`}
               alt={painting.title}
               loading="lazy"
-              style={{
-                height: 160,
-                width: 160,
-                cursor: "pointer",
-                border: "7px solid #e3e3e3",
-                boxShadow: "rgb(28 28 28 / 24%) 1px 1px 1px 0px",
-              }}
+              className="painting-card-index"
               onClick={() => handleOpenImages(painting)}
             />
             <DeletePainting painting={painting} />

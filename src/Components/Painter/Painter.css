@@ -38,29 +38,42 @@
   color: #646464 !important;
 }
 
+.painting-card-index {
+  margin: 5px;
+  height: 160px;
+  width: 160px;
+  cursor: pointer;
+  border: 7px solid #e3e3e3;
+  box-shadow: rgb(28 28 28 / 24%) 2px 2px 4px 0px;
+}
+
+.painting-card-index:hover {
+  box-shadow: rgb(28 28 28 / 24%) 1px 1px 1px 0px;
+}
+
 .painting-title-index {
   font-weight: 400;
   font-size: 12px;
   text-decoration: none;
-  color: #727272;
+  color: #525252;
 }
 
 .publication-title-index {
   font-weight: 600;
   font-size: 18px;
   text-decoration: none;
-  color: #727272;
+  color: #525252;
 }
 
 .exhibition-title-index{
   text-decoration: none;
-  color: #727272;
+  color: #525252;
   font-style: italic;
 }
 
 .exhibition-title-index-all, .talk-title-index-all {
   text-decoration: none;
-  color: #727272;
+  color: #525252;
 }
 
 .painting-title-index:hover, 

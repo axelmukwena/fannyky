@@ -66,7 +66,7 @@ function parsePainterMenu(painter, url) {
   menu.push({
     id: "contact",
     name: "Contact",
-    slug: `${url}/biography`,
+    slug: `${url}/contact`,
   });
   return menu;
 }

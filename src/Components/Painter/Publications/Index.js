@@ -29,6 +29,7 @@ const Index = function Index() {
             padding: 0,
             width: "100%",
             alignItems: "center",
+            backgroundColor: "#f7f7f7d4",
             boxShadow: "rgb(28 28 28 / 7%) 0px 0px 6px 1px",
           }}
         >

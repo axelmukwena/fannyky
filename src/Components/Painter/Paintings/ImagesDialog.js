@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { convertFromRaw } from "draft-js";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
+import CustomHorizontal from "../CustomHorizontal";
 
 const ImageDialog = function ImageDialog({
   painting,
@@ -177,25 +178,7 @@ const PaintingsDialogContent = function PaintingsDialogContent({
   show,
   painting,
 }) {
-  const convertContentToHTML = (content) => {
-    if (content) {
-      const object = JSON.parse(content);
-      const raw = convertFromRaw(object);
-      const html = convertToHTML(raw);
-      return html;
-    }
-    return null;
-  };
-
-  const createMarkup = (html) => {
-    return {
-      __html: DOMPurify.sanitize(html),
-    };
-  };
-
   if (show) {
-    let description = convertContentToHTML(painting.description);
-    description = createMarkup(description);
     return (
       <div className="painting-dialog-content">
         <Link
@@ -216,12 +199,7 @@ const PaintingsDialogContent = function PaintingsDialogContent({
           {painting.dimension}
         </Typography>
 
-        <hr className="horizontal" />
-
-        <Typography
-          style={{ marginTop: 5, fontSize: 14 }}
-          dangerouslySetInnerHTML={description}
-        />
+        <GetDescription painting={painting} />
       </div>
     );
   }
@@ -233,6 +211,40 @@ const DateCreated = function DateCreated({ painting }) {
     return `, ${painting.date_created.split("-")[0]}`;
   }
   return "";
+};
+
+const GetDescription = function GetDescription({ painting }) {
+  const convertContentToHTML = (content) => {
+    if (content) {
+      const object = JSON.parse(content);
+      const raw = convertFromRaw(object);
+      const html = convertToHTML(raw);
+      return html;
+    }
+    return null;
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+  let description = convertContentToHTML(painting.description);
+  const tempDes = description.replace("<p></p>", "");
+  if (tempDes) {
+    description = createMarkup(description);
+    return (
+      <div>
+        <CustomHorizontal />
+
+        <Typography
+          style={{ marginTop: 5, fontSize: 14 }}
+          dangerouslySetInnerHTML={description}
+        />
+      </div>
+    );
+  }
+  return null;
 };
 
 export default ImageDialog;
