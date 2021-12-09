@@ -47,8 +47,8 @@ const Index = function Index() {
               {publication.title}
             </Link>
             <Typography style={{ fontSize: "0.8rem", color: "#606060" }}>
-              {publication.organization}, {publication.location}, Published:{" "}
-              {publication.year}
+              {publication.organization}, {publication.location}
+              <GetYear publication={publication} />
             </Typography>
 
             <TrimDescription publication={publication} />
@@ -83,6 +83,13 @@ const Index = function Index() {
       </div>
     </div>
   );
+};
+
+const GetYear = function GetYear({ publication }) {
+  if (publication.year) {
+    return `, Published: ${publication.year}`;
+  }
+  return null;
 };
 
 const TrimDescription = function TrimDescription({ publication }) {
