@@ -111,7 +111,7 @@ const Group = function Group({ paintings, handleOpenImages }) {
             fontWeight: 600,
             fontSize: "1rem",
             fontFamily: "Roboto",
-            margin: "0 0 50px",
+            margin: "0 8px 50px",
           }}
           className="page-title"
         >
