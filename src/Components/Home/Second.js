@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
 import "./Home.css";
 import { getResource } from "../../utils/requests";
-import backgroundOne from "../../images/landing-background-one.png";
-import backgroundTwo from "../../images/landing-background-two.png";
+import budaBackground from "../../images/buda-background.png";
+import fannyBackground from "../../images/fanny-background.png";
 
 const Second = function Second() {
   const [height, setHeight] = useState(0);
@@ -16,8 +16,14 @@ const Second = function Second() {
     setWidth(window.innerWidth);
   }
 
+  // Reverse the painters entered in the database
+  function parsePainters(data) {
+    // data = data.reverse();
+    setPainters(data);
+  }
+
   useEffect(() => {
-    getResource("/", setPainters);
+    getResource("/", parsePainters);
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener
@@ -64,7 +70,7 @@ const PainterOne = function PainterOne({ painters }) {
             height: 400,
             width: 400,
             border: "2px solid #e7e7e7",
-            backgroundImage: `url(${backgroundTwo})`,
+            backgroundImage: `url(${budaBackground})`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             backgroundSize: "cover",
@@ -101,7 +107,7 @@ const PainterTwo = function PainterTwo({ painters }) {
             height: 400,
             width: 400,
             border: "2px solid #e7e7e7",
-            backgroundImage: `url(${backgroundOne})`,
+            backgroundImage: `url(${fannyBackground})`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             backgroundSize: "cover",
