@@ -18,7 +18,7 @@ const Second = function Second() {
 
   // Reverse the painters entered in the database
   function parsePainters(data) {
-    // data = data.reverse();
+    data = data.reverse();
     setPainters(data);
   }
 
