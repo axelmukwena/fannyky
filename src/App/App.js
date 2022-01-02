@@ -29,16 +29,19 @@ const App = function App() {
   }, [dispatch]);
 
   return (
-    <Switch>
-      <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-      <Route exact path="/">
-        <Second />
-      </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <Route path="/:painterID" component={Painter} key="painter" />
-    </Switch>
+    <>
+      <Switch>
+        <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+        <Route exact path="/">
+          <Second />
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route path="/:painterID" component={Painter} key="painter" />
+      </Switch>
+      <div id="toasts-root" />
+    </>
   );
 };
 export default App;
