@@ -198,8 +198,8 @@ const DeletePainting = function DeletePainting({ painting }) {
         onClick={() => handleDeletePainting()}
         style={{
           position: "absolute",
-          top: 10,
-          right: 10,
+          top: 20,
+          right: 25,
           padding: 0,
           cursor: "pointer",
           color: "black",

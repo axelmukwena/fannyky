@@ -25,6 +25,7 @@
 .painting {
   margin: 25px 100px 0 0;
   min-height: 230px;
+  position: relative;
 }
 
 @media (max-width: 900px) {
