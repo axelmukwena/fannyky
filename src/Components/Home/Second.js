@@ -1,37 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
+import { Grid, Button, Typography, Box, CircularProgress } from "@mui/material";
 import "./Home.css";
 import { getResource } from "../../utils/requests";
 import budaBackground from "../../images/buda-background.png";
 import fannyBackground from "../../images/fanny-background.png";
 
 const Second = function Second() {
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [painters, setPainters] = useState([]);
-
-  function handleResize() {
-    setHeight(window.innerHeight);
-    setWidth(window.innerWidth);
-  }
+  const [painters, setPainters] = useState(null);
 
   // Reverse the painters entered in the database
   function parsePainters(data) {
-    data = data.reverse();
+    const images = [budaBackground, fannyBackground];
+    for (let i = 0; i < data.length; i += 1) {
+      data[i].image = images[i];
+    }
+
     setPainters(data);
   }
 
   useEffect(() => {
     getResource("/", parsePainters);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    // remove resize listener
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
 
+  if (!painters) {
+    return (
+      <Grid
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        style={{ margin: 0, padding: 0, height: "100vh" }}
+        container
+        spacing={2}
+      >
+        <Grid item>
+          <Box sx={{ display: "flex" }}>
+            <CircularProgress />
+          </Box>
+        </Grid>
+      </Grid>
+    );
+  }
   return (
     <div
       className="canvas-container"
@@ -40,52 +49,82 @@ const Second = function Second() {
     >
       <Grid
         direction="row"
-        justifyContent="space-evenly"
+        justifyContent="center"
         alignItems="center"
-        style={{ margin: 0, padding: 0, width, height }}
+        style={{ margin: 0, padding: 0, height: "100vh" }}
         container
         spacing={2}
       >
-        <Grid item style={{ margin: 0, padding: 0 }}>
-          <PainterOne painters={painters} />
-        </Grid>
-        <Grid item style={{ margin: 0, padding: 0 }}>
-          <PainterTwo painters={painters} />
-        </Grid>
+        {painters.map((painter) => {
+          return (
+            <Grid
+              key={painter.slug}
+              item
+              xs={12}
+              sm={6}
+              style={{ margin: 0, padding: 0 }}
+            >
+              <Grid
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                container
+              >
+                <Grid item style={{ margin: 0, padding: 0 }}>
+                  <Painter painter={painter} />
+                </Grid>
+              </Grid>
+            </Grid>
+          );
+        })}
       </Grid>
     </div>
   );
 };
 
-const PainterOne = function PainterOne({ painters }) {
-  if (painters.length > 1) {
+const Painter = function Painter({ painter }) {
+  if (painter) {
     return (
-      <Link to={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
+      <Link to={`/${painter.slug}`} style={{ textDecoration: "none" }}>
         <Button
-          // className="button-one"
           variant="outlined"
           size="large"
-          style={{
+          fullWidth
+          sx={{
             borderRadius: "100%",
-            height: 400,
-            width: 400,
-            border: "2px solid #e7e7e7",
-            backgroundImage: `url(${budaBackground})`,
+            border: "none",
+            backgroundImage: `url(${painter.image})`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             backgroundSize: "cover",
             textTransform: "none",
+            height: "230px",
+            width: "230px",
+            "@media (min-width: 600px)": {
+              height: "250px",
+              width: "250px",
+            },
+            "@media (min-width: 900px)": {
+              height: "400px",
+              width: "400px",
+            },
+            ":hover": {
+              border: "none",
+            },
           }}
         >
           <Typography
-            style={{
+            sx={{
               fontWeight: 900,
-              fontSize: "2rem",
+              fontSize: "1.5rem",
+              "@media (min-width: 600px)": {
+                fontSize: "2rem",
+              },
               fontFamily: "Roboto",
               color: "white",
             }}
           >
-            {painters[0].name}
+            {painter.name}
           </Typography>
         </Button>
       </Link>
@@ -94,18 +133,18 @@ const PainterOne = function PainterOne({ painters }) {
   return "";
 };
 
-const PainterTwo = function PainterTwo({ painters }) {
-  if (painters.length > 1) {
-    return (
-      <Link to={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
+export default Second;
+
+// eslint-disable-next-line no-lone-blocks
+{
+  /* <Link to={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
         <Button
           // className="button-two"
           variant="outlined"
           size="large"
+          fullWidth
           style={{
             borderRadius: "100%",
-            height: 400,
-            width: 400,
             border: "2px solid #e7e7e7",
             backgroundImage: `url(${fannyBackground})`,
             backgroundRepeat: "no-repeat",
@@ -125,10 +164,5 @@ const PainterTwo = function PainterTwo({ painters }) {
             {painters[1].name}
           </Typography>
         </Button>
-      </Link>
-    );
-  }
-  return "";
-};
-
-export default Second;
+      </Link> */
+}

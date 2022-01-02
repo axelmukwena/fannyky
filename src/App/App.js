@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
+import "./toast.css";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import authorizeUser from "../currentUser/authorize";
@@ -7,7 +8,6 @@ import Painter from "../Components/Painter/Painter";
 import Login from "../Components/Login/Login";
 import { getResource } from "../utils/requests";
 import Second from "../Components/Home/Second";
-// import Second from "../Components/Home/Second";
 
 const App = function App() {
   const dispatch = useDispatch();

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
+import Toast from "../../../utils/toast";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
@@ -204,7 +205,7 @@ const DeleteExhibition = function DeleteExhibition({ exhibition }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeleteExhibition = () => {

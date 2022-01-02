@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const currentMenuSlice = createSlice({
   name: "menu",
   initialState: {
-    menu: [],
-    siteName: ["Buda Fans", "/"],
+    menu: null,
+    siteName: ["", "/"],
   },
   reducers: {
     updateMenu: (state, action) => {

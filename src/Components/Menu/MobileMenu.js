@@ -1,12 +1,19 @@
-import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  Paper,
+} from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
 import React from "react";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import SideMenu from "./SideMenu";
+import { Link } from "react-router-dom";
 import "./Menu.css";
+import SideMenu from "./MainMenu";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -23,29 +30,28 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MainNav = function MainNav() {
+const MobileMenu = function MobileMenu() {
   const classes = useStyles();
-  const siteName = useSelector((state) => state.currentMenu.siteName);
-  const history = useHistory();
+  const [logoName, logoUrl] = useSelector(
+    (state) => state.currentMenu.siteName
+  );
 
   const handleOpen = () => {
-    // document.getElementById('sidenav').style.minWidth = '200px'
-    // document.getElementById('back-layer').style.display = 'block'
-    // document.getElementById('sidenav').style.padding = '1.5em'
+    document.getElementById("popup-nav").style.display = "block";
+    document.getElementById("popup-nav").style.minWidth = "200px";
+    document.getElementById("back-layer").style.display = "block";
+    document.getElementById("popup-nav").style.padding = "1.5em";
   };
 
   const handleClose = () => {
-    // document.getElementById('sidenav').style.minWidth = '0'
-    // document.getElementById('back-layer').style.display = 'none'
-    // document.getElementById('sidenav').style.padding = '0'
-  };
-
-  const handleClick = () => {
-    history.push("/");
+    document.getElementById("popup-nav").style.minWidth = "0";
+    document.getElementById("back-layer").style.display = "none";
+    document.getElementById("popup-nav").style.padding = "0";
+    document.getElementById("popup-nav").style.display = "none";
   };
 
   return (
-    <div className="main-nav">
+    <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           color="secondary"
@@ -53,24 +59,24 @@ const MainNav = function MainNav() {
           className={clsx(classes.appBar)}
         >
           <Toolbar className="toolbar">
-            <Typography
-              onClick={handleClick}
-              style={{
-                fontWeight: 900,
-                fontSize: "1.4rem",
-                fontFamily: "Roboto",
-                flex: 1,
-                // cursor: 'pointer',
-              }}
-            >
-              {siteName}
-            </Typography>
+            <div className="logo" style={{ flexGrow: 1, marginBottom: 0 }}>
+              <Link to={logoUrl} className="">
+                <Typography
+                  style={{
+                    fontWeight: 900,
+                    fontSize: "1.4rem",
+                    fontFamily: "Roboto",
+                  }}
+                >
+                  {logoName.toLowerCase()}
+                </Typography>
+              </Link>
+            </div>
             <IconButton
               edge="end"
               color="inherit"
               aria-label="menu"
-              sx={{ mr: 2 }}
-              style={{ marginTop: 3 }}
+              style={{ color: "#787878" }}
               onClick={handleOpen}
               size="large"
             >
@@ -79,9 +85,20 @@ const MainNav = function MainNav() {
           </Toolbar>
         </AppBar>
       </Box>
-      <SideMenu handleClose={handleClose} />
-    </div>
+      <div
+        id="back-layer"
+        className="back-layer"
+        onClick={handleClose}
+        onKeyDown={handleClose}
+        role="button"
+        tabIndex={0}
+        aria-label="Mobile Menu"
+      />
+      <Paper id="popup-nav" elevation={0} className="popup-nav">
+        <SideMenu handleClose={handleClose} />
+      </Paper>
+    </>
   );
 };
 
-export default MainNav;
+export default MobileMenu;

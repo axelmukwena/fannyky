@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-// import background from "../../images/landing-background-one.png";
-import background from "../../images/landing-background-two.png";
-// import background from "../../images/landing-background-three.png";
+import background from "../../images/buda-background.png";
 
 const Canvas = function Canvas() {
   const canvasRef = useRef(null);

@@ -10,6 +10,7 @@ import {
 } from "../../../utils/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
+import Toast from "../../../utils/toast";
 
 const Show = function Show({ match }) {
   const { url } = match;
@@ -28,6 +29,7 @@ const Show = function Show({ match }) {
 
   const handleClose = () => {
     setOpen(false);
+    setCurrent(0);
   };
 
   if (award.id) {
@@ -113,7 +115,7 @@ const DeleteImage = function DeleteImage({ award, index }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeleteImage = () => {
@@ -159,7 +161,7 @@ const IsLoggedIn = function IsLoggedIn({ award }) {
   };
 
   const handleDeleleResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeleteAward = () => {

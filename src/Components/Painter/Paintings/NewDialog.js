@@ -19,6 +19,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
+import Toast from "../../../utils/toast";
 
 const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [title, setTitle] = useState("");
@@ -76,11 +77,11 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   }, [painting]);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handlePaintingResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
     // Update paintings with images
     if (data.success && images.length > 0) {
       const { id } = data.painting;

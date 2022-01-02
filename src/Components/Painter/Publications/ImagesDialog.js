@@ -80,6 +80,7 @@ const ImageDialog = function ImageDialog({
             right: 0,
             padding: "0 13px",
             position: "absolute",
+            zIndex: 100,
           }}
         >
           <Button
@@ -90,23 +91,19 @@ const ImageDialog = function ImageDialog({
           </Button>
         </DialogActions>
         <Grid container spacing={0}>
-          <Grid
-            item
-            xs
-            style={{ cursor: "pointer" }}
-            onClick={() => goBack(publication.images)}
-          >
+          {publication.images.length > 1 && (
             <Button
+              onClick={() => goBack(publication.images)}
               style={{
                 color: "#cfcfcf",
                 backgroundColor: "transparent",
-                top: "50%",
                 float: "left",
               }}
             >
               <ArrowBackIosIcon />
             </Button>
-          </Grid>
+          )}
+          <Grid item xs onClick={handleClose} />
           <Grid item xs="auto" style={{ maxWidth: "80%" }}>
             <Card elevation={0} style={{ padding: 0, borderRadius: 0 }}>
               <div className="dialog-image">
@@ -119,23 +116,19 @@ const ImageDialog = function ImageDialog({
               </div>
             </Card>
           </Grid>
-          <Grid
-            item
-            xs
-            style={{ cursor: "pointer" }}
-            onClick={() => goForward(publication.images)}
-          >
+          <Grid item xs onClick={handleClose} />
+          {publication.images.length > 1 && (
             <Button
+              onClick={() => goForward(publication.images)}
               style={{
                 color: "#cfcfcf",
                 backgroundColor: "transparent",
-                top: "50%",
                 float: "right",
               }}
             >
               <ArrowForwardIosIcon />
             </Button>
-          </Grid>
+          )}
         </Grid>
       </Dialog>
     );

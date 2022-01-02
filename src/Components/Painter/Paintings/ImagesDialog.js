@@ -104,6 +104,7 @@ const ImageDialog = function ImageDialog({
             right: 0,
             padding: "0 13px",
             position: "absolute",
+            zIndex: 100,
           }}
         >
           <Button
@@ -114,23 +115,19 @@ const ImageDialog = function ImageDialog({
           </Button>
         </DialogActions>
         <Grid container spacing={0}>
-          <Grid
-            item
-            xs
-            style={{ cursor: "pointer" }}
-            onClick={() => goBack(painting.images)}
-          >
+          {painting.images.length > 1 && (
             <Button
+              onClick={() => goBack(painting.images)}
               style={{
                 color: "#cfcfcf",
                 backgroundColor: "transparent",
-                top: "50%",
                 float: "left",
               }}
             >
               <ArrowBackIosIcon />
             </Button>
-          </Grid>
+          )}
+          <Grid item xs onClick={handleClose} />
           <Grid item xs="auto" style={{ maxWidth: "80%" }}>
             <Card
               onMouseOver={() => showContent()}
@@ -150,23 +147,19 @@ const ImageDialog = function ImageDialog({
               <PaintingsDialogContent show={show} painting={painting} />
             </Card>
           </Grid>
-          <Grid
-            item
-            xs
-            style={{ cursor: "pointer" }}
-            onClick={() => goForward(painting.images)}
-          >
+          <Grid item xs onClick={handleClose} />
+          {painting.images.length > 1 && (
             <Button
+              onClick={() => goForward(painting.images)}
               style={{
                 color: "#cfcfcf",
                 backgroundColor: "transparent",
-                top: "50%",
                 float: "right",
               }}
             >
               <ArrowForwardIosIcon />
             </Button>
-          </Grid>
+          )}
         </Grid>
       </Dialog>
     );

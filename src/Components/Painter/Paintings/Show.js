@@ -13,6 +13,7 @@ import {
 } from "../../../utils/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
+import Toast from "../../../utils/toast";
 
 const Show = function Show({ match }) {
   const { url } = match;
@@ -147,7 +148,7 @@ const DeleteImage = function DeleteImage({ painting, index }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeleteImage = () => {
@@ -193,7 +194,7 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
   };
 
   const handleDeleleResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeletePainting = () => {

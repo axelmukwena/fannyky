@@ -1,16 +1,10 @@
 import { DeleteOutline } from "@mui/icons-material";
-import {
-  Button,
-  Typography,
-  CardMedia,
-  Card,
-  ImageList,
-  ImageListItem,
-} from "@mui/material";
+import { Button, Typography, Grid, Box, CardMedia } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
+import Toast from "../../../utils/toast";
 import ImagesDialog from "./ImagesDialog";
 import NewDialog from "./NewDialog";
 
@@ -24,6 +18,9 @@ const Index = function Index() {
   const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
+  const [width, setWidth] = useState(null);
+
+  const history = useHistory();
 
   function setPaintings(paintings) {
     setGroupOne([]);
@@ -64,25 +61,45 @@ const Index = function Index() {
     }
   }
 
+  function handleResize() {
+    if (window.innerWidth > 900) {
+      setWidth(window.innerWidth);
+    } else {
+      setWidth(null);
+    }
+  }
+
   // You need to add `/paintings` to path
   // because `/paintings` is root for a painter
   // If you see in publications, no need
   // to add `/publications` to `path`
   useEffect(() => {
     getResource(`${path}/paintings`, setPaintings);
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    // remove resize listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [path]);
 
   const handleOpenImages = (painting) => {
-    setSelected(painting);
-    setOpenImages(true);
+    if (width) {
+      setSelected(painting);
+      setOpenImages(true);
+    } else {
+      history.push(`${painting.painter.slug}/works/${painting.slug}`);
+    }
   };
 
   const handleCloseImages = () => {
     setOpenImages(false);
+    setCurrent(0);
   };
 
   return (
-    <div className="resource-container">
+    <Box sx={{ margin: "20px" }}>
       <IsLoggedIn />
       <Group paintings={groupOne} handleOpenImages={handleOpenImages} />
       <Group paintings={groupTwo} handleOpenImages={handleOpenImages} />
@@ -97,7 +114,7 @@ const Index = function Index() {
         handleClose={handleCloseImages}
         show
       />
-    </div>
+    </Box>
   );
 };
 
@@ -105,110 +122,60 @@ const Group = function Group({ paintings, handleOpenImages }) {
   if (paintings.length > 0) {
     const year = paintings[0].rankdate.split("-")[0];
     return (
-      <div style={{ marginBottom: 70 }}>
+      <Box sx={{ marginBottom: "70px" }}>
         <Typography
           style={{
             fontWeight: 600,
             fontSize: "1rem",
             fontFamily: "Roboto",
-            margin: "0 8px 50px",
+            margin: "0 8px 20px",
           }}
           className="page-title"
         >
           {year}
         </Typography>
 
-        <div className="row">
+        <Grid
+          direction="row"
+          justifyContent="left"
+          alignItems="center"
+          container
+          spacing={2}
+          sx={{ margin: 0 }}
+        >
           <AddPhotos
             paintings={paintings}
             handleOpenImages={handleOpenImages}
           />
-        </div>
-      </div>
+        </Grid>
+      </Box>
     );
   }
   return null;
 };
 
 const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
-  if (paintings.length > 0) {
-    // console.log(paintings);
-    return (
-      <ImageList cols={4} style={{ gap: "50px 120px" }}>
-        {paintings.map((painting) => (
-          <ImageListItem key={painting.slug}>
-            <CardMedia
-              component="img"
-              src={`${painting.images[0].url}`}
-              alt={painting.title}
-              loading="lazy"
-              className="painting-card-index"
-              onClick={() => handleOpenImages(painting)}
-            />
-            <DeletePainting painting={painting} />
-            <Typography style={{ margin: 8, width: 150 }}>
-              <Link
-                to={`${painting.painter.slug}/works/${painting.slug}`}
-                className="painting-title-index"
-              >
-                {painting.title}
-              </Link>
-            </Typography>
-          </ImageListItem>
-        ))}
-      </ImageList>
-    );
-  }
   return paintings.map((painting) => (
     <div key={painting.slug} className="painting">
-      <CardImage painting={painting} handleOpenImages={handleOpenImages} />
-      <div className="abstract">
+      <CardMedia
+        component="img"
+        src={`${painting.images[0].url}`}
+        alt={painting.title}
+        loading="lazy"
+        className="painting-card-index"
+        onClick={() => handleOpenImages(painting)}
+      />
+      <DeletePainting painting={painting} />
+      <Typography className="painting-title-index-typography">
         <Link
           to={`${painting.painter.slug}/works/${painting.slug}`}
           className="painting-title-index"
         >
           {painting.title}
         </Link>
-
-        <Typography style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
-          <DateCreated painting={painting} /> {painting.abstract}
-        </Typography>
-      </div>
+      </Typography>
     </div>
   ));
-};
-
-const CardImage = function CardImage({ painting, handleOpenImages }) {
-  if (painting.images.length > 0) {
-    return (
-      <Card
-        id={painting.images[0].url}
-        className="loaded-files"
-        elevation={0}
-        style={{
-          padding: 0,
-          margin: 0,
-          position: "relative",
-          borderRadius: 0,
-        }}
-      >
-        <CardMedia
-          component="img"
-          // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
-          src={`${painting.images[0].url}?w=700&h=700&fit=crop&auto=format`}
-          alt={painting.title}
-          loading="lazy"
-          className="painting-image"
-          width={150}
-          height={150}
-          onClick={() => handleOpenImages(painting)}
-          style={{ cursor: "pointer" }}
-        />
-        <DeletePainting painting={painting} />
-      </Card>
-    );
-  }
-  return null;
 };
 
 const DeletePainting = function DeletePainting({ painting }) {
@@ -216,7 +183,7 @@ const DeletePainting = function DeletePainting({ painting }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeletePainting = () => {
@@ -242,16 +209,6 @@ const DeletePainting = function DeletePainting({ painting }) {
         }}
       />
     );
-  }
-  return null;
-};
-
-const DateCreated = function DateCreated({ painting }) {
-  if (painting.date_created && painting.abstract) {
-    return `${painting.date_created.split("-")[0]} - `;
-  }
-  if (painting.date_created) {
-    return painting.date_created.split("-")[0];
   }
   return null;
 };

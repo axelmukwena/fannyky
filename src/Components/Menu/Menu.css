@@ -54,6 +54,22 @@
   border-radius: 5px;
 }
 
+.popup-nav {
+    height: fit-content;
+    width: 0;
+    position: absolute;
+    z-index: 2;
+    top: 80px;
+    right: 34px;
+    overflow-x: hidden;
+    transition: width 0.5s;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-left: 0;
+    display: none;
+    box-shadow: rgb(28 28 28 / 12%) 3px 5px 11px 0px;
+}
+
 .back-layer {
   z-index: 2;
   overflow-x: hidden;

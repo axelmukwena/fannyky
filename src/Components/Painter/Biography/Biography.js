@@ -7,6 +7,7 @@ import { convertFromRaw } from "draft-js";
 import { DeleteOutline, Email, Link, Phone } from "@mui/icons-material";
 import EditDialog from "./EditDialog";
 import { postResource } from "../../../utils/requests";
+import Toast from "../../../utils/toast";
 
 const Biography = function Biography() {
   const painter = useSelector((state) => state.currentPainter.painter);
@@ -173,7 +174,7 @@ const DeleteImage = function DeleteImage({ painter, index }) {
   const currentUser = useSelector((state) => state.currentUser.user);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleDeleteImage = () => {

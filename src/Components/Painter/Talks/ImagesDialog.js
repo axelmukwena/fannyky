@@ -13,7 +13,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const ImageDialog = function ImageDialog({
-  exhibition,
+  talk,
   current,
   setCurrent,
   open,
@@ -53,7 +53,7 @@ const ImageDialog = function ImageDialog({
   }
 
   // console.log(exhibition);
-  if (exhibition && exhibition.images.length > 0) {
+  if (talk && talk.images.length > 0) {
     return (
       <Dialog
         fullScreen
@@ -80,6 +80,7 @@ const ImageDialog = function ImageDialog({
             right: 0,
             padding: "0 13px",
             position: "absolute",
+            zIndex: 100,
           }}
         >
           <Button
@@ -90,52 +91,44 @@ const ImageDialog = function ImageDialog({
           </Button>
         </DialogActions>
         <Grid container spacing={0}>
-          <Grid
-            item
-            xs
-            style={{ cursor: "pointer" }}
-            onClick={() => goBack(exhibition.images)}
-          >
+          {talk.images.length > 1 && (
             <Button
+              onClick={() => goBack(talk.images)}
               style={{
                 color: "#cfcfcf",
                 backgroundColor: "transparent",
-                top: "50%",
                 float: "left",
               }}
             >
               <ArrowBackIosIcon />
             </Button>
-          </Grid>
+          )}
+          <Grid item xs onClick={handleClose} />
           <Grid item xs="auto" style={{ maxWidth: "80%" }}>
             <Card elevation={0} style={{ padding: 0, borderRadius: 0 }}>
               <div className="dialog-image">
                 <CardMedia
                   component="img"
-                  src={exhibition.images[current].url}
-                  alt={exhibition.title}
+                  src={talk.images[current].url}
+                  alt={talk.title}
                   height={height}
                 />
               </div>
             </Card>
           </Grid>
-          <Grid
-            item
-            xs
-            style={{ cursor: "pointer" }}
-            onClick={() => goForward(exhibition.images)}
-          >
+          <Grid item xs onClick={handleClose} />
+          {talk.images.length > 1 && (
             <Button
+              onClick={() => goForward(talk.images)}
               style={{
                 color: "#cfcfcf",
                 backgroundColor: "transparent",
-                top: "50%",
                 float: "right",
               }}
             >
               <ArrowForwardIosIcon />
             </Button>
-          </Grid>
+          )}
         </Grid>
       </Dialog>
     );

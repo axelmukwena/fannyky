@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
+import Toast from "../../../utils/toast";
 
 const NewDialog = function NewDialog({ award, painter, open, handleClose }) {
   const [prize, setPrize] = useState("");
@@ -53,11 +54,11 @@ const NewDialog = function NewDialog({ award, painter, open, handleClose }) {
   }, [award]);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handleAwardResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
     // Update awards with images
     if (data.success && images.length > 0) {
       const { id } = data.award;

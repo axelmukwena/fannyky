@@ -17,9 +17,11 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { parseImages, parseGeneralParams } from "../../../utils/helpers";
 import { postResource, putResource } from "../../../utils/requests";
 import UploadImages from "../UploadImages";
+import Toast from "../../../utils/toast";
 
 const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const [name, setName] = useState("");
+  const [rank, setRank] = useState("");
   const [pagelink, setPagelink] = useState("");
   const [about, setAbout] = useState(() => EditorState.createEmpty());
   const [email, setEmail] = useState("");
@@ -56,11 +58,11 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   }, [painter]);
 
   const handleImagesResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
   };
 
   const handlePainterResponse = (data) => {
-    console.log("Response", data);
+    Toast({ message: data.message, type: "success" });
     // Update paintings with images
     if (data.success && images.length > 0) {
       const { id } = data.painter;
@@ -79,6 +81,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
 
     const data = {
       id: painter.id,
+      rank,
       name,
       pagelink,
       about: stringAbout,
@@ -150,6 +153,19 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
             </Grid>
 
             <Grid item xs={6}>
+              <TextField
+                fullWidth
+                label="Rank"
+                variant="outlined"
+                name="rank"
+                value={rank}
+                type="number"
+                required
+                onChange={(e) => setRank(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Page Link"
