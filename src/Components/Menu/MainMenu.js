@@ -7,41 +7,44 @@ import "./Menu.css";
 
 const MainMenu = function MainMenu({ handleClose }) {
   const currentMenu = useSelector((state) => state.currentMenu.menu);
+  const history = useHistory();
 
   const currentYear = new Date().getFullYear();
 
-  const handleClick = (e) => {
+  const handleClick = (e, url) => {
+    e.preventDefault();
     const items = document.getElementsByClassName("menu-item");
     for (let i = 0; i < items.length; i += 1) {
       items[i].className = "menu-item";
     }
-    const parent = e.target.parentElement.parentElement;
-    parent.className = "menu-item active";
+    const current = e.target;
+    current.className = "menu-item active";
 
     handleClose();
+    history.replace(url);
   };
 
   if (currentMenu) {
     return (
       <>
-        <div className="menu-item">
-          <Link to="/">
-            <Typography>Home</Typography>
+        <div>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography>
+              <span className="menu-item">Home</span>
+            </Typography>
           </Link>
         </div>
         {currentMenu.map((item) => (
-          <div
+          <Link
             key={item.id}
-            className="menu-item"
-            role="button"
-            onClick={handleClick}
-            onKeyPress={handleClick}
-            tabIndex={0}
+            onClick={(event) => handleClick(event, item.slug)}
+            to={item.slug}
+            style={{ textDecoration: "none" }}
           >
-            <Link to={item.slug}>
-              <Typography>{item.name}</Typography>
-            </Link>
-          </div>
+            <Typography sx={{ padding: "5px 0" }}>
+              <span className="menu-item">{item.name}</span>
+            </Typography>
+          </Link>
         ))}
         <IsLoggedIn />
         <div className="copyright">
