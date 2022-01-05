@@ -69,10 +69,10 @@ and (max-width: 900px) {
 and (min-width: 900px) {
   .painting-card-index {
     margin: 5px;
-    height: 160px;
-    width: 160px;
+    height: 120px;
+    width: 120px;
     cursor: pointer;
-    border: 7px solid #e3e3e3;
+    border: 5px solid #e3e3e3;
     box-shadow: rgb(28 28 28 / 24%) 2px 2px 4px 0px;
   }
 
@@ -101,7 +101,7 @@ and (max-width: 899px) {
 
 .painting-title-index-typography {
   margin: 8px;
-  width: 160px;
+  width: 120px;
 }
 
 @media (max-width: 600px) {

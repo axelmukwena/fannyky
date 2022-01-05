@@ -109,18 +109,6 @@ const Index = function Index() {
 
   return (
     <>
-      <Typography
-        style={{
-          fontWeight: 600,
-          fontSize: "1rem",
-          fontFamily: "Roboto",
-          marginBottom: 20,
-        }}
-        className="page-title"
-      >
-        Works
-      </Typography>
-      <CustomHorizontal />
       <IsLoggedIn />
       <Group
         width={width}
@@ -160,8 +148,8 @@ const Index = function Index() {
 };
 
 const Group = function Group({ width, paintings, handleOpenImages }) {
-  let justifyContent = "space-between";
-  let spacing = 3;
+  let justifyContent = "flex-start";
+  let spacing = 0;
   if (!width) {
     justifyContent = "space-evenly";
     spacing = 0;
@@ -180,8 +168,10 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
           }}
           className="page-title"
         >
-          {year}
+          {year} Works
         </Typography>
+
+        <CustomHorizontal />
 
         <Grid
           direction="row"
@@ -189,7 +179,6 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
           alignItems="flex-start"
           container
           spacing={spacing}
-          sx={{ margin: 0 }}
         >
           <AddPhotos
             paintings={paintings}
@@ -204,7 +193,14 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
 
 const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
   return paintings.map((painting) => (
-    <Grid item key={painting.slug} sx={{ paddingLeft: "0 !important" }}>
+    <Grid
+      item
+      key={painting.slug}
+      sx={{
+        /* paddingLeft: "0 !important" */
+        margin: "20px 70px 0 0",
+      }}
+    >
       <CardMedia
         component="img"
         src={`${painting.images[0].url}`}
