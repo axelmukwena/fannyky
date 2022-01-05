@@ -7,6 +7,8 @@ import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
 import ImagesDialog from "./ImagesDialog";
 import NewDialog from "./NewDialog";
+import Loading from "../../Loading/Loading";
+import CustomHorizontal from "../CustomHorizontal";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
@@ -19,6 +21,7 @@ const Index = function Index() {
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
   const [width, setWidth] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   const history = useHistory();
 
@@ -28,7 +31,8 @@ const Index = function Index() {
     setGroupThree([]);
     setGroupFour([]);
     setGroupFive([]);
-    if (paintings.length > 0) {
+
+    if (paintings) {
       const currentYear = new Date().getFullYear();
       const startDate = new Date("2000-01-01");
       const diff = currentYear - 2000;
@@ -58,6 +62,7 @@ const Index = function Index() {
           }
         }
       }
+      setLoaded(true);
     }
   }
 
@@ -98,14 +103,50 @@ const Index = function Index() {
     setCurrent(0);
   };
 
+  if (!loaded) {
+    return <Loading />;
+  }
+
   return (
-    <Box sx={{ margin: "20px" }}>
+    <>
+      <Typography
+        style={{
+          fontWeight: 600,
+          fontSize: "1rem",
+          fontFamily: "Roboto",
+          marginBottom: 20,
+        }}
+        className="page-title"
+      >
+        Works
+      </Typography>
+      <CustomHorizontal />
       <IsLoggedIn />
-      <Group paintings={groupOne} handleOpenImages={handleOpenImages} />
-      <Group paintings={groupTwo} handleOpenImages={handleOpenImages} />
-      <Group paintings={groupThree} handleOpenImages={handleOpenImages} />
-      <Group paintings={groupFour} handleOpenImages={handleOpenImages} />
-      <Group paintings={groupFive} handleOpenImages={handleOpenImages} />
+      <Group
+        width={width}
+        paintings={groupOne}
+        handleOpenImages={handleOpenImages}
+      />
+      <Group
+        width={width}
+        paintings={groupTwo}
+        handleOpenImages={handleOpenImages}
+      />
+      <Group
+        width={width}
+        paintings={groupThree}
+        handleOpenImages={handleOpenImages}
+      />
+      <Group
+        width={width}
+        paintings={groupFour}
+        handleOpenImages={handleOpenImages}
+      />
+      <Group
+        width={width}
+        paintings={groupFive}
+        handleOpenImages={handleOpenImages}
+      />
       <ImagesDialog
         painting={selected}
         current={current}
@@ -114,11 +155,18 @@ const Index = function Index() {
         handleClose={handleCloseImages}
         show
       />
-    </Box>
+    </>
   );
 };
 
-const Group = function Group({ paintings, handleOpenImages }) {
+const Group = function Group({ width, paintings, handleOpenImages }) {
+  let justifyContent = "flex-start";
+  let spacing = 3;
+  if (!width) {
+    justifyContent = "space-evenly";
+    spacing = 0;
+  }
+
   if (paintings.length > 0) {
     const year = paintings[0].rankdate.split("-")[0];
     return (
@@ -137,10 +185,10 @@ const Group = function Group({ paintings, handleOpenImages }) {
 
         <Grid
           direction="row"
-          justifyContent="left"
-          alignItems="center"
+          justifyContent={justifyContent}
+          alignItems="flex-start"
           container
-          spacing={2}
+          spacing={spacing}
           sx={{ margin: 0 }}
         >
           <AddPhotos
@@ -156,12 +204,12 @@ const Group = function Group({ paintings, handleOpenImages }) {
 
 const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
   return paintings.map((painting) => (
-    <div key={painting.slug} className="painting">
+    <Grid item key={painting.slug}>
       <CardMedia
         component="img"
         src={`${painting.images[0].url}`}
         alt={painting.title}
-        loading="lazy"
+        // loading="lazy"
         className="painting-card-index"
         onClick={() => handleOpenImages(painting)}
       />
@@ -174,7 +222,7 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
           {painting.title}
         </Link>
       </Typography>
-    </div>
+    </Grid>
   ));
 };
 

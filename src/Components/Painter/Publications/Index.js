@@ -1,4 +1,4 @@
-import { Button, Typography, CardMedia, Card } from "@mui/material";
+import { Button, Typography, CardMedia, Card, Grid } from "@mui/material";
 import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
@@ -7,69 +7,30 @@ import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
-  const [publications, setPublications] = useState([]);
+  const [publications, setPublications] = useState(null);
 
   useEffect(() => {
     getResource(path, setPublications);
   }, [path]);
 
-  const GetPublications = function GetPublications() {
-    if (publications.length > 0) {
-      return publications.map((publication) => (
-        <div
-          key={publication.slug}
-          className="publication row"
-          style={{
-            // border: "1px solid #e5e5e5",
-            borderRadius: 4,
-            padding: 0,
-            width: "100%",
-            alignItems: "center",
-            backgroundColor: "#f7f7f7d4",
-            boxShadow: "rgb(28 28 28 / 7%) 0px 0px 6px 1px",
-          }}
-        >
-          <Link to={`publications/${publication.slug}`}>
-            <CardImage publication={publication} />
-          </Link>
-          <div
-            className="publications-index-details"
-            style={{ margin: 15, width: "80%" }}
-          >
-            <Link
-              to={`publications/${publication.slug}`}
-              className="publication-title-index"
-            >
-              {publication.title}
-            </Link>
-            <Typography style={{ fontSize: "0.8rem", color: "#606060" }}>
-              {publication.organization}, {publication.location}
-              <GetYear publication={publication} />
-            </Typography>
-
-            <TrimDescription publication={publication} />
-
-            <DeletePublication publication={publication} />
-          </div>
-        </div>
-      ));
-    }
-    return "";
-  };
+  if (!publications) {
+    return <Loading />;
+  }
 
   return (
-    <div className="resource-container" style={{ width: "80%" }}>
+    <div className="resource-container">
       <Typography
         style={{
           fontWeight: 600,
           fontSize: "1rem",
           fontFamily: "Roboto",
-          marginBottom: 20,
+          margin: "20px 0",
         }}
         className="page-title"
       >
@@ -80,10 +41,68 @@ const Index = function Index() {
 
       <IsLoggedIn />
       <div className="row" style={{ marginTop: 15 }}>
-        <GetPublications />
+        <GetPublications publications={publications} />
       </div>
     </div>
   );
+};
+
+const GetPublications = function GetPublications({ publications }) {
+  const getSm = (publication) => {
+    if (publication.images.length > 0) {
+      return 10;
+    }
+    return 12;
+  };
+
+  if (publications) {
+    return publications.map((publication) => (
+      <Grid
+        key={publication.slug}
+        container
+        sx={{
+          borderRadius: "4px",
+          margin: "15px 0",
+          width: "100%",
+          backgroundColor: "#f7f7f7d4",
+          boxShadow: "rgb(28 28 28 / 7%) 0px 0px 6px 1px",
+        }}
+      >
+        <CardImage publication={publication} />
+
+        <Grid xs={12} sm={getSm(publication)} item>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="flex-start"
+            sx={{ padding: "15px", height: "100%" }}
+          >
+            <Grid item>
+              <Link
+                to={`publications/${publication.slug}`}
+                className="publication-title-index"
+              >
+                {publication.title}
+              </Link>
+            </Grid>
+            <Grid item>
+              <Typography style={{ fontSize: "0.8rem", color: "#606060" }}>
+                {publication.organization}, {publication.location}
+                <GetYear publication={publication} />
+              </Typography>
+            </Grid>
+            <Grid item>
+              <TrimDescription publication={publication} />
+            </Grid>
+
+            <DeletePublication publication={publication} />
+          </Grid>
+        </Grid>
+      </Grid>
+    ));
+  }
+  return "";
 };
 
 const GetYear = function GetYear({ publication }) {
@@ -94,6 +113,10 @@ const GetYear = function GetYear({ publication }) {
 };
 
 const TrimDescription = function TrimDescription({ publication }) {
+  if (!publication || !publication.description) {
+    return null;
+  }
+
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html),
@@ -118,6 +141,7 @@ const TrimDescription = function TrimDescription({ publication }) {
   // {des.substring(0, 300)}...
   let { description } = publication;
   description = convertContentToHTML(description);
+
   if (description) {
     const html = "__html";
     const items = description[html].split("</p>");
@@ -156,25 +180,25 @@ const TrimDescription = function TrimDescription({ publication }) {
 const CardImage = function CardImage({ publication }) {
   if (publication.images.length > 0) {
     return (
-      <Card
-        id={publication.images[0].url}
-        className="loaded-files"
-        elevation={0}
-        style={{
-          padding: 0,
-          marginRight: 5,
-          borderRadius: "4px 0 0 4px",
-          width: 130,
-        }}
-      >
-        <CardMedia
-          component="img"
-          src={`${publication.images[0].url}`}
-          alt={publication.title}
-          loading="lazy"
-          className="publication-image"
-        />
-      </Card>
+      <Grid xs={12} sm={2} item>
+        <Link to={`publications/${publication.slug}`}>
+          <Card
+            id={publication.images[0].url}
+            elevation={0}
+            style={{
+              padding: 0,
+              margin: "15px",
+            }}
+          >
+            <CardMedia
+              component="img"
+              src={`${publication.images[0].url}`}
+              alt={publication.title}
+              loading="lazy"
+            />
+          </Card>
+        </Link>
+      </Grid>
     );
   }
   return null;
@@ -196,13 +220,15 @@ const DeletePublication = function DeletePublication({ publication }) {
 
   if (currentUser && painter.id) {
     return (
-      <Button
-        variant="contained"
-        onClick={() => handleDeletePublication()}
-        style={{ backgroundColor: "#b12222", marginTop: 10 }}
-      >
-        <Typography>Delete</Typography>
-      </Button>
+      <Grid item>
+        <Button
+          variant="contained"
+          onClick={() => handleDeletePublication()}
+          style={{ backgroundColor: "#b12222", marginTop: 10 }}
+        >
+          <Typography>Delete</Typography>
+        </Button>
+      </Grid>
     );
   }
   return null;

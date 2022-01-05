@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./toast.css";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
@@ -7,20 +7,19 @@ import authorizeUser from "../currentUser/authorize";
 import Painter from "../Components/Painter/Painter";
 import Login from "../Components/Login/Login";
 import { getResource } from "../utils/requests";
-import Second from "../Components/Home/Second";
+import Home from "../Components/Home/Home";
+import Loading from "../Components/Loading/Loading";
 
 const App = function App() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const [loaded, setLoaded] = useState(null);
 
   // Since the app is hosted on heroku on free servers,
   // this request's main purpose is to wake the app up
   // eslint-disable-next-line no-unused-vars
   function wakeUpApp(data) {
-    if (!data) {
-      getResource("/", wakeUpApp);
-      window.location.reload();
-    }
+    setLoaded(data);
   }
 
   useEffect(() => {
@@ -28,12 +27,17 @@ const App = function App() {
     authorizeUser(dispatch);
   }, [dispatch]);
 
+  // Loader
+  if (!loaded) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Switch>
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
         <Route exact path="/">
-          <Second />
+          <Home />
         </Route>
         <Route exact path="/login">
           <Login />

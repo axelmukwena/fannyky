@@ -6,8 +6,6 @@ import {
   Box,
   Paper,
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import clsx from "clsx";
 import React from "react";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -15,23 +13,7 @@ import { Link } from "react-router-dom";
 import "./Menu.css";
 import SideMenu from "./MainMenu";
 
-const useStyles = makeStyles(() => ({
-  appBar: {
-    margin: 0,
-    position: "static",
-  },
-  typography: {
-    fontWeight: 500,
-    fontSize: "1.2rem",
-    color: "#444",
-    textDecoration: "none",
-    marginLeft: 5,
-    marginRight: 5,
-  },
-}));
-
 const MobileMenu = function MobileMenu() {
-  const classes = useStyles();
   const [logoName, logoUrl] = useSelector(
     (state) => state.currentMenu.siteName
   );
@@ -56,7 +38,7 @@ const MobileMenu = function MobileMenu() {
         <AppBar
           color="secondary"
           elevation={0}
-          className={clsx(classes.appBar)}
+          sx={{ margin: 0, position: "static", padding: "0" }}
         >
           <Toolbar className="toolbar">
             <div className="logo" style={{ flexGrow: 1, marginBottom: 0 }}>

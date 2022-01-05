@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const currentPainterSlice = createSlice({
   name: "painter",
   initialState: {
-    painter: {},
+    painter: null,
   },
   reducers: {
     updatePainter: (state, action) => {

@@ -7,56 +7,24 @@ import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
-  const [talks, setTalks] = useState([]);
+  const [talks, setTalks] = useState(null);
 
   useEffect(() => {
     getResource(path, setTalks);
   }, [path]);
 
-  const GetTalks = function GetTalks() {
-    if (talks.length > 0) {
-      return talks.map((talk) => (
-        <div
-          key={talk.slug}
-          className="talk"
-          style={{
-            borderRadius: 4,
-            padding: 0,
-            width: "100%",
-            margin: "10px 0",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "100%" }}>
-            <Typography style={{ paddingLeft: 40, textIndent: -40 }}>
-              <Link className="talk-title-index-all" to={`talks/${talk.slug}`}>
-                {talk.date}
-                &nbsp;&nbsp;
-                <span
-                  className="talk-title-index"
-                  style={{ fontStyle: "italic" }}
-                >
-                  {talk.title}{" "}
-                </span>
-                {talk.organizer} {talk.location} <TrimDescription talk={talk} />
-              </Link>
-            </Typography>
-
-            <DeleteTalk talk={talk} />
-          </div>
-        </div>
-      ));
-    }
-    return "";
-  };
+  if (!talks) {
+    return <Loading />;
+  }
 
   return (
-    <div className="resource-container" style={{ width: "70%" }}>
+    <div className="resource-container">
       <Typography
         style={{
           fontWeight: 600,
@@ -71,10 +39,48 @@ const Index = function Index() {
       <CustomHorizontal />
       <IsLoggedIn />
       <div className="row" style={{ marginTop: 15 }}>
-        <GetTalks />
+        <GetTalks talks={talks} />
       </div>
     </div>
   );
+};
+
+const GetTalks = function GetTalks({ talks }) {
+  if (talks) {
+    return talks.map((talk) => (
+      <div
+        key={talk.slug}
+        className="talk"
+        style={{
+          borderRadius: 4,
+          padding: 0,
+          width: "100%",
+          margin: "10px 0",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ width: "100%" }}>
+          <Typography style={{ paddingLeft: 50, textIndent: -47 }}>
+            <Link className="talk-title-index-all" to={`talks/${talk.slug}`}>
+              {talk.date}
+              <span>
+                <span
+                  className="talk-title-index"
+                  style={{ fontStyle: "italic", marginLeft: "14px" }}
+                >
+                  {talk.title}{" "}
+                </span>
+                {talk.organizer} {talk.location} <TrimDescription talk={talk} />
+              </span>
+            </Link>
+          </Typography>
+
+          <DeleteTalk talk={talk} />
+        </div>
+      </div>
+    ));
+  }
+  return "";
 };
 
 const TrimDescription = function TrimDescription({ talk }) {

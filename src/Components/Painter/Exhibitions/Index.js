@@ -7,11 +7,13 @@ import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
+  const [loaded, setLoaded] = useState(false);
   const [solo, setSolo] = useState([]);
   const [group, setGroup] = useState([]);
   const [others, setOthers] = useState([]);
@@ -20,7 +22,7 @@ const Index = function Index() {
     setSolo([]);
     setGroup([]);
     setOthers([]);
-    if (exhibitions.length > 0) {
+    if (exhibitions) {
       for (let i = 0; i < exhibitions.length; i += 1) {
         if (exhibitions[i].which === "solo") {
           setSolo((old) => [...old, exhibitions[i]]);
@@ -30,6 +32,7 @@ const Index = function Index() {
           setOthers((old) => [...old, exhibitions[i]]);
         }
       }
+      setLoaded(true);
     }
   }
 
@@ -37,13 +40,17 @@ const Index = function Index() {
     getResource(path, setExhibitions);
   }, [path]);
 
+  if (!loaded) {
+    return <Loading />;
+  }
+
   return (
-    <div className="resource-container" style={{ width: "70%" }}>
+    <div className="resource-container">
       <IsLoggedIn />
       <Placeholder solo={solo} group={group} others={others} />
-      <MiddleExhibitions title="Solo Exhibitions" exhibitions={solo} />
-      <MiddleExhibitions title="Group Exhibitions" exhibitions={group} />
-      <MiddleExhibitions title="Other Exhibitions" exhibitions={others} />
+      <TypeExhibitions title="Solo Exhibitions" exhibitions={solo} />
+      <TypeExhibitions title="Group Exhibitions" exhibitions={group} />
+      <TypeExhibitions title="Other Exhibitions" exhibitions={others} />
     </div>
   );
 };
@@ -70,7 +77,7 @@ const Placeholder = function Placeholder({ solo, group, others }) {
   return null;
 };
 
-const MiddleExhibitions = function MiddleExhibitions({ title, exhibitions }) {
+const TypeExhibitions = function TypeExhibitions({ title, exhibitions }) {
   if (exhibitions.length > 0) {
     return (
       <div>
@@ -87,7 +94,7 @@ const MiddleExhibitions = function MiddleExhibitions({ title, exhibitions }) {
         </Typography>
         <CustomHorizontal />
 
-        <div className="row" style={{ marginTop: 15, marginBottom: 10 }}>
+        <div className="row" style={{ marginTop: 15, marginBottom: 50 }}>
           <GetExhibitions exhibitions={exhibitions} />
         </div>
       </div>
@@ -111,22 +118,23 @@ const GetExhibitions = function GetExhibitions({ exhibitions }) {
         }}
       >
         <div style={{ width: "100%" }}>
-          <Typography style={{ paddingLeft: 40, textIndent: -40 }}>
+          <Typography style={{ paddingLeft: 50, textIndent: -47 }}>
             <Link
               className="exhibition-title-index-all"
               to={`exhibitions/${exhibition.slug}`}
             >
               {exhibition.start_date}
               <EndDate exhibition={exhibition} />
-              &nbsp;&nbsp;
-              <span
-                className="exhibition-title-index"
-                style={{ fontStyle: "italic" }}
-              >
-                {exhibition.title}{" "}
+              <span>
+                <span
+                  className="exhibition-title-index"
+                  style={{ fontStyle: "italic", marginLeft: "14px" }}
+                >
+                  {exhibition.title}{" "}
+                </span>
+                {exhibition.organization} {exhibition.location}{" "}
+                <TrimDescription exhibition={exhibition} />
               </span>
-              {exhibition.organization} {exhibition.location}{" "}
-              <TrimDescription exhibition={exhibition} />
             </Link>
           </Typography>
 

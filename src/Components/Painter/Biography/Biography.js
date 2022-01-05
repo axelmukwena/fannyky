@@ -8,6 +8,7 @@ import { DeleteOutline, Email, Link, Phone } from "@mui/icons-material";
 import EditDialog from "./EditDialog";
 import { postResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 
 const Biography = function Biography() {
   const painter = useSelector((state) => state.currentPainter.painter);
@@ -28,16 +29,25 @@ const Biography = function Biography() {
     };
   };
 
-  // Create html markup for about section
-  let about = convertContentToHTML(painter.about);
-  if (about) {
-    about = about.replace("###", "<br>");
+  if (!painter) {
+    return <Loading />;
   }
-  about = createMarkup(about);
 
-  return (
-    <div style={{ margin: "20px 15px", width: "100%" }}>
-      <Grid container spacing={2} style={{ width: "70%" }}>
+  let sm = 12;
+  if (painter) {
+    if (painter.images.length > 0) {
+      sm = 9;
+    }
+
+    // Create html markup for about section
+    let about = convertContentToHTML(painter.about);
+    if (about) {
+      about = about.replace("###", "<br>");
+    }
+    about = createMarkup(about);
+
+    return (
+      <Grid container spacing={2} sx={{ padding: "15px" }}>
         <IsLoggedIn />
 
         <Grid item xs={12}>
@@ -60,16 +70,26 @@ const Biography = function Biography() {
         <GetLink painter={painter} />
 
         <Grid item xs={12}>
-          <hr className="horizontal" style={{ marginTop: 0 }} />
+          <hr className="horizontal" style={{ margin: "0" }} />
         </Grid>
 
-        <Grid item style={{ display: "flex" }}>
-          <Typography dangerouslySetInnerHTML={about} />
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          sx={{ marginTop: "0" }}
+          spacing={5}
+        >
           <GetImage painter={painter} />
+
+          <Grid item xs={12} sm={sm}>
+            <Typography dangerouslySetInnerHTML={about} />
+          </Grid>
         </Grid>
       </Grid>
-    </div>
-  );
+    );
+  }
 };
 
 const GetFirstHorizontal = function GetFirstHorizontal({ painter }) {
@@ -142,29 +162,28 @@ const GetImage = function GetImage({ painter }) {
   if (painter.id && painter.images.length > 0) {
     const image = painter.images[0];
     return (
-      <Card
-        id={image.url}
-        className="loaded-files"
-        elevation={0}
-        style={{
-          width: "100%",
-          margin: "15px 0 0 15px",
-          padding: 0,
-          position: "relative",
-          borderRadius: 0,
-        }}
-      >
-        <CardMedia
-          component="img"
-          // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
-          src={`${image.url}`}
-          alt={painter.name}
-          loading="lazy"
-          className="painting-image"
-          style={{ borderRadius: "100%" }}
-        />
-        <DeleteImage painter={painter} index={0} />
-      </Card>
+      <Grid item xs={8} sm={3}>
+        <Card
+          id={image.url}
+          elevation={0}
+          style={{
+            padding: 0,
+            position: "relative",
+            borderRadius: 0,
+          }}
+        >
+          <CardMedia
+            component="img"
+            // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
+            src={`${image.url}`}
+            alt={painter.name}
+            loading="lazy"
+            className="painting-image"
+            style={{ borderRadius: "100%" }}
+          />
+          <DeleteImage painter={painter} index={0} />
+        </Card>
+      </Grid>
     );
   }
   return null;

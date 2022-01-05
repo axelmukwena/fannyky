@@ -1,15 +1,16 @@
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
-  const [awards, setAwards] = useState([]);
+  const [awards, setAwards] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
@@ -20,51 +21,12 @@ const Index = function Index() {
     history.push(url);
   };
 
-  const GetAwards = function GetAwards() {
-    if (awards.length > 0) {
-      return awards.map((award) => (
-        <div key={award.slug} style={{ margin: "25px 25px 0 0" }}>
-          <Card
-            elevation={0}
-            onClick={() => handleClick(`awards/${award.slug}`)}
-            style={{
-              cursor: "pointer",
-              fontSize: 13,
-              width: 200,
-              minHeight: 180,
-              color: "#787878",
-              backgroundColor: "#e7e7e7",
-              padding: 0,
-            }}
-          >
-            <div style={{ padding: 10, backgroundColor: "#787878" }}>
-              <Typography style={{ color: "#f1f1f1", fontWeight: 900 }}>
-                {award.prize}
-              </Typography>
-            </div>
-
-            <div style={{ color: "#525252", padding: 10 }}>
-              <Typography>{award.description}</Typography>
-            </div>
-            <div
-              style={{
-                fontStyle: "italic",
-                color: "#525252",
-                padding: "0 10px 10px 10px",
-              }}
-            >
-              <Typography>— {award.year}</Typography>
-            </div>
-          </Card>
-          <DeleteAward award={award} />
-        </div>
-      ));
-    }
-    return "";
-  };
+  if (!awards) {
+    return <Loading />;
+  }
 
   return (
-    <div className="resource-container" style={{ width: "100%" }}>
+    <div className="resource-container">
       <Typography
         style={{
           fontWeight: 600,
@@ -78,11 +40,60 @@ const Index = function Index() {
       </Typography>
       <CustomHorizontal />
       <IsLoggedIn />
-      <div className="row">
-        <GetAwards />
-      </div>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        spacing={4}
+        sx={{ marginTop: "0" }}
+      >
+        <GetAwards awards={awards} handleClick={handleClick} />
+      </Grid>
     </div>
   );
+};
+
+const GetAwards = function GetAwards({ awards, handleClick }) {
+  if (awards.length > 0) {
+    return awards.map((award) => (
+      <Grid key={award.slug} item xs={12} sm={3} className="award-grid">
+        <Card
+          elevation={0}
+          onClick={() => handleClick(`awards/${award.slug}`)}
+          className="award"
+        >
+          <Typography
+            sx={{
+              color: "#f1f1f1",
+              fontWeight: 900,
+              padding: "10px",
+              backgroundColor: "#787878",
+            }}
+          >
+            {award.prize}
+          </Typography>
+
+          <Typography
+            sx={{ color: "#525252", padding: "10px", textAlign: "left" }}
+          >
+            {award.description}
+          </Typography>
+          <Typography
+            sx={{
+              fontStyle: "italic",
+              color: "#525252",
+              padding: "0 10px 10px 10px",
+            }}
+          >
+            — {award.year}
+          </Typography>
+        </Card>
+        <DeleteAward award={award} />
+      </Grid>
+    ));
+  }
+  return "";
 };
 
 const DeleteAward = function DeleteAward({ award }) {

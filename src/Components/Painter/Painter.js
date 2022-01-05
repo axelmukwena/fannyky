@@ -59,45 +59,54 @@ const Painter = function Painter({ match }) {
     <>
       {!width ? <MobileMenu /> : null}
 
-      <div className="painter">
-        <Grid container spacing={1}>
-          {width ? (
-            <Grid item xs="auto" style={{ width: 180 }}>
-              <DesktopMenu />
-            </Grid>
-          ) : null}
-          <Grid item xs>
-            <div className="content-container">
-              <Switch>
-                <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-                <Route
-                  path={`${url}/exhibitions`}
-                  component={Exhibitions}
-                  key="exhibitions"
-                />
-                <Route
-                  path={`${url}/publications`}
-                  component={Publications}
-                  key="publications"
-                />
-                <Route path={`${url}/talks`} component={Talks} key="talks" />
-                <Route path={`${url}/awards`} component={Awards} key="awards" />
-                <Route
-                  path={`${url}/biography`}
-                  component={Biography}
-                  key="biography"
-                />
-                <Route
-                  path={`${url}/contact`}
-                  component={Contact}
-                  key="contact"
-                />
-                <Route path={url} component={Paintings} key="paintings" />
-              </Switch>
-            </div>
+      <Grid
+        className="painter"
+        direction="row"
+        justifyContent="start"
+        alignItems="start"
+        container
+        spacing={1}
+      >
+        {width ? (
+          <Grid item xs="auto" sx={{ width: 180, padding: 0 }}>
+            <DesktopMenu />
           </Grid>
+        ) : null}
+        <Grid
+          item
+          xs
+          sx={{ paddingLeft: "0 !important", paddingTop: "0 !important" }}
+        >
+          <div className="content-container">
+            <Switch>
+              <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+              <Route
+                path={`${url}/exhibitions`}
+                component={Exhibitions}
+                key="exhibitions"
+              />
+              <Route
+                path={`${url}/publications`}
+                component={Publications}
+                key="publications"
+              />
+              <Route path={`${url}/talks`} component={Talks} key="talks" />
+              <Route path={`${url}/awards`} component={Awards} key="awards" />
+              <Route
+                path={`${url}/biography`}
+                component={Biography}
+                key="biography"
+              />
+              <Route
+                path={`${url}/contact`}
+                component={Contact}
+                key="contact"
+              />
+              <Route path={url} component={Paintings} key="paintings" />
+            </Switch>
+          </div>
         </Grid>
-      </div>
+      </Grid>
     </>
   );
 };

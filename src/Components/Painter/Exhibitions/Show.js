@@ -15,10 +15,11 @@ import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import { capitalize } from "../../../utils/helpers";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 
 const Show = function Show({ match }) {
   const { url } = match;
-  const [exhibition, setExhibition] = useState({});
+  const [exhibition, setExhibition] = useState(null);
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
 
@@ -52,7 +53,11 @@ const Show = function Show({ match }) {
     setCurrent(0);
   };
 
-  if (exhibition.id) {
+  if (!exhibition) {
+    return <Loading />;
+  }
+
+  if (exhibition) {
     let description = convertContentToHTML(exhibition.description);
     description = createMarkup(description);
     const { images } = exhibition;
@@ -72,7 +77,6 @@ const Show = function Show({ match }) {
                 <Card
                   key={image.url}
                   id={image.url}
-                  className="loaded-files"
                   elevation={0}
                   style={{
                     padding: 0,

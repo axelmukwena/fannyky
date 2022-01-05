@@ -86,7 +86,6 @@ const UploadImages = function UploadImages({
         {previews.map((url, index) => (
           <Card
             id={url}
-            className="loaded-files"
             elevation={0}
             key={url}
             style={{

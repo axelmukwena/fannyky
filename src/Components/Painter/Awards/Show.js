@@ -11,10 +11,11 @@ import {
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utils/toast";
+import Loading from "../../Loading/Loading";
 
 const Show = function Show({ match }) {
   const { url } = match;
-  const [award, setAward] = useState({});
+  const [award, setAward] = useState(null);
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
 
@@ -31,6 +32,10 @@ const Show = function Show({ match }) {
     setOpen(false);
     setCurrent(0);
   };
+
+  if (!award) {
+    return <Loading />;
+  }
 
   if (award.id) {
     const { images } = award;
@@ -50,7 +55,6 @@ const Show = function Show({ match }) {
                 <Card
                   key={image.url}
                   id={image.url}
-                  className="loaded-files"
                   elevation={0}
                   style={{
                     padding: 0,

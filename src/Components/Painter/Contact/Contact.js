@@ -2,9 +2,14 @@ import React from "react";
 import { Typography, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Email, Link, Phone } from "@mui/icons-material";
+import Loading from "../../Loading/Loading";
 
 const Contact = function Contact() {
   const painter = useSelector((state) => state.currentPainter.painter);
+
+  if (!painter) {
+    return <Loading />;
+  }
 
   return (
     <div style={{ margin: "20px 15px", width: "100%" }}>
