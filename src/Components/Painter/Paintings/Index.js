@@ -160,7 +160,7 @@ const Index = function Index() {
 };
 
 const Group = function Group({ width, paintings, handleOpenImages }) {
-  let justifyContent = "flex-start";
+  let justifyContent = "space-between";
   let spacing = 3;
   if (!width) {
     justifyContent = "space-evenly";
@@ -204,7 +204,7 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
 
 const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
   return paintings.map((painting) => (
-    <Grid item key={painting.slug}>
+    <Grid item key={painting.slug} sx={{ paddingLeft: "0 !important" }}>
       <CardMedia
         component="img"
         src={`${painting.images[0].url}`}

@@ -43,7 +43,7 @@ const Index = function Index() {
       <Grid
         container
         direction="row"
-        justifyContent="space-between"
+        justifyContent="flex-start"
         alignItems="flex-start"
         spacing={4}
         sx={{ marginTop: "0" }}
@@ -57,7 +57,7 @@ const Index = function Index() {
 const GetAwards = function GetAwards({ awards, handleClick }) {
   if (awards.length > 0) {
     return awards.map((award) => (
-      <Grid key={award.slug} item xs={12} sm={3} className="award-grid">
+      <Grid key={award.slug} item xs={12} sm={3}>
         <Card
           elevation={0}
           onClick={() => handleClick(`awards/${award.slug}`)}
