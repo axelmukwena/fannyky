@@ -196,6 +196,7 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
     <Grid
       item
       key={painting.slug}
+      className="painting-grid-item"
       sx={{
         /* paddingLeft: "0 !important" */
         margin: "20px 70px 0 0",

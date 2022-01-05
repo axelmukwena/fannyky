@@ -57,6 +57,17 @@ and (max-width: 900px) {
   color: #646464 !important;
 }
 
+.painting-grid-item {
+  margin: 25px 80px 0 0;
+}
+
+@media screen 
+and (max-width: 900px) {
+  .painting-grid-item {
+    margin: 0;
+  }
+}
+
 .painting-card-index {
     height: 230px;
     width: 230px;
