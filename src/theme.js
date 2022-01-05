@@ -42,7 +42,7 @@ const theme = createTheme({
         root: {
           fontWeight: 400,
           fontSize: "0.9rem",
-          fontFamily: "gill-sans, sans-serif",
+          fontFamily: "Roboto, sans-serif",
           // fontFamily: "Titillium Web, sans-serif",
         },
       },
