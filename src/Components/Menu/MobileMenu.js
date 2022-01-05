@@ -32,6 +32,13 @@ const MobileMenu = function MobileMenu() {
     document.getElementById("popup-nav").style.display = "none";
   };
 
+  const handleClick = () => {
+    const items = document.getElementsByClassName("menu-item");
+    for (let i = 0; i < items.length; i += 1) {
+      items[i].className = "menu-item";
+    }
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -42,7 +49,7 @@ const MobileMenu = function MobileMenu() {
         >
           <Toolbar className="toolbar">
             <div className="logo" style={{ flexGrow: 1, marginBottom: 0 }}>
-              <Link to={logoUrl} className="">
+              <Link to={logoUrl} onClick={handleClick} className="">
                 <Typography
                   style={{
                     fontWeight: 900,

@@ -27,11 +27,18 @@ const DesktopMenu = function DesktopMenu() {
     };
   }, []);
 
+  const handleClick = () => {
+    const items = document.getElementsByClassName("menu-item");
+    for (let i = 0; i < items.length; i += 1) {
+      items[i].className = "menu-item";
+    }
+  };
+
   if (width > 900) {
     return (
       <Paper id="sidemenu" elevation={0} className="sidemenu">
         <div className="logo">
-          <Link to={logoUrl} className="">
+          <Link to={logoUrl} onClick={handleClick} className="">
             <Typography
               style={{
                 fontWeight: 900,
