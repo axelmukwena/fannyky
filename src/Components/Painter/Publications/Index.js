@@ -161,6 +161,7 @@ const TrimDescription = function TrimDescription({ publication }) {
       return (
         <div>
           <Typography
+            className="justify"
             style={{ marginTop: 20 }}
             dangerouslySetInnerHTML={description}
           />
@@ -169,6 +170,7 @@ const TrimDescription = function TrimDescription({ publication }) {
     }
     return (
       <Typography
+        className="justify"
         style={{ marginTop: 20 }}
         dangerouslySetInnerHTML={description}
       />

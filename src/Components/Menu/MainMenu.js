@@ -17,7 +17,7 @@ const MainMenu = function MainMenu({ handleClose }) {
     for (let i = 0; i < items.length; i += 1) {
       items[i].className = "menu-item";
     }
-    const current = e.target;
+    const current = document.getElementById(url);
     current.className = "menu-item active";
 
     handleClose();
@@ -29,7 +29,7 @@ const MainMenu = function MainMenu({ handleClose }) {
       <>
         <div>
           <Link to="/" style={{ textDecoration: "none" }}>
-            <Typography>
+            <Typography sx={{ padding: "5px 0" }}>
               <span className="menu-item">Home</span>
             </Typography>
           </Link>
@@ -42,7 +42,9 @@ const MainMenu = function MainMenu({ handleClose }) {
             style={{ textDecoration: "none" }}
           >
             <Typography sx={{ padding: "5px 0" }}>
-              <span className="menu-item">{item.name}</span>
+              <span id={item.slug} className="menu-item">
+                {item.name}
+              </span>
             </Typography>
           </Link>
         ))}

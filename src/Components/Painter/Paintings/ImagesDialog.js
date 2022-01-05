@@ -185,12 +185,17 @@ const PaintingsDialogContent = function PaintingsDialogContent({
           By {painting.painter.name}
           <DateCreated />
         </Typography>
-        <Typography style={{ fontSize: 14, color: "#525252" }}>
-          {painting.abstract}
-        </Typography>
-        <Typography style={{ fontSize: 14, color: "#525252" }}>
-          {painting.dimension}
-        </Typography>
+        {painting.abstract && (
+          <Typography style={{ fontSize: 14, color: "#525252" }}>
+            Media: {painting.abstract}
+          </Typography>
+        )}
+
+        {painting.dimension && (
+          <Typography style={{ fontSize: 14, color: "#525252" }}>
+            Dimensions: {painting.dimension}
+          </Typography>
+        )}
 
         <GetDescription painting={painting} />
       </div>
@@ -231,6 +236,7 @@ const GetDescription = function GetDescription({ painting }) {
         <CustomHorizontal />
 
         <Typography
+          className="justify"
           style={{ marginTop: 5, fontSize: 14 }}
           dangerouslySetInnerHTML={description}
         />

@@ -27,10 +27,6 @@ and (max-width: 900px) {
   position: relative;
 }
 
-.show-content {
-  margin: 20px;
-}
-
 .painting {
   margin: 25px 100px 0 0;
   min-height: 230px;
@@ -58,7 +54,7 @@ and (max-width: 900px) {
 }
 
 .painting-grid-item {
-  margin: 25px 80px 0 0;
+  margin: 40px 80px 30px 0;
 }
 
 @media screen 
@@ -83,7 +79,7 @@ and (min-width: 900px) {
     height: 120px;
     width: 120px;
     cursor: pointer;
-    border: 5px solid #e3e3e3;
+    border: 5px solid rgb(241, 241, 241);
     box-shadow: rgb(28 28 28 / 24%) 2px 2px 4px 0px;
   }
 
@@ -111,7 +107,7 @@ and (max-width: 899px) {
 }
 
 .painting-title-index-typography {
-  margin: 8px;
+  margin: 8px 8px 0 8px;
   width: 120px;
 }
 
@@ -236,4 +232,9 @@ and (max-width: 899px) {
   color: #787878;
   background-color: #e7e7e7;
   padding: 0;
+}
+
+.justify,
+.justify p {
+  text-align: justify;
 }

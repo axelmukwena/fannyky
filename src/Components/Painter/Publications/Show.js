@@ -36,37 +36,33 @@ const Show = function Show({ match }) {
         <Grid container spacing={2}>
           <GetImages publication={publication} />
 
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            sx={{ paddingLeft: "0 !important", paddingTop: "0 !important" }}
-          >
-            <div className="show-content">
-              <Typography
-                style={{
-                  fontWeight: 900,
-                  fontSize: "1.4rem",
-                  fontFamily: "Roboto",
-                  flex: 1,
-                }}
-              >
-                {publication.title}
-              </Typography>
+          <Grid item xs={12} sm={publication.images.length > 0 ? 6 : 12}>
+            <Typography
+              style={{
+                fontWeight: 900,
+                fontSize: "1.4rem",
+                fontFamily: "Roboto",
+                flex: 1,
+              }}
+            >
+              {publication.title}
+            </Typography>
 
-              <Typography style={{}}>By {publication.painter.name}</Typography>
+            <Typography>By {publication.painter.name}</Typography>
 
-              <CustomHorizontal />
+            <CustomHorizontal />
 
-              <Typography style={{}}>
-                {publication.organization}, {publication.location}
-              </Typography>
+            <Typography>
+              {publication.organization}, {publication.location}
+            </Typography>
 
-              <FormatLink publication={publication} />
-              <GetYear publication={publication} />
+            <FormatLink publication={publication} />
 
-              <GetDescription publication={publication} />
-            </div>
+            {publication.year && (
+              <Typography>Published: {publication.year}</Typography>
+            )}
+
+            <GetDescription publication={publication} />
           </Grid>
         </Grid>
       </>
@@ -139,13 +135,6 @@ const GetImages = function GetImages({ publication }) {
   );
 };
 
-const GetYear = function GetYear({ publication }) {
-  if (publication.year) {
-    return <Typography>Published: {publication.year}</Typography>;
-  }
-  return null;
-};
-
 const GetDescription = function GetDescription({ publication }) {
   const convertContentToHTML = (content) => {
     if (content) {
@@ -171,6 +160,7 @@ const GetDescription = function GetDescription({ publication }) {
         <CustomHorizontal />
 
         <Typography
+          className="justify"
           style={{ marginTop: 20 }}
           dangerouslySetInnerHTML={description}
         />

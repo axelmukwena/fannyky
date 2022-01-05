@@ -54,11 +54,11 @@ const Show = function Show({ match }) {
               elevation={0}
               style={{
                 padding: 0,
-                margin: 20,
+                margin: "0 20px 20px 0",
                 position: "relative",
                 borderRadius: 0,
-                border: "7px solid #e3e3e3",
-                boxShadow: "rgb(28 28 28 / 24%) 1px 1px 1px 0px",
+                // border: "7px solid #e3e3e3",
+                // boxShadow: "rgb(28 28 28 / 24%) 1px 1px 1px 0px",
               }}
             >
               <CardMedia
@@ -85,28 +85,30 @@ const Show = function Show({ match }) {
           handleClose={handleClose}
           show={false}
         />
-        <div className="show-content" style={{ width: "80%" }}>
-          <Typography
-            style={{
-              fontWeight: 900,
-              fontSize: "1.4rem",
-              fontFamily: "Roboto",
-              flex: 1,
-            }}
-          >
-            {painting.title}
-          </Typography>
+        <Typography
+          style={{
+            fontWeight: 900,
+            fontSize: "1.4rem",
+            fontFamily: "Roboto",
+            flex: 1,
+          }}
+        >
+          {painting.title}
+        </Typography>
 
-          <Typography>By {painting.painter.name}</Typography>
+        <Typography>By {painting.painter.name}</Typography>
 
-          <CustomHorizontal />
+        <CustomHorizontal />
 
-          <DateCreated painting={painting} />
-          <Abstract painting={painting} />
-          <Dimension painting={painting} />
+        {painting.date_created && (
+          <Typography>Created {painting.date_created.split("-")[0]}</Typography>
+        )}
 
-          <GetDescription painting={painting} />
-        </div>
+        {painting.abstract && <Typography>{painting.abstract}</Typography>}
+
+        {painting.dimension && <Typography>{painting.dimension}</Typography>}
+
+        <GetDescription painting={painting} />
       </div>
     );
   }
@@ -138,6 +140,7 @@ const GetDescription = function GetDescription({ painting }) {
         <CustomHorizontal />
 
         <Typography
+          className="justify"
           style={{ marginTop: 20 }}
           dangerouslySetInnerHTML={description}
         />
@@ -234,27 +237,6 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
         />
       </div>
     );
-  }
-  return "";
-};
-
-const DateCreated = function DateCreated({ painting }) {
-  if (painting.date_created) {
-    return <Typography>{painting.date_created.split("-")[0]}</Typography>;
-  }
-  return "";
-};
-
-const Abstract = function Abstract({ painting }) {
-  if (painting.abstract) {
-    return <Typography>{painting.abstract}</Typography>;
-  }
-  return "";
-};
-
-const Dimension = function Dimension({ painting }) {
-  if (painting.dimension) {
-    return <Typography>{painting.dimension}</Typography>;
   }
   return "";
 };

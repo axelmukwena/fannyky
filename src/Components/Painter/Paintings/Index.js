@@ -215,10 +215,50 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
         <Link
           to={`${painting.painter.slug}/works/${painting.slug}`}
           className="painting-title-index"
+          style={{ fontWeight: 500 }}
         >
           {painting.title}
         </Link>
       </Typography>
+
+      {painting.date_created && (
+        <Typography
+          sx={{
+            fontWeight: 400,
+            fontSize: "12px",
+            margin: "0 8px",
+            width: "120px",
+          }}
+        >
+          {painting.date_created.split("-")[0]}
+        </Typography>
+      )}
+
+      {painting.abstract && (
+        <Typography
+          sx={{
+            fontWeight: 400,
+            fontSize: "12px",
+            margin: "0 8px",
+            width: "120px",
+          }}
+        >
+          {painting.abstract}
+        </Typography>
+      )}
+
+      {painting.dimension && (
+        <Typography
+          sx={{
+            fontWeight: 400,
+            fontSize: "12px",
+            margin: "0 8px",
+            width: "120px",
+          }}
+        >
+          {painting.dimension}
+        </Typography>
+      )}
     </Grid>
   ));
 };

@@ -13,8 +13,10 @@ const Home = function Home() {
   // Reverse the painters entered in the database
   function parsePainters(data) {
     const images = [budaBackground, fannyBackground];
+    const captions = ["Realism", "Abstractionism"];
     for (let i = 0; i < data.length; i += 1) {
       data[i].image = images[i];
+      data[i].caption = captions[i];
     }
 
     setPainters(data);
@@ -83,19 +85,39 @@ const Painter = function Painter({ painter }) {
             },
           }}
         >
-          <Typography
-            sx={{
-              fontWeight: 900,
-              fontSize: "1.5rem",
-              "@media (min-width: 600px)": {
-                fontSize: "2rem",
-              },
-              fontFamily: "Roboto",
-              color: "white",
-            }}
-          >
-            {painter.name}
-          </Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography
+                sx={{
+                  fontWeight: 900,
+                  fontSize: "1.5rem",
+                  "@media (min-width: 600px)": {
+                    fontSize: "2rem",
+                  },
+                  fontFamily: "Roboto",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {painter.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                sx={{
+                  fontWeight: 500,
+                  fontSize: "1rem",
+                  "@media (min-width: 600px)": {
+                    fontSize: "1rem",
+                  },
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {painter.caption}
+              </Typography>
+            </Grid>
+          </Grid>
         </Button>
       </Link>
     );

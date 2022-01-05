@@ -47,7 +47,7 @@ const Biography = function Biography() {
     about = createMarkup(about);
 
     return (
-      <Grid container spacing={2} sx={{ padding: "15px" }}>
+      <Grid container spacing={2}>
         <IsLoggedIn />
 
         <Grid item xs={12}>
@@ -63,11 +63,63 @@ const Biography = function Biography() {
           </Typography>
         </Grid>
 
-        <GetFirstHorizontal painter={painter} />
+        {(painter.email || painter.phone || painter.link) && (
+          <Grid item xs={12}>
+            <hr className="horizontal" />
+          </Grid>
+        )}
 
-        <GetEmail painter={painter} />
-        <GetPhone painter={painter} />
-        <GetLink painter={painter} />
+        {painter.email && (
+          <Grid
+            item
+            style={{
+              width: "fit-content",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Email style={{ fontSize: 19, marginRight: 7 }} />
+            <Typography>{painter.email}</Typography>
+          </Grid>
+        )}
+
+        {painter.phone && (
+          <Grid
+            item
+            style={{
+              width: "fit-content",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            |&nbsp;&nbsp;&nbsp;
+            <Phone style={{ fontSize: 19, marginRight: 7 }} />
+            <Typography>{painter.phone}</Typography>
+          </Grid>
+        )}
+
+        {painter.link && (
+          <Grid
+            item
+            style={{
+              width: "fit-content",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            |&nbsp;&nbsp;&nbsp;
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Link style={{ fontSize: 19, marginRight: 7 }} />
+            <a
+              href={painter.link}
+              target="_blank"
+              className="text-color"
+              rel="noreferrer"
+            >
+              <Typography>Professional Profile</Typography>
+            </a>
+          </Grid>
+        )}
 
         <Grid item xs={12}>
           <hr className="horizontal" style={{ margin: "0" }} />
@@ -84,78 +136,12 @@ const Biography = function Biography() {
           <GetImage painter={painter} />
 
           <Grid item xs={12} sm={sm}>
-            <Typography dangerouslySetInnerHTML={about} />
+            <Typography className="justify" dangerouslySetInnerHTML={about} />
           </Grid>
         </Grid>
       </Grid>
     );
   }
-};
-
-const GetFirstHorizontal = function GetFirstHorizontal({ painter }) {
-  if (painter.email || painter.phone || painter.link) {
-    return (
-      <Grid item xs={12}>
-        <hr className="horizontal" />
-      </Grid>
-    );
-  }
-  return null;
-};
-
-const GetEmail = function GetEmail({ painter }) {
-  if (painter.email) {
-    return (
-      <Grid
-        item
-        style={{ width: "fit-content", display: "flex", alignItems: "center" }}
-      >
-        <Email style={{ fontSize: 19, marginRight: 7 }} />
-        <Typography>{painter.email}</Typography>
-      </Grid>
-    );
-  }
-  return null;
-};
-
-const GetPhone = function GetPhone({ painter }) {
-  if (painter.phone) {
-    return (
-      <Grid
-        item
-        style={{ width: "fit-content", display: "flex", alignItems: "center" }}
-      >
-        |&nbsp;&nbsp;&nbsp;
-        <Phone style={{ fontSize: 19, marginRight: 7 }} />
-        <Typography>{painter.phone}</Typography>
-      </Grid>
-    );
-  }
-  return null;
-};
-
-const GetLink = function GetLink({ painter }) {
-  if (painter.link) {
-    return (
-      <Grid
-        item
-        style={{ width: "fit-content", display: "flex", alignItems: "center" }}
-      >
-        |&nbsp;&nbsp;&nbsp;
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <Link style={{ fontSize: 19, marginRight: 7 }} />
-        <a
-          href={painter.link}
-          target="_blank"
-          className="text-color"
-          rel="noreferrer"
-        >
-          <Typography>Professional Profile</Typography>
-        </a>
-      </Grid>
-    );
-  }
-  return null;
 };
 
 const GetImage = function GetImage({ painter }) {

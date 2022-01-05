@@ -118,7 +118,10 @@ const GetExhibitions = function GetExhibitions({ exhibitions }) {
         }}
       >
         <div style={{ width: "100%" }}>
-          <Typography style={{ paddingLeft: 50, textIndent: -47 }}>
+          <Typography
+            className="justify"
+            style={{ paddingLeft: 50, textIndent: -47 }}
+          >
             <Link
               className="exhibition-title-index-all"
               to={`exhibitions/${exhibition.slug}`}

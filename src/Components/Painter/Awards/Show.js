@@ -16,12 +16,53 @@ import Loading from "../../Loading/Loading";
 const Show = function Show({ match }) {
   const { url } = match;
   const [award, setAward] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     getResource(url, setAward);
   }, [url]);
+
+  if (!award) {
+    return <Loading />;
+  }
+
+  if (award.id) {
+    return (
+      <div style={{}}>
+        <IsLoggedIn award={award} />
+        <Grid container spacing={2}>
+          <GetImages award={award} />
+
+          <Grid item xs={12} sm={award.images.length > 0 ? 6 : 12}>
+            <Typography
+              style={{
+                fontWeight: 900,
+                fontSize: "1.4rem",
+                fontFamily: "Roboto",
+                flex: 1,
+              }}
+            >
+              {award.prize}
+            </Typography>
+
+            <CustomHorizontal />
+
+            <Typography>Artist: {award.painter.name}</Typography>
+
+            <Typography style={{ marginTop: 8 }}>
+              {award.year} — {award.description}
+            </Typography>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+
+  return "";
+};
+
+const GetImages = function GetImages({ award }) {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState(0);
 
   const handleOpen = (index) => {
     setCurrent(index);
@@ -33,85 +74,56 @@ const Show = function Show({ match }) {
     setCurrent(0);
   };
 
-  if (!award) {
-    return <Loading />;
+  const { images } = award;
+
+  // console.log()
+  if (images.length <= 0) {
+    return null;
   }
 
-  if (award.id) {
-    const { images } = award;
-    let width = "45%";
-    let padding = "16px 0 0 16px";
-    if (images.length === 0) {
-      width = "70%";
-      padding = "0";
-    }
-    return (
-      <div style={{}}>
-        <IsLoggedIn award={award} />
-        <Grid container spacing={2}>
-          <Grid item style={{ width, padding }}>
-            <div className="row">
-              {images.map((image, index) => (
-                <Card
-                  key={image.url}
-                  id={image.url}
-                  elevation={0}
-                  style={{
-                    padding: 0,
-                    margin: "20px 20px 20px 20px",
-                    position: "relative",
-                    borderRadius: 0,
-                  }}
-                >
-                  <CardMedia
-                    src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
-                    alt={award.prize}
-                    loading="lazy"
-                    component="img"
-                    onClick={() => handleOpen(index)}
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  />
-                  <DeleteImage award={award} index={index} />
-                </Card>
-              ))}
-            </div>
-            <ImagesDialog
-              award={award}
-              current={current}
-              setCurrent={setCurrent}
-              open={open}
-              handleClose={handleClose}
+  return (
+    <Grid
+      item
+      xs={12}
+      sm={6}
+      sx={{ paddingLeft: "0 !important", paddingTop: "0 !important" }}
+    >
+      <div className="row">
+        {images.map((image, index) => (
+          <Card
+            key={image.url}
+            id={image.url}
+            elevation={0}
+            style={{
+              padding: 0,
+              margin: "20px 20px 20px 20px",
+              position: "relative",
+              borderRadius: 0,
+            }}
+          >
+            <CardMedia
+              src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+              alt={award.prize}
+              loading="lazy"
+              component="img"
+              onClick={() => handleOpen(index)}
+              style={{
+                cursor: "pointer",
+              }}
             />
-          </Grid>
-          <Grid item style={{ width }}>
-            <div className="show-content">
-              <Typography
-                style={{
-                  fontWeight: 900,
-                  fontSize: "1.4rem",
-                  fontFamily: "Roboto",
-                  flex: 1,
-                }}
-              >
-                {award.prize}
-              </Typography>
-
-              <CustomHorizontal />
-
-              <Typography>Artist: {award.painter.name}</Typography>
-
-              <Typography style={{ marginTop: 8 }}>
-                {award.year} — {award.description}
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
+            <DeleteImage award={award} index={index} />
+          </Card>
+        ))}
       </div>
-    );
-  }
-  return "";
+      <ImagesDialog
+        award={award}
+        current={current}
+        setCurrent={setCurrent}
+        open={open}
+        handleClose={handleClose}
+      />
+    </Grid>
+  );
 };
 
 const DeleteImage = function DeleteImage({ award, index }) {

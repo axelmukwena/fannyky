@@ -20,8 +20,6 @@ import Loading from "../../Loading/Loading";
 const Show = function Show({ match }) {
   const { url } = match;
   const [exhibition, setExhibition] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     getResource(url, setExhibition);
@@ -43,6 +41,68 @@ const Show = function Show({ match }) {
     };
   };
 
+  if (!exhibition) {
+    return <Loading />;
+  }
+
+  if (exhibition) {
+    let description = convertContentToHTML(exhibition.description);
+    description = createMarkup(description);
+
+    return (
+      <div style={{}}>
+        <IsLoggedIn exhibition={exhibition} />
+        <Grid container spacing={2}>
+          <GetImages exhibition={exhibition} />
+
+          <Grid item xs={12} sm={exhibition.images.length > 0 ? 6 : 12}>
+            <Typography
+              style={{
+                fontWeight: 900,
+                fontSize: "1.4rem",
+                fontFamily: "Roboto",
+                flex: 1,
+              }}
+            >
+              {exhibition.title}
+            </Typography>
+
+            <CustomHorizontal />
+
+            <Typography style={{}}>
+              Artist: {exhibition.painter.name}
+            </Typography>
+            <Capitalize exhibition={exhibition} />
+            <Typography style={{}}>
+              Date: {exhibition.start_date}
+              <EndDate exhibition={exhibition} />
+            </Typography>
+
+            <FormatLink exhibition={exhibition} />
+
+            <CustomHorizontal />
+
+            <Typography style={{}}>
+              {exhibition.organization} {exhibition.location}
+            </Typography>
+
+            <Typography
+              className="justify"
+              style={{ marginTop: 20 }}
+              dangerouslySetInnerHTML={description}
+            />
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+  return "";
+};
+
+const GetImages = function GetImages({ exhibition }) {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState(0);
+
   const handleOpen = (index) => {
     setCurrent(index);
     setOpen(true);
@@ -53,103 +113,56 @@ const Show = function Show({ match }) {
     setCurrent(0);
   };
 
-  if (!exhibition) {
-    return <Loading />;
+  const { images } = exhibition;
+
+  // console.log()
+  if (images.length <= 0) {
+    return null;
   }
 
-  if (exhibition) {
-    let description = convertContentToHTML(exhibition.description);
-    description = createMarkup(description);
-    const { images } = exhibition;
-    let width = "45%";
-    let padding = "16px 0 0 16px";
-    if (images.length === 0) {
-      width = "70%";
-      padding = "0";
-    }
-    return (
-      <div style={{}}>
-        <IsLoggedIn exhibition={exhibition} />
-        <Grid container spacing={2}>
-          <Grid item style={{ width, padding }}>
-            <div className="row">
-              {images.map((image, index) => (
-                <Card
-                  key={image.url}
-                  id={image.url}
-                  elevation={0}
-                  style={{
-                    padding: 0,
-                    margin: "20px 20px 20px 20px",
-                    position: "relative",
-                    borderRadius: 0,
-                  }}
-                >
-                  <CardMedia
-                    src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
-                    alt={exhibition.title}
-                    loading="lazy"
-                    component="img"
-                    onClick={() => handleOpen(index)}
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  />
-                  <DeleteImage exhibition={exhibition} index={index} />
-                </Card>
-              ))}
-            </div>
-            <ImagesDialog
-              exhibition={exhibition}
-              current={current}
-              setCurrent={setCurrent}
-              open={open}
-              handleClose={handleClose}
+  return (
+    <Grid
+      item
+      xs={12}
+      sm={6}
+      sx={{ paddingLeft: "0 !important", paddingTop: "0 !important" }}
+    >
+      <div className="row">
+        {images.map((image, index) => (
+          <Card
+            key={image.url}
+            id={image.url}
+            elevation={0}
+            style={{
+              padding: 0,
+              margin: "20px 20px 20px 20px",
+              position: "relative",
+              borderRadius: 0,
+            }}
+          >
+            <CardMedia
+              src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+              alt={exhibition.title}
+              loading="lazy"
+              component="img"
+              onClick={() => handleOpen(index)}
+              style={{
+                cursor: "pointer",
+              }}
             />
-          </Grid>
-          <Grid item style={{ width }}>
-            <div className="show-content">
-              <Typography
-                style={{
-                  fontWeight: 900,
-                  fontSize: "1.4rem",
-                  fontFamily: "Roboto",
-                  flex: 1,
-                }}
-              >
-                {exhibition.title}
-              </Typography>
-
-              <CustomHorizontal />
-
-              <Typography style={{}}>
-                Artist: {exhibition.painter.name}
-              </Typography>
-              <Capitalize exhibition={exhibition} />
-              <Typography style={{}}>
-                Date: {exhibition.start_date}
-                <EndDate exhibition={exhibition} />
-              </Typography>
-
-              <FormatLink exhibition={exhibition} />
-
-              <CustomHorizontal />
-
-              <Typography style={{}}>
-                {exhibition.organization} {exhibition.location}
-              </Typography>
-
-              <Typography
-                style={{ marginTop: 20 }}
-                dangerouslySetInnerHTML={description}
-              />
-            </div>
-          </Grid>
-        </Grid>
+            <DeleteImage exhibition={exhibition} index={index} />
+          </Card>
+        ))}
       </div>
-    );
-  }
-  return "";
+      <ImagesDialog
+        exhibition={exhibition}
+        current={current}
+        setCurrent={setCurrent}
+        open={open}
+        handleClose={handleClose}
+      />
+    </Grid>
+  );
 };
 
 const Capitalize = function Capitalize({ exhibition }) {
