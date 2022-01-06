@@ -44,6 +44,10 @@ const ImageDialog = function ImageDialog({
       setWidth(`${window.innerWidth - 30}px`);
       setMaxHeight(`${window.innerWidth - 30}px`);
     }
+
+    if (resource && resource.images.length <= 1) {
+      setJustifyContent("center");
+    }
   };
 
   const showContent = () => {
@@ -64,12 +68,6 @@ const ImageDialog = function ImageDialog({
   };
 
   useEffect(() => {
-    if (resource && resource.images.length > 1) {
-      setJustifyContent("space-between");
-    } else {
-      setJustifyContent("center");
-    }
-
     handleResize();
     window.addEventListener("resize", handleResize);
 
