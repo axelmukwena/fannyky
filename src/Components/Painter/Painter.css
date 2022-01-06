@@ -225,10 +225,16 @@ and (max-width: 899px) {
 
 .award {
   cursor: pointer;
-  min-height: 200px;
+  min-height: fit-content;
   color: #787878;
   background-color: #e7e7e7;
   padding: 0;
+}
+
+@media (min-width: 600px) {
+  .award {
+    min-height: 200px;
+  }
 }
 
 .justify,

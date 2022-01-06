@@ -67,6 +67,7 @@ const Show = function Show({ match }) {
             >
               {images.map((image, index) => (
                 <Grid
+                  key={image.url}
                   item
                   xs={12}
                   sm={4}
@@ -79,7 +80,6 @@ const Show = function Show({ match }) {
                 >
                   <CardMedia
                     elevation={0}
-                    key={image.url}
                     id={image.url}
                     src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
                     alt={painting.title}

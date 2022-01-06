@@ -28,23 +28,18 @@ const ImageDialog = function ImageDialog({
 }) {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState("fit-content");
-  const [justifyContent, setJustifyContent] = useState("center");
+  const [widthValue, setWidthValue] = useState(0);
 
   // On screen width changes
   const handleResize = () => {
     setHeight(window.innerHeight - 34);
+    setWidthValue(window.innerWidth);
 
     if (window.innerWidth > 900) {
-      setJustifyContent("space-between");
       setWidth("fit-content");
     } else {
-      setJustifyContent("center");
-      setWidth(`100%`);
+      setWidth("100%");
       setHeight("100%");
-    }
-
-    if (resource && resource.images.length <= 1) {
-      setJustifyContent("center");
     }
   };
 
@@ -93,6 +88,11 @@ const ImageDialog = function ImageDialog({
 
   // console.log(painting);
   if (resource && resource.images.length > 0) {
+    let justifyContent = "center";
+    if (widthValue > 900 && !(resource.images.length === 1)) {
+      justifyContent = "space-between";
+    }
+
     return (
       <Dialog
         fullScreen
