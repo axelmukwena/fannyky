@@ -47,7 +47,7 @@ const DesktopMenu = function DesktopMenu() {
                 flex: 1,
               }}
             >
-              {logoName.toLowerCase()}
+              {logoName}
             </Typography>
           </Link>
         </div>

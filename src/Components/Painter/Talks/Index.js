@@ -152,7 +152,7 @@ const DeleteTalk = function DeleteTalk({ talk }) {
     deleteResource(`${path}`, handleImagesResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <Button
         variant="contained"
@@ -179,7 +179,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <div className="row" style={{ marginTop: 25 }}>
         <Button

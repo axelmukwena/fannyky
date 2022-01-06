@@ -30,7 +30,7 @@ const ImageDialog = function ImageDialog({
 
   // On screen width changes
   const handleResize = () => {
-    setHeight(window.innerHeight - 30);
+    setHeight(window.innerHeight - 34);
   };
 
   const showContent = () => {
@@ -85,7 +85,7 @@ const ImageDialog = function ImageDialog({
         onClose={handleClose}
         BackdropProps={{
           style: {
-            opacity: 0.8,
+            opacity: 0.94,
             backgroundColor: "white",
           },
         }}
@@ -99,7 +99,7 @@ const ImageDialog = function ImageDialog({
         }}
       >
         <DialogActions
-          style={{
+          sx={{
             width: "fit-content",
             right: 0,
             padding: "0 13px",
@@ -108,57 +108,68 @@ const ImageDialog = function ImageDialog({
           }}
         >
           <Button
-            style={{ color: "#cfcfcf", backgroundColor: "transparent" }}
+            sx={{ color: "#cfcfcf", backgroundColor: "transparent" }}
             onClick={handleClose}
           >
             <Close />
           </Button>
         </DialogActions>
-        <Grid container spacing={0}>
+        <Grid
+          container
+          direction="row"
+          justifyContent={
+            painting.images.length > 1 ? "space-between" : "center"
+          }
+          alignItems="center"
+          spacing={0}
+          sx={{ height: "100%" }}
+        >
           {painting.images.length > 1 && (
-            <Button
-              onClick={() => goBack(painting.images)}
-              style={{
-                color: "#cfcfcf",
-                backgroundColor: "transparent",
-                float: "left",
-              }}
-            >
-              <ArrowBackIosIcon />
-            </Button>
+            <Grid xs="auto" item sx={{ display: { xs: "none", sm: "block" } }}>
+              <Button
+                onClick={() => goBack(painting.images)}
+                sx={{
+                  color: "#a1a1a1",
+                  backgroundColor: "transparent",
+                  float: "left",
+                }}
+              >
+                <ArrowBackIosIcon />
+              </Button>
+            </Grid>
           )}
-          <Grid item xs onClick={handleClose} />
-          <Grid item xs="auto" style={{ maxWidth: "80%" }}>
+          <Grid item xs={12} sm={10} sx={{ alignSelf: "center" }}>
             <Card
               onMouseOver={() => showContent()}
               onMouseEnter={() => showContent()}
               onMouseLeave={() => hideContent()}
               elevation={0}
-              style={{ padding: 0, borderRadius: 0 }}
+              sx={{ padding: 0, borderRadius: 0 }}
             >
               <div className="dialog-image">
                 <CardMedia
                   component="img"
                   src={painting.images[current].url}
                   alt={painting.title}
-                  height={height}
+                  sx={{ maxHeight: height }}
                 />
               </div>
               <PaintingsDialogContent show={show} painting={painting} />
             </Card>
           </Grid>
-          <Grid item xs onClick={handleClose} />
           {painting.images.length > 1 && (
-            <Button
-              onClick={() => goForward(painting.images)}
-              style={{
-                color: "#cfcfcf",
-                backgroundColor: "transparent",
-                float: "right",
-              }}
-            >
-              <ArrowForwardIosIcon />
-            </Button>
+            <Grid xs="auto" item sx={{ display: { xs: "none", sm: "block" } }}>
+              <Button
+                onClick={() => goForward(painting.images)}
+                sx={{
+                  color: "#a1a1a1",
+                  backgroundColor: "transparent",
+                  float: "right",
+                }}
+              >
+                <ArrowForwardIosIcon />
+              </Button>
+            </Grid>
           )}
         </Grid>
       </Dialog>
@@ -181,18 +192,18 @@ const PaintingsDialogContent = function PaintingsDialogContent({
           {painting.title}
         </Link>
 
-        <Typography style={{ marginTop: 10, fontSize: 14, color: "#525252" }}>
+        <Typography sx={{ marginTop: 10, fontSize: 14, color: "#525252" }}>
           By {painting.painter.name}
           <DateCreated />
         </Typography>
         {painting.abstract && (
-          <Typography style={{ fontSize: 14, color: "#525252" }}>
+          <Typography sx={{ fontSize: 14, color: "#525252" }}>
             Media: {painting.abstract}
           </Typography>
         )}
 
         {painting.dimension && (
-          <Typography style={{ fontSize: 14, color: "#525252" }}>
+          <Typography sx={{ fontSize: 14, color: "#525252" }}>
             Dimensions: {painting.dimension}
           </Typography>
         )}
@@ -237,7 +248,7 @@ const GetDescription = function GetDescription({ painting }) {
 
         <Typography
           className="justify"
-          style={{ marginTop: 5, fontSize: 14 }}
+          sx={{ marginTop: 5, fontSize: 14 }}
           dangerouslySetInnerHTML={description}
         />
       </div>

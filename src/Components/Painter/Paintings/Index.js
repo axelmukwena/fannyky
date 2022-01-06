@@ -8,7 +8,6 @@ import Toast from "../../../utils/toast";
 import ImagesDialog from "./ImagesDialog";
 import NewDialog from "./NewDialog";
 import Loading from "../../Loading/Loading";
-import CustomHorizontal from "../CustomHorizontal";
 
 const Index = function Index() {
   const { path } = useRouteMatch();
@@ -158,20 +157,17 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
   if (paintings.length > 0) {
     const year = paintings[0].rankdate.split("-")[0];
     return (
-      <Box sx={{ marginBottom: "70px" }}>
+      <Box sx={{ marginBottom: "50px" }}>
         <Typography
           style={{
             fontWeight: 600,
             fontSize: "1rem",
             fontFamily: "Roboto",
-            margin: "0 8px 20px",
+            margin: "0 0 0 5px",
           }}
-          className="page-title"
         >
           {year} Works
         </Typography>
-
-        <CustomHorizontal />
 
         <Grid
           direction="row"
@@ -193,15 +189,7 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
 
 const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
   return paintings.map((painting) => (
-    <Grid
-      item
-      key={painting.slug}
-      className="painting-grid-item"
-      sx={{
-        /* paddingLeft: "0 !important" */
-        margin: "20px 70px 0 0",
-      }}
-    >
+    <Grid item key={painting.slug} className="painting-grid-item">
       <CardMedia
         component="img"
         src={`${painting.images[0].url}`}
@@ -277,7 +265,7 @@ const DeletePainting = function DeletePainting({ painting }) {
     deleteResource(`${path}`, handleImagesResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeletePainting()}
@@ -313,7 +301,7 @@ const IsLoggedIn = function IsLoggedIn() {
 
   const newOpenCategory = () => {};
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <div className="row" style={{ marginTop: 25 }}>
         <Button

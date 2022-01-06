@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
-import { DeleteOutline, Email, Link, Phone } from "@mui/icons-material";
+import { DeleteOutline } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import EditDialog from "./EditDialog";
 import { postResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
@@ -36,7 +37,7 @@ const Biography = function Biography() {
   let sm = 12;
   if (painter) {
     if (painter.images.length > 0) {
-      sm = 9;
+      sm = 7;
     }
 
     // Create html markup for about section
@@ -50,93 +51,64 @@ const Biography = function Biography() {
       <Grid container spacing={2}>
         <IsLoggedIn />
 
-        <Grid item xs={12}>
-          <Typography
-            style={{
-              fontWeight: 600,
-              fontSize: "1rem",
-              fontFamily: "Roboto",
-            }}
-            className="page-title"
-          >
-            Biography
-          </Typography>
-        </Grid>
-
-        {(painter.email || painter.phone || painter.link) && (
-          <Grid item xs={12}>
-            <hr className="horizontal" />
-          </Grid>
-        )}
-
-        {painter.email && (
-          <Grid
-            item
-            style={{
-              width: "fit-content",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Email style={{ fontSize: 19, marginRight: 7 }} />
-            <Typography>{painter.email}</Typography>
-          </Grid>
-        )}
-
-        {painter.phone && (
-          <Grid
-            item
-            style={{
-              width: "fit-content",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            |&nbsp;&nbsp;&nbsp;
-            <Phone style={{ fontSize: 19, marginRight: 7 }} />
-            <Typography>{painter.phone}</Typography>
-          </Grid>
-        )}
-
-        {painter.link && (
-          <Grid
-            item
-            style={{
-              width: "fit-content",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            |&nbsp;&nbsp;&nbsp;
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Link style={{ fontSize: 19, marginRight: 7 }} />
-            <a
-              href={painter.link}
-              target="_blank"
-              className="text-color"
-              rel="noreferrer"
-            >
-              <Typography>Professional Profile</Typography>
-            </a>
-          </Grid>
-        )}
-
-        <Grid item xs={12}>
-          <hr className="horizontal" style={{ margin: "0" }} />
-        </Grid>
-
         <Grid
           container
           direction="row"
-          justifyContent="space-evenly"
+          justifyContent="space-between"
           alignItems="flex-start"
-          sx={{ marginTop: "0" }}
-          spacing={5}
+          sx={{ margin: "20px 0 0 20px" }}
         >
           <GetImage painter={painter} />
 
           <Grid item xs={12} sm={sm}>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                fontSize: "1rem",
+                fontFamily: "Roboto",
+                marginBottom: "12px",
+              }}
+            >
+              About {painter.name.split(" ")[0]}
+            </Typography>
+
+            {painter.link && (
+              <Grid
+                item
+                style={{
+                  width: "fit-content",
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "17px",
+                }}
+              >
+                <a
+                  href={painter.link}
+                  target="_blank"
+                  className="text-color"
+                  rel="noreferrer"
+                >
+                  <Typography>Professional Profile</Typography>
+                </a>
+              </Grid>
+            )}
+
             <Typography className="justify" dangerouslySetInnerHTML={about} />
+
+            <Link
+              to={`/${painter.slug}/contact`}
+              replace
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                sx={{ textTransform: "none", marginTop: "20px", width: "40%" }}
+              >
+                Get in touch
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </Grid>
@@ -148,7 +120,7 @@ const GetImage = function GetImage({ painter }) {
   if (painter.id && painter.images.length > 0) {
     const image = painter.images[0];
     return (
-      <Grid item xs={8} sm={3}>
+      <Grid item xs={8} sm={4} sx={{ margin: "0 20px 20px 0" }}>
         <Card
           id={image.url}
           elevation={0}
@@ -165,7 +137,9 @@ const GetImage = function GetImage({ painter }) {
             alt={painter.name}
             loading="lazy"
             className="painting-image"
-            style={{ borderRadius: "100%" }}
+            style={{
+              borderRadius: "100%",
+            }}
           />
           <DeleteImage painter={painter} index={0} />
         </Card>
@@ -190,7 +164,7 @@ const DeleteImage = function DeleteImage({ painter, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -224,7 +198,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <Grid item xs={12}>
         <Button

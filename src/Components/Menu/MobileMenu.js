@@ -57,7 +57,7 @@ const MobileMenu = function MobileMenu() {
                     fontFamily: "Roboto",
                   }}
                 >
-                  {logoName.toLowerCase()}
+                  {logoName}
                 </Typography>
               </Link>
             </div>

@@ -76,13 +76,15 @@ const IsLoggedIn = function IsLoggedIn() {
   if (currentUser) {
     return (
       <div className="menu-item">
-        <Link to="/logout" onClick={handleLogout} style={{ borderRadius: 5 }}>
-          <Typography
-            style={{
-              fontWeight: 400,
-            }}
-          >
-            Logout
+        <Link
+          to="/logout"
+          onClick={handleLogout}
+          style={{ textDecoration: "none" }}
+        >
+          <Typography sx={{ padding: "5px 0" }}>
+            <span id="logout" className="menu-item">
+              Logout
+            </span>
           </Typography>
         </Link>
       </div>

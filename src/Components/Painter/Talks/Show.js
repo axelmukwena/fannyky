@@ -200,7 +200,7 @@ const DeleteImage = function DeleteImage({ talk, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -244,7 +244,7 @@ const IsLoggedIn = function IsLoggedIn({ talk }) {
     deleteResource(`${path}`, handleDeleleResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <div>
         <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>

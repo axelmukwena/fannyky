@@ -8,7 +8,6 @@ import { Link, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
 import Loading from "../../Loading/Loading";
-import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
 const Index = function Index() {
@@ -32,12 +31,9 @@ const Index = function Index() {
           fontFamily: "Roboto",
           margin: "20px 0",
         }}
-        className="page-title"
       >
         Publications
       </Typography>
-
-      <CustomHorizontal />
 
       <IsLoggedIn />
       <div className="row" style={{ marginTop: 15 }}>
@@ -61,11 +57,15 @@ const GetPublications = function GetPublications({ publications }) {
         key={publication.slug}
         container
         sx={{
-          borderRadius: "4px",
-          margin: "15px 0",
+          // borderRadius: "4px",
+          border: "1px solid #e1e1e1",
+          borderLeftWidth: "0",
+          borderRightWidth: "0",
+          borderBottomWidth: "0",
+          padding: "20px 0",
           width: "100%",
-          backgroundColor: "#f7f7f7d4",
-          boxShadow: "rgb(28 28 28 / 7%) 0px 0px 6px 1px",
+          // backgroundColor: "#f7f7f7d4",
+          // boxShadow: "rgb(28 28 28 / 7%) 0px 0px 6px 1px",
         }}
       >
         <CardImage publication={publication} />
@@ -157,23 +157,33 @@ const TrimDescription = function TrimDescription({ publication }) {
     }
 
     if (description[html].length > 80) {
-      description[html] = `${description[html].substring(0, 300)}...`;
-      return (
-        <div>
-          <Typography
-            className="justify"
-            style={{ marginTop: 20 }}
-            dangerouslySetInnerHTML={description}
-          />
-        </div>
-      );
+      description[html] = `${description[html].substring(0, 300)}`;
     }
+
     return (
-      <Typography
-        className="justify"
-        style={{ marginTop: 20 }}
-        dangerouslySetInnerHTML={description}
-      />
+      <>
+        <Typography
+          className="justify"
+          style={{ marginTop: 20 }}
+          dangerouslySetInnerHTML={description}
+        />
+        <Link
+          to={`publications/${publication.slug}`}
+          style={{ textDecoration: "none" }}
+        >
+          <Typography
+            sx={{
+              // fontWeight: 500,
+              color: "#747474",
+              ":hover": {
+                textDecoration: "underline",
+              },
+            }}
+          >
+            more
+          </Typography>
+        </Link>
+      </>
     );
   }
   return null;
@@ -220,7 +230,7 @@ const DeletePublication = function DeletePublication({ publication }) {
     deleteResource(`${path}`, handleImagesResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <Grid item>
         <Button
@@ -249,7 +259,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <div className="row" style={{ marginTop: 25 }}>
         <Button

@@ -142,7 +142,7 @@ const DeleteImage = function DeleteImage({ award, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -186,7 +186,7 @@ const IsLoggedIn = function IsLoggedIn({ award }) {
     deleteResource(`${path}`, handleDeleleResponse);
   };
 
-  if (currentUser && painter.id) {
+  if (currentUser && painter) {
     return (
       <div>
         <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>

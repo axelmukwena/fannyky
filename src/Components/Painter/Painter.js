@@ -65,16 +65,17 @@ const Painter = function Painter({ match }) {
         justifyContent="start"
         alignItems="start"
         container
-        spacing={1}
+        spacing={0}
       >
         {width ? (
-          <Grid item xs="auto" sx={{ width: 180, padding: 0 }}>
+          <Grid item xs={2.5}>
             <DesktopMenu />
           </Grid>
         ) : null}
         <Grid
           item
-          xs
+          xs={12}
+          sm={9.5}
           sx={{ paddingLeft: "0 !important", paddingTop: "0 !important" }}
         >
           <div className="content-container">
