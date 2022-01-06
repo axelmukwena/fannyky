@@ -75,7 +75,7 @@ const Painter = function Painter({ match }) {
         <Grid
           item
           xs={12}
-          sm={9.5}
+          md={9.5}
           sx={{ paddingLeft: "0 !important", paddingTop: "0 !important" }}
         >
           <div className="content-container">

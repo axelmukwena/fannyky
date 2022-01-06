@@ -16,10 +16,10 @@ import { Link } from "react-router-dom";
 import { convertFromRaw } from "draft-js";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
-import CustomHorizontal from "../CustomHorizontal";
+import CustomHorizontal from "./CustomHorizontal";
 
 const ImageDialog = function ImageDialog({
-  painting,
+  resource,
   current,
   setCurrent,
   open,
@@ -27,10 +27,23 @@ const ImageDialog = function ImageDialog({
   show,
 }) {
   const [height, setHeight] = useState(0);
+  const [maxHeight, setMaxHeight] = useState(0);
+  const [width, setWidth] = useState("fit-content");
+  const [justifyContent, setJustifyContent] = useState("center");
 
   // On screen width changes
   const handleResize = () => {
     setHeight(window.innerHeight - 34);
+
+    if (window.innerWidth > 600) {
+      setJustifyContent("space-between");
+      setWidth("fit-content");
+      setMaxHeight("100%");
+    } else {
+      setJustifyContent("center");
+      setWidth(`${window.innerWidth - 30}px`);
+      setMaxHeight(`${window.innerWidth - 30}px`);
+    }
   };
 
   const showContent = () => {
@@ -51,6 +64,12 @@ const ImageDialog = function ImageDialog({
   };
 
   useEffect(() => {
+    if (resource && resource.images.length > 1) {
+      setJustifyContent("space-between");
+    } else {
+      setJustifyContent("center");
+    }
+
     handleResize();
     window.addEventListener("resize", handleResize);
 
@@ -77,7 +96,7 @@ const ImageDialog = function ImageDialog({
   }
 
   // console.log(painting);
-  if (painting && painting.images.length > 0) {
+  if (resource && resource.images.length > 0) {
     return (
       <Dialog
         fullScreen
@@ -117,17 +136,15 @@ const ImageDialog = function ImageDialog({
         <Grid
           container
           direction="row"
-          justifyContent={
-            painting.images.length > 1 ? "space-between" : "center"
-          }
+          justifyContent={justifyContent}
           alignItems="center"
           spacing={0}
           sx={{ height: "100%" }}
         >
-          {painting.images.length > 1 && (
+          {resource.images.length > 1 && (
             <Grid xs="auto" item sx={{ display: { xs: "none", sm: "block" } }}>
               <Button
-                onClick={() => goBack(painting.images)}
+                onClick={() => goBack(resource.images)}
                 sx={{
                   color: "#a1a1a1",
                   backgroundColor: "transparent",
@@ -138,7 +155,7 @@ const ImageDialog = function ImageDialog({
               </Button>
             </Grid>
           )}
-          <Grid item xs={12} sm={10} sx={{ alignSelf: "center" }}>
+          <Grid item sx={{ maxWidth: "100%", alignSelf: "center" }}>
             <Card
               onMouseOver={() => showContent()}
               onMouseEnter={() => showContent()}
@@ -149,18 +166,19 @@ const ImageDialog = function ImageDialog({
               <div className="dialog-image">
                 <CardMedia
                   component="img"
-                  src={painting.images[current].url}
-                  alt={painting.title}
-                  sx={{ maxHeight: height }}
+                  src={resource.images[current].url}
+                  alt={resource.title}
+                  height={height}
+                  sx={{ width, maxHeight }}
                 />
               </div>
-              <PaintingsDialogContent show={show} painting={painting} />
+              <PaintingsDialogContent show={show} resource={resource} />
             </Card>
           </Grid>
-          {painting.images.length > 1 && (
+          {resource.images.length > 1 && (
             <Grid xs="auto" item sx={{ display: { xs: "none", sm: "block" } }}>
               <Button
-                onClick={() => goForward(painting.images)}
+                onClick={() => goForward(resource.images)}
                 sx={{
                   color: "#a1a1a1",
                   backgroundColor: "transparent",
@@ -180,35 +198,38 @@ const ImageDialog = function ImageDialog({
 
 const PaintingsDialogContent = function PaintingsDialogContent({
   show,
-  painting,
+  resource,
 }) {
   if (show) {
     return (
       <div className="painting-dialog-content">
         <Link
-          to={`${painting.painter.slug}/paintings/${painting.slug}`}
+          to={`${resource.painter.slug}/works/${resource.slug}`}
           className="painting-title-popup"
+          replace
         >
-          {painting.title}
+          {resource.title}
         </Link>
 
-        <Typography sx={{ marginTop: 10, fontSize: 14, color: "#525252" }}>
-          By {painting.painter.name}
+        <Typography
+          sx={{ marginTop: "10px", fontSize: "0.975rem", color: "#525252" }}
+        >
+          By {resource.painter.name}
           <DateCreated />
         </Typography>
-        {painting.abstract && (
-          <Typography sx={{ fontSize: 14, color: "#525252" }}>
-            Media: {painting.abstract}
+        {resource.abstract && (
+          <Typography sx={{ fontSize: "0.975rem", color: "#525252" }}>
+            Media: {resource.abstract}
           </Typography>
         )}
 
-        {painting.dimension && (
-          <Typography sx={{ fontSize: 14, color: "#525252" }}>
-            Dimensions: {painting.dimension}
+        {resource.dimension && (
+          <Typography sx={{ fontSize: "0.975rem", color: "#525252" }}>
+            Dimensions: {resource.dimension}
           </Typography>
         )}
 
-        <GetDescription painting={painting} />
+        <GetDescription painting={resource} />
       </div>
     );
   }

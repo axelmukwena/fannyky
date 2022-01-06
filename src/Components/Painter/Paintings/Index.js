@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
 import Toast from "../../../utils/toast";
-import ImagesDialog from "./ImagesDialog";
+import ImagesDialog from "../ImagesDialog";
 import NewDialog from "./NewDialog";
 import Loading from "../../Loading/Loading";
 
@@ -135,7 +135,7 @@ const Index = function Index() {
         handleOpenImages={handleOpenImages}
       />
       <ImagesDialog
-        painting={selected}
+        resource={selected}
         current={current}
         setCurrent={setCurrent}
         open={openImages}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
-import ImagesDialog from "./ImagesDialog";
+import ImagesDialog from "../ImagesDialog";
 import {
   deleteResource,
   getResource,
@@ -116,7 +116,7 @@ const GetImages = function GetImages({ award }) {
         ))}
       </div>
       <ImagesDialog
-        award={award}
+        resource={award}
         current={current}
         setCurrent={setCurrent}
         open={open}

@@ -56,6 +56,9 @@ const GetPublications = function GetPublications({ publications }) {
       <Grid
         key={publication.slug}
         container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
         sx={{
           // borderRadius: "4px",
           border: "1px solid #e1e1e1",

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { CardMedia, Typography, Button, Card } from "@mui/material";
+import { CardMedia, Typography, Button, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
-import ImagesDialog from "./ImagesDialog";
+import ImagesDialog from "../ImagesDialog";
 import {
   deleteResource,
   getResource,
@@ -44,72 +44,105 @@ const Show = function Show({ match }) {
   if (painting) {
     const { images } = painting;
     return (
-      <div>
+      <>
         <IsLoggedIn painting={painting} />
-        <div className="row">
-          {images.map((image, index) => (
-            <Card
-              key={image.url}
-              id={image.url}
-              elevation={0}
-              style={{
-                padding: 0,
-                margin: "0 20px 20px 0",
-                position: "relative",
-                borderRadius: 0,
-                // border: "7px solid #e3e3e3",
-                // boxShadow: "rgb(28 28 28 / 24%) 1px 1px 1px 0px",
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item xs={12}>
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              spacing={3}
+              sx={{
+                justifyContent: "center",
+                "@media (min-width: 600px)": {
+                  justifyContent: "flex-start",
+                },
               }}
             >
-              <CardMedia
-                src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
-                alt={painting.title}
-                loading="lazy"
-                component="img"
-                onClick={() => handleOpen(index)}
-                style={{
-                  cursor: "pointer",
-                  width: 260,
-                  height: 260,
-                }}
-              />
-              <DeleteImage painting={painting} index={index} />
-            </Card>
-          ))}
-        </div>
+              {images.map((image, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  sx={{
+                    margin: "0 20px 20px 0",
+                    "@media (max-width: 600px)": {
+                      margin: "20px 0",
+                    },
+                  }}
+                >
+                  <CardMedia
+                    elevation={0}
+                    key={image.url}
+                    id={image.url}
+                    src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+                    alt={painting.title}
+                    loading="lazy"
+                    component="img"
+                    onClick={() => handleOpen(index)}
+                    sx={{
+                      cursor: "pointer",
+                      width: "260px",
+                      height: "260px",
+                      position: "relative",
+                      borderRadius: 0,
+                      "@media (max-width: 600px)": {
+                        width: "100%",
+                        height: "100%",
+                      },
+                    }}
+                  />
+                  <DeleteImage painting={painting} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              style={{
+                fontWeight: 900,
+                fontSize: "1.4rem",
+                fontFamily: "Roboto",
+                flex: 1,
+              }}
+            >
+              {painting.title}
+            </Typography>
+
+            <Typography>By {painting.painter.name}</Typography>
+
+            <CustomHorizontal />
+
+            {painting.date_created && (
+              <Typography>
+                Created {painting.date_created.split("-")[0]}
+              </Typography>
+            )}
+
+            {painting.abstract && <Typography>{painting.abstract}</Typography>}
+
+            {painting.dimension && (
+              <Typography>{painting.dimension}</Typography>
+            )}
+
+            <GetDescription painting={painting} />
+          </Grid>
+        </Grid>
         <ImagesDialog
-          painting={painting}
+          resource={painting}
           current={current}
           setCurrent={setCurrent}
           open={open}
           handleClose={handleClose}
           show={false}
         />
-        <Typography
-          style={{
-            fontWeight: 900,
-            fontSize: "1.4rem",
-            fontFamily: "Roboto",
-            flex: 1,
-          }}
-        >
-          {painting.title}
-        </Typography>
-
-        <Typography>By {painting.painter.name}</Typography>
-
-        <CustomHorizontal />
-
-        {painting.date_created && (
-          <Typography>Created {painting.date_created.split("-")[0]}</Typography>
-        )}
-
-        {painting.abstract && <Typography>{painting.abstract}</Typography>}
-
-        {painting.dimension && <Typography>{painting.dimension}</Typography>}
-
-        <GetDescription painting={painting} />
-      </div>
+      </>
     );
   }
   return "";

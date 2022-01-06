@@ -5,7 +5,7 @@ import { DeleteOutline, Link } from "@mui/icons-material";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
-import ImagesDialog from "./ImagesDialog";
+import ImagesDialog from "../ImagesDialog";
 import {
   deleteResource,
   getResource,
@@ -125,7 +125,7 @@ const GetImages = function GetImages({ publication }) {
         </Card>
       ))}
       <ImagesDialog
-        publication={publication}
+        resource={publication}
         current={current}
         setCurrent={setCurrent}
         open={open}
