@@ -27,7 +27,6 @@ const ImageDialog = function ImageDialog({
   show,
 }) {
   const [height, setHeight] = useState(0);
-  const [maxHeight, setMaxHeight] = useState(0);
   const [width, setWidth] = useState("fit-content");
   const [justifyContent, setJustifyContent] = useState("center");
 
@@ -35,14 +34,13 @@ const ImageDialog = function ImageDialog({
   const handleResize = () => {
     setHeight(window.innerHeight - 34);
 
-    if (window.innerWidth > 600) {
+    if (window.innerWidth > 900) {
       setJustifyContent("space-between");
       setWidth("fit-content");
-      setMaxHeight("100%");
     } else {
       setJustifyContent("center");
-      setWidth(`${window.innerWidth - 30}px`);
-      setMaxHeight(`${window.innerWidth - 30}px`);
+      setWidth(`100%`);
+      setHeight("100%");
     }
 
     if (resource && resource.images.length <= 1) {
@@ -166,8 +164,7 @@ const ImageDialog = function ImageDialog({
                   component="img"
                   src={resource.images[current].url}
                   alt={resource.title}
-                  height={height}
-                  sx={{ width, maxHeight }}
+                  sx={{ width, height }}
                 />
               </div>
               <PaintingsDialogContent show={show} resource={resource} />

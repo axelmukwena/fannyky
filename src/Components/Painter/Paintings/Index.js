@@ -19,7 +19,7 @@ const Index = function Index() {
   const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
-  const [width, setWidth] = useState(null);
+  const [width, setWidth] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
   const history = useHistory();
@@ -66,11 +66,7 @@ const Index = function Index() {
   }
 
   function handleResize() {
-    if (window.innerWidth > 900) {
-      setWidth(window.innerWidth);
-    } else {
-      setWidth(null);
-    }
+    setWidth(window.innerWidth);
   }
 
   // You need to add `/paintings` to path
@@ -89,7 +85,7 @@ const Index = function Index() {
   }, [path]);
 
   const handleOpenImages = (painting) => {
-    if (width) {
+    if (width > 900) {
       setSelected(painting);
       setOpenImages(true);
     } else {
@@ -149,8 +145,13 @@ const Index = function Index() {
 const Group = function Group({ width, paintings, handleOpenImages }) {
   let justifyContent = "flex-start";
   let spacing = 0;
-  if (!width) {
-    justifyContent = "space-evenly";
+  if (width <= 900 && width > 600) {
+    justifyContent = "space-between";
+    spacing = 0;
+  }
+
+  if (width <= 600) {
+    justifyContent = "center";
     spacing = 0;
   }
 
@@ -177,6 +178,7 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
           spacing={spacing}
         >
           <AddPhotos
+            width={width}
             paintings={paintings}
             handleOpenImages={handleOpenImages}
           />
@@ -187,7 +189,7 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
   return null;
 };
 
-const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
+const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
       <CardMedia
@@ -196,6 +198,14 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
         alt={painting.title}
         // loading="lazy"
         className="painting-card-index"
+        sx={{
+          height: "230px",
+          width: "230px",
+          "@media (max-width: 600px)": {
+            height: `${width - 60}px`,
+            width: `${width - 60}px`,
+          },
+        }}
         onClick={() => handleOpenImages(painting)}
       />
       <DeletePainting painting={painting} />
@@ -216,6 +226,9 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
             fontSize: "12px",
             margin: "0 8px",
             width: "120px",
+            "@media (max-width: 600px)": {
+              margin: "0",
+            },
           }}
         >
           {painting.date_created.split("-")[0]}
@@ -229,6 +242,9 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
             fontSize: "12px",
             margin: "0 8px",
             width: "120px",
+            "@media (max-width: 600px)": {
+              margin: "0",
+            },
           }}
         >
           {painting.abstract}
@@ -241,6 +257,9 @@ const AddPhotos = function AddPhotos({ paintings, handleOpenImages }) {
             fontWeight: 400,
             fontSize: "12px",
             margin: "0 8px",
+            "@media (max-width: 600px)": {
+              margin: "0",
+            },
             width: "120px",
           }}
         >
