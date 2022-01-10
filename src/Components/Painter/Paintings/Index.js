@@ -25,8 +25,6 @@ const Index = function Index() {
   const history = useHistory();
 
   function setPaintings(paintings) {
-    if (paintings.length < 1) return;
-
     setGroupOne([]);
     setGroupTwo([]);
     setGroupThree([]);
@@ -34,7 +32,7 @@ const Index = function Index() {
     setGroupFive([]);
 
     // If fanny wong
-    if (paintings[0].painter.rank === 1) {
+    if (paintings.length > 0 && paintings[0].painter.rank === 1) {
       const key = "group_type";
 
       // https://stackoverflow.com/a/47385953/8050183
@@ -62,7 +60,7 @@ const Index = function Index() {
     }
 
     // If fanny wong
-    if (paintings[0].painter.rank === 2) {
+    if (paintings.length > 0 && paintings[0].painter.rank === 2) {
       const currentYear = new Date().getFullYear();
       const startDate = new Date("2000-01-01");
       const diff = currentYear - 2000;
