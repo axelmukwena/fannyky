@@ -290,7 +290,9 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           className="painting-title-index"
           style={{ fontWeight: 500 }}
         >
-          {painting.title}
+          {painting.title.length > 20
+            ? `${painting.title.substring(0, 20)}...`
+            : painting.title}
         </Link>
       </Typography>
 
@@ -322,7 +324,9 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             },
           }}
         >
-          {painting.abstract}
+          {painting.abstract.length > 20
+            ? `${painting.abstract.substring(0, 20)}...`
+            : painting.abstract}
         </Typography>
       )}
 
@@ -338,7 +342,9 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             width: "120px",
           }}
         >
-          {painting.dimension}
+          {painting.dimension.length > 20
+            ? `${painting.dimension.substring(0, 20)}...`
+            : painting.dimension}
         </Typography>
       )}
     </Grid>
