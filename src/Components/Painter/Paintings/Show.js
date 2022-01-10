@@ -73,6 +73,7 @@ const Show = function Show({ match }) {
                   sm={4}
                   sx={{
                     margin: "0 20px 20px 0",
+                    position: "relative",
                     "@media (max-width: 600px)": {
                       margin: "20px 0",
                     },
@@ -120,15 +121,30 @@ const Show = function Show({ match }) {
             <CustomHorizontal />
 
             {painting.date_created && (
-              <Typography>
+              <Typography sx={{ marginBottom: "5px" }}>
                 Created {painting.date_created.split("-")[0]}
               </Typography>
             )}
 
-            {painting.abstract && <Typography>{painting.abstract}</Typography>}
+            {painting.abstract && (
+              <Typography>
+                <span style={{ fontWeight: 500 }}>Media: </span>
+                {painting.abstract}
+              </Typography>
+            )}
 
             {painting.dimension && (
-              <Typography>{painting.dimension}</Typography>
+              <Typography>
+                <span style={{ fontWeight: 500 }}>Dimensions: </span>
+                {painting.dimension}
+              </Typography>
+            )}
+
+            {painting.group_type && (
+              <Typography>
+                <span style={{ fontWeight: 500 }}>Category: </span>
+                {painting.group_type}
+              </Typography>
             )}
 
             <GetDescription painting={painting} />
@@ -205,13 +221,13 @@ const DeleteImage = function DeleteImage({ painting, index }) {
         onClick={() => handleDeleteImage()}
         style={{
           position: "absolute",
-          top: 10,
+          top: 35,
           right: 10,
           padding: 0,
           cursor: "pointer",
           color: "black",
           fontSize: 21,
-          backgroundColor: "rgb(255 255 255 / 28%)",
+          backgroundColor: "#8989892e",
           borderRadius: "2px",
         }}
       />
@@ -245,30 +261,34 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
 
   if (currentUser && painter) {
     return (
-      <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>
-        <Button
-          style={{ width: 200, height: 40, marginRight: 25 }}
-          variant="contained"
-          color="primary"
-          onClick={() => handleOpenNew()}
-        >
-          Edit Painting
-        </Button>
-        <Button
-          style={{ width: 200, height: 40, marginRight: 25 }}
-          variant="contained"
-          color="primary"
-          onClick={() => handleDeletePainting()}
-        >
-          Delete Painting
-        </Button>
+      <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
+        <Grid item xs={12} sm={6}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => handleOpenNew()}
+          >
+            Edit Painting
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => handleDeletePainting()}
+          >
+            Delete Painting
+          </Button>
+        </Grid>
         <NewDialog
           painting={painting}
           painter={painter}
           open={openNew}
           handleClose={handleCloseNew}
         />
-      </div>
+      </Grid>
     );
   }
   return "";

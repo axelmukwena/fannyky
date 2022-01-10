@@ -177,7 +177,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 fullWidth
                 label="Email"
@@ -188,7 +188,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 fullWidth
                 label="Phone"

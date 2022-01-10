@@ -6,7 +6,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,6 +32,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [rankdate, setRankdate] = useState(null);
   const [dimension, setDimension] = useState("");
   const [abstract, setAbstract] = useState("");
+  const [groupType, setGroupType] = useState("");
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
@@ -69,6 +74,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       setDateCreated(painting.date_created);
       setDimension(painting.dimension);
       setAbstract(painting.abstract);
+      setGroupType(painting.groupType);
     }
 
     if (painting && painting.images.length > 0) {
@@ -105,6 +111,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       rankdate,
       dimension,
       abstract,
+      group_type: groupType,
       description: stringDescription,
       painter,
     };
@@ -216,7 +223,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={painter.rank === 1 ? 8 : 12}>
               <TextField
                 fullWidth
                 label="Abstract"
@@ -226,6 +233,31 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
                 onChange={(e) => setAbstract(e.target.value)}
               />
             </Grid>
+
+            {/* If painter is Buda, add painter types for grouping */}
+            {/* Fanny uses date grouping */}
+            {painter.rank === 1 ? (
+              <Grid item xs={4}>
+                <FormControl fullWidth required>
+                  <InputLabel id="group-type">Group Type</InputLabel>
+                  <Select
+                    labelId="group-type"
+                    id="group-type-select"
+                    value={groupType}
+                    label="Group Type"
+                    onChange={(e) => setGroupType(e.target.value)}
+                  >
+                    <MenuItem value="Creative Works">Creative Works</MenuItem>
+                    <MenuItem value="Landscapes in Japan">
+                      Landscapes in Japan
+                    </MenuItem>
+                    <MenuItem value="Sketches with Themes">
+                      Sketches with Themes
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            ) : null}
 
             <Grid item xs={12}>
               <Typography style={{ margin: 9, color: "#626262" }}>

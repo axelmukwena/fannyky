@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Card,
   CardMedia,
@@ -27,20 +28,13 @@ const ImageDialog = function ImageDialog({
   show,
 }) {
   const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState("fit-content");
-  const [widthValue, setWidthValue] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [showOnMobile, setShowOnMobile] = useState("block");
 
   // On screen width changes
   const handleResize = () => {
     setHeight(window.innerHeight - 34);
-    setWidthValue(window.innerWidth);
-
-    if (window.innerWidth > 900) {
-      setWidth("fit-content");
-    } else {
-      setWidth("100%");
-      setHeight("100%");
-    }
+    setWidth(window.innerWidth);
   };
 
   const showContent = () => {
@@ -60,6 +54,16 @@ const ImageDialog = function ImageDialog({
     }
   };
 
+  const toggleMobile = () => {
+    if (width > 600) return;
+
+    if (showOnMobile === "none") {
+      setShowOnMobile("block");
+    } else {
+      setShowOnMobile("none");
+    }
+  };
+
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -70,26 +74,26 @@ const ImageDialog = function ImageDialog({
     };
   }, []);
 
-  function goBack(images) {
+  const goBack = (images) => {
     if (current > 0) {
       setCurrent(current - 1);
     } else if (current === 0) {
       setCurrent(images.length - 1);
     }
-  }
+  };
 
-  function goForward(images) {
+  const goForward = (images) => {
     if (current < images.length - 1) {
       setCurrent(current + 1);
     } else if (current === images.length - 1) {
       setCurrent(0);
     }
-  }
+  };
 
   // console.log(painting);
   if (resource && resource.images.length > 0) {
     let justifyContent = "center";
-    if (widthValue > 900 && !(resource.images.length === 1)) {
+    if (width > 900 && !(resource.images.length === 1)) {
       justifyContent = "space-between";
     }
 
@@ -144,7 +148,6 @@ const ImageDialog = function ImageDialog({
                 sx={{
                   color: "#a1a1a1",
                   backgroundColor: "transparent",
-                  float: "left",
                 }}
               >
                 <ArrowBackIosIcon />
@@ -157,16 +160,30 @@ const ImageDialog = function ImageDialog({
               onMouseEnter={() => showContent()}
               onMouseLeave={() => hideContent()}
               elevation={0}
-              sx={{ padding: 0, borderRadius: 0 }}
+              sx={{
+                padding: 0,
+                borderRadius: 0,
+                position: width > 600 ? "static" : "relative",
+              }}
             >
               <div className="dialog-image">
                 <CardMedia
                   component="img"
                   src={resource.images[current].url}
                   alt={resource.title}
-                  sx={{ width, height }}
+                  onTouchStart={() => toggleMobile()}
+                  sx={{
+                    width: width > 900 ? "fit-content" : "100%",
+                    height: width > 900 ? height : "100%",
+                  }}
                 />
               </div>
+              <BackForwardButtonsMobile
+                resource={resource}
+                goBack={goBack}
+                goForward={goForward}
+                showOnMobile={showOnMobile}
+              />
               <PaintingsDialogContent show={show} resource={resource} />
             </Card>
           </Grid>
@@ -177,7 +194,6 @@ const ImageDialog = function ImageDialog({
                 sx={{
                   color: "#a1a1a1",
                   backgroundColor: "transparent",
-                  float: "right",
                 }}
               >
                 <ArrowForwardIosIcon />
@@ -191,13 +207,73 @@ const ImageDialog = function ImageDialog({
   return "";
 };
 
+const BackForwardButtonsMobile = function BackForwardButtonsMobile({
+  resource,
+  goBack,
+  goForward,
+  showOnMobile,
+}) {
+  if (resource.images.length > 1) {
+    return (
+      <>
+        <Grid
+          xs="auto"
+          item
+          sx={{
+            display: { xs: showOnMobile, sm: "none" },
+            position: "absolute",
+            top: "45%",
+            left: "0",
+            zIndex: 100,
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => goBack(resource.images)}
+            sx={{
+              borderRadius: 0,
+            }}
+          >
+            <ArrowBackIosIcon />
+          </Button>
+        </Grid>
+
+        <Grid
+          xs="auto"
+          item
+          sx={{
+            display: { xs: showOnMobile, sm: "none" },
+            position: "absolute",
+            top: "45%",
+            right: "0",
+            zIndex: 100,
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => goForward(resource.images)}
+            sx={{
+              borderRadius: 0,
+            }}
+          >
+            <ArrowForwardIosIcon />
+          </Button>
+        </Grid>
+      </>
+    );
+  }
+  return null;
+};
+
 const PaintingsDialogContent = function PaintingsDialogContent({
   show,
   resource,
 }) {
   if (show) {
     return (
-      <div className="painting-dialog-content">
+      <Box className="painting-dialog-content" sx={{ width: "fit-content" }}>
         <Link
           to={`${resource.painter.slug}/works/${resource.slug}`}
           className="painting-title-popup"
@@ -225,7 +301,7 @@ const PaintingsDialogContent = function PaintingsDialogContent({
         )}
 
         <GetDescription painting={resource} />
-      </div>
+      </Box>
     );
   }
   return "";

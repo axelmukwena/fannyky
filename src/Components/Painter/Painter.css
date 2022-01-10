@@ -64,17 +64,15 @@ and (max-width: 900px) {
 }
 
 .painting-card-index {
-    border: none;
-    box-shadow: none;
-    margin: 0;
+  border: none;
+  box-shadow: none;
+  margin: 0;
 }
 
 @media screen 
 and (min-width: 900px) {
   .painting-card-index {
     margin: 5px;
-    height: 120px;
-    width: 120px;
     cursor: pointer;
     border: 5px solid #f1f1f1;
     box-shadow: rgb(28 28 28 / 24%) 2px 2px 4px 0px;
@@ -162,7 +160,7 @@ and (max-width: 899px) {
   position: absolute;
   background-color: white;
   opacity: 1;
-  bottom: 16px;
+  bottom: 0;
   display: none;
   width: 0;
 }

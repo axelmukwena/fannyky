@@ -1,5 +1,5 @@
 import { DeleteOutline } from "@mui/icons-material";
-import { Button, Typography, Grid, Box, CardMedia } from "@mui/material";
+import { Button, Typography, Grid, Box, CardMedia, Card } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
@@ -20,19 +20,49 @@ const Index = function Index() {
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
   const [width, setWidth] = useState(0);
-  const [paintingWidth, setPaintingWidth] = useState("230px");
   const [loaded, setLoaded] = useState(false);
 
   const history = useHistory();
 
   function setPaintings(paintings) {
+    if (paintings.length < 1) return;
+
     setGroupOne([]);
     setGroupTwo([]);
     setGroupThree([]);
     setGroupFour([]);
     setGroupFive([]);
 
-    if (paintings) {
+    // If fanny wong
+    if (paintings[0].painter.rank === 1) {
+      const key = "group_type";
+
+      // https://stackoverflow.com/a/47385953/8050183
+      const groups = paintings.reduce((hash, obj) => {
+        if (obj[key] === undefined) return hash;
+        return Object.assign(hash, {
+          [obj[key]]: (hash[obj[key]] || []).concat(obj),
+        });
+      }, {});
+
+      const setGroups = [
+        setGroupOne,
+        setGroupTwo,
+        setGroupThree,
+        setGroupFour,
+        setGroupFive,
+      ];
+
+      const keys = Object.keys(groups);
+      for (let i = 0; i < keys.length; i += 1) {
+        const setGroup = setGroups[i];
+        const group = groups[keys[i]];
+        setGroup(group);
+      }
+    }
+
+    // If fanny wong
+    if (paintings[0].painter.rank === 2) {
       const currentYear = new Date().getFullYear();
       const startDate = new Date("2000-01-01");
       const diff = currentYear - 2000;
@@ -62,17 +92,12 @@ const Index = function Index() {
           }
         }
       }
-      setLoaded(true);
     }
+    setLoaded(true);
   }
 
   function handleResize() {
     setWidth(window.innerWidth);
-    if (window.innerWidth > 600) {
-      setPaintingWidth("230px");
-    } else {
-      setPaintingWidth(`${window.innerWidth - 60}px`);
-    }
   }
 
   // You need to add `/paintings` to path
@@ -118,25 +143,21 @@ const Index = function Index() {
       />
       <Group
         width={width}
-        paintingWidth={paintingWidth}
         paintings={groupTwo}
         handleOpenImages={handleOpenImages}
       />
       <Group
         width={width}
-        paintingWidth={paintingWidth}
         paintings={groupThree}
         handleOpenImages={handleOpenImages}
       />
       <Group
         width={width}
-        paintingWidth={paintingWidth}
         paintings={groupFour}
         handleOpenImages={handleOpenImages}
       />
       <Group
         width={width}
-        paintingWidth={paintingWidth}
         paintings={groupFive}
         handleOpenImages={handleOpenImages}
       />
@@ -152,12 +173,7 @@ const Index = function Index() {
   );
 };
 
-const Group = function Group({
-  width,
-  paintingWidth,
-  paintings,
-  handleOpenImages,
-}) {
+const Group = function Group({ width, paintings, handleOpenImages }) {
   let justifyContent = "flex-start";
   let spacing = 0;
   if (width <= 900 && width > 600) {
@@ -171,7 +187,13 @@ const Group = function Group({
   }
 
   if (paintings.length > 0) {
-    const year = paintings[0].rankdate.split("-")[0];
+    let title = "";
+    if (paintings[0].painter.rank === 1) {
+      title = paintings[0].group_type;
+    } else {
+      title = `${paintings[0].rankdate.split("-")[0]} Works`;
+    }
+
     return (
       <Box sx={{ marginBottom: "50px" }}>
         <Typography
@@ -182,7 +204,7 @@ const Group = function Group({
             margin: "0 0 0 5px",
           }}
         >
-          {year} Works
+          {title}
         </Typography>
 
         <Grid
@@ -193,7 +215,7 @@ const Group = function Group({
           spacing={spacing}
         >
           <AddPhotos
-            paintingWidth={paintingWidth}
+            width={width}
             paintings={paintings}
             handleOpenImages={handleOpenImages}
           />
@@ -204,11 +226,7 @@ const Group = function Group({
   return null;
 };
 
-const AddPhotos = function AddPhotos({
-  paintingWidth,
-  paintings,
-  handleOpenImages,
-}) {
+const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
   const [visible, setVisible] = useState(false);
   const placeholderRef = useRef(null);
 
@@ -225,31 +243,44 @@ const AddPhotos = function AddPhotos({
     return null;
   }, [visible, placeholderRef]);
 
+  let paintingWidth = "120px";
+
+  if (width > 900) {
+    paintingWidth = "120px";
+  } else {
+    paintingWidth = `${window.innerWidth - 60}px`;
+  }
+
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
       {visible ? (
-        <>
+        <Card
+          elevation={0}
+          sx={{
+            padding: 0,
+            margin: 0,
+            position: "relative",
+            borderRadius: 0,
+          }}
+        >
           <CardMedia
             component="img"
             src={`${painting.images[0].url}`}
             alt={painting.title}
+            height={paintingWidth}
             // loading="lazy"
             className="painting-card-index"
             sx={{
-              height: "230px",
-              width: "230px",
-              "@media (max-width: 600px)": {
-                height: paintingWidth,
-                width: paintingWidth,
-              },
+              height: paintingWidth,
+              width: paintingWidth,
             }}
             onClick={() => handleOpenImages(painting)}
           />
           <DeletePainting painting={painting} />
-        </>
+        </Card>
       ) : (
         <Box
-          style={{ height: paintingWidth, backgroundColor: "#f1f1f1" }}
+          sx={{ height: paintingWidth, backgroundColor: "#f1f1f1" }}
           aria-label={painting.title}
           ref={placeholderRef}
         />
@@ -271,7 +302,7 @@ const AddPhotos = function AddPhotos({
             fontWeight: 400,
             fontSize: "12px",
             margin: "0 8px",
-            width: "120px",
+            width: paintingWidth,
             "@media (max-width: 600px)": {
               margin: "0",
             },
@@ -287,7 +318,7 @@ const AddPhotos = function AddPhotos({
             fontWeight: 400,
             fontSize: "12px",
             margin: "0 8px",
-            width: "120px",
+            width: paintingWidth,
             "@media (max-width: 600px)": {
               margin: "0",
             },
@@ -334,10 +365,10 @@ const DeletePainting = function DeletePainting({ painting }) {
     return (
       <DeleteOutline
         onClick={() => handleDeletePainting()}
-        style={{
+        sx={{
           position: "absolute",
-          top: 20,
-          right: 25,
+          top: "20px",
+          right: "25px",
           padding: 0,
           cursor: "pointer",
           color: "black",
@@ -364,34 +395,26 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  const newOpenCategory = () => {};
-
   if (currentUser && painter) {
     return (
-      <div className="row" style={{ marginTop: 25 }}>
-        <Button
-          style={{ width: 200, height: 40, marginRight: 25 }}
-          variant="contained"
-          color="primary"
-          onClick={() => handleOpenNew()}
-        >
-          New Painting
-        </Button>
-        <Button
-          style={{ width: 200, height: 40 }}
-          variant="contained"
-          color="primary"
-          onClick={() => newOpenCategory()}
-        >
-          New Category
-        </Button>
-        <NewDialog
-          painting={false}
-          painter={painter}
-          open={openNew}
-          handleClose={handleCloseNew}
-        />
-      </div>
+      <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
+        <Grid item xs={12} sm={6}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => handleOpenNew()}
+          >
+            New Painting
+          </Button>
+          <NewDialog
+            painting={false}
+            painter={painter}
+            open={openNew}
+            handleClose={handleCloseNew}
+          />
+        </Grid>
+      </Grid>
     );
   }
   return "";
