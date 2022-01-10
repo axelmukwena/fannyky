@@ -96,6 +96,8 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
 
       postResource(path, params, handleImagesResponse);
     }
+
+    handleClose();
   };
 
   const handleSubmit = (e) => {
