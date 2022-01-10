@@ -190,7 +190,7 @@ const GetDescription = function GetDescription({ painting }) {
 
         <Typography
           className="justify"
-          style={{ marginTop: 20 }}
+          sx={{ marginTop: "20px" }}
           dangerouslySetInnerHTML={description}
         />
       </div>

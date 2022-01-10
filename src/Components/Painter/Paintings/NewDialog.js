@@ -74,7 +74,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       setDateCreated(painting.date_created);
       setDimension(painting.dimension);
       setAbstract(painting.abstract);
-      setGroupType(painting.groupType);
+      setGroupType(painting.group_type);
     }
 
     if (painting && painting.images.length > 0) {
