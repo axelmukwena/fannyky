@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Grid, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography, CardMedia } from "@mui/material";
 import "./Home.css";
 import { getResource } from "../../utils/requests";
 import budaBackground from "../../images/buda-background.png";
@@ -46,7 +46,7 @@ const Home = function Home() {
             // sm={6}
             style={{ margin: 0, padding: 0 }}
           >
-            <Painter painter={painter} />
+            <Painter2 painter={painter} />
           </Grid>
         );
       })}
@@ -54,6 +54,7 @@ const Home = function Home() {
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 const Painter = function Painter({ painter }) {
   if (painter) {
     return (
@@ -86,6 +87,93 @@ const Painter = function Painter({ painter }) {
           }}
         >
           <Grid container>
+            <Grid item xs={12}>
+              <Typography
+                sx={{
+                  fontWeight: 900,
+                  fontSize: "1.5rem",
+                  "@media (min-width: 600px)": {
+                    fontSize: "2rem",
+                  },
+                  fontFamily: "Roboto",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {painter.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                sx={{
+                  fontWeight: 500,
+                  fontSize: "1rem",
+                  "@media (min-width: 600px)": {
+                    fontSize: "1rem",
+                  },
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {painter.caption}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Button>
+      </Link>
+    );
+  }
+  return "";
+};
+
+const Painter2 = function Painter2({ painter }) {
+  if (painter) {
+    return (
+      <Link to={`/${painter.slug}`} style={{ textDecoration: "none" }}>
+        <Button
+          variant="outlined"
+          size="large"
+          fullWidth
+          sx={{
+            borderRadius: "100%",
+            border: "none",
+            textTransform: "none",
+            height: "230px",
+            width: "230px",
+            "@media (min-width: 600px)": {
+              height: "250px",
+              width: "250px",
+            },
+            "@media (min-width: 900px)": {
+              height: "400px",
+              width: "400px",
+            },
+            ":hover": {
+              border: "none",
+            },
+          }}
+        >
+          <CardMedia
+            component="img"
+            src={painter.image}
+            alt={painter.name}
+            // loading="lazy"
+            sx={{
+              position: "relative",
+              borderRadius: "100%",
+              height: "230px",
+              width: "230px",
+              "@media (min-width: 600px)": {
+                height: "250px",
+                width: "250px",
+              },
+              "@media (min-width: 900px)": {
+                height: "400px",
+                width: "400px",
+              },
+            }}
+          />
+          <Grid container sx={{ position: "absolute" }}>
             <Grid item xs={12}>
               <Typography
                 sx={{

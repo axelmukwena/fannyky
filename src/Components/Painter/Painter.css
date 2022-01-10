@@ -76,7 +76,7 @@ and (min-width: 900px) {
     height: 120px;
     width: 120px;
     cursor: pointer;
-    border: 5px solid rgb(241, 241, 241);
+    border: 5px solid #f1f1f1;
     box-shadow: rgb(28 28 28 / 24%) 2px 2px 4px 0px;
   }
 

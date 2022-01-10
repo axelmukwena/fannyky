@@ -1,6 +1,6 @@
 import { DeleteOutline } from "@mui/icons-material";
 import { Button, Typography, Grid, Box, CardMedia } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { deleteResource, getResource } from "../../../utils/requests";
@@ -20,6 +20,7 @@ const Index = function Index() {
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
   const [width, setWidth] = useState(0);
+  const [paintingWidth, setPaintingWidth] = useState("230px");
   const [loaded, setLoaded] = useState(false);
 
   const history = useHistory();
@@ -67,6 +68,11 @@ const Index = function Index() {
 
   function handleResize() {
     setWidth(window.innerWidth);
+    if (window.innerWidth > 600) {
+      setPaintingWidth("230px");
+    } else {
+      setPaintingWidth(`${window.innerWidth - 60}px`);
+    }
   }
 
   // You need to add `/paintings` to path
@@ -112,21 +118,25 @@ const Index = function Index() {
       />
       <Group
         width={width}
+        paintingWidth={paintingWidth}
         paintings={groupTwo}
         handleOpenImages={handleOpenImages}
       />
       <Group
         width={width}
+        paintingWidth={paintingWidth}
         paintings={groupThree}
         handleOpenImages={handleOpenImages}
       />
       <Group
         width={width}
+        paintingWidth={paintingWidth}
         paintings={groupFour}
         handleOpenImages={handleOpenImages}
       />
       <Group
         width={width}
+        paintingWidth={paintingWidth}
         paintings={groupFive}
         handleOpenImages={handleOpenImages}
       />
@@ -142,7 +152,12 @@ const Index = function Index() {
   );
 };
 
-const Group = function Group({ width, paintings, handleOpenImages }) {
+const Group = function Group({
+  width,
+  paintingWidth,
+  paintings,
+  handleOpenImages,
+}) {
   let justifyContent = "flex-start";
   let spacing = 0;
   if (width <= 900 && width > 600) {
@@ -178,7 +193,7 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
           spacing={spacing}
         >
           <AddPhotos
-            width={width}
+            paintingWidth={paintingWidth}
             paintings={paintings}
             handleOpenImages={handleOpenImages}
           />
@@ -189,26 +204,57 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
   return null;
 };
 
-const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
+const AddPhotos = function AddPhotos({
+  paintingWidth,
+  paintings,
+  handleOpenImages,
+}) {
+  const [visible, setVisible] = useState(false);
+  const placeholderRef = useRef(null);
+
+  useEffect(() => {
+    if (!visible && placeholderRef.current) {
+      const observer = new IntersectionObserver(([{ intersectionRatio }]) => {
+        if (intersectionRatio > 0) {
+          setVisible(true);
+        }
+      });
+      observer.observe(placeholderRef.current);
+      return () => observer.disconnect();
+    }
+    return null;
+  }, [visible, placeholderRef]);
+
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
-      <CardMedia
-        component="img"
-        src={`${painting.images[0].url}`}
-        alt={painting.title}
-        // loading="lazy"
-        className="painting-card-index"
-        sx={{
-          height: "230px",
-          width: "230px",
-          "@media (max-width: 600px)": {
-            height: `${width - 60}px`,
-            width: `${width - 60}px`,
-          },
-        }}
-        onClick={() => handleOpenImages(painting)}
-      />
-      <DeletePainting painting={painting} />
+      {visible ? (
+        <>
+          <CardMedia
+            component="img"
+            src={`${painting.images[0].url}`}
+            alt={painting.title}
+            // loading="lazy"
+            className="painting-card-index"
+            sx={{
+              height: "230px",
+              width: "230px",
+              "@media (max-width: 600px)": {
+                height: paintingWidth,
+                width: paintingWidth,
+              },
+            }}
+            onClick={() => handleOpenImages(painting)}
+          />
+          <DeletePainting painting={painting} />
+        </>
+      ) : (
+        <Box
+          style={{ height: paintingWidth, backgroundColor: "#f1f1f1" }}
+          aria-label={painting.title}
+          ref={placeholderRef}
+        />
+      )}
+
       <Typography className="painting-title-index-typography">
         <Link
           to={`${painting.painter.slug}/works/${painting.slug}`}

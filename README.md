@@ -148,3 +148,7 @@ React-based Fannyky Front end application consuming the Ruby on Rails-based API 
       </LocalizationProvider>
     </Grid>
 
+### Lazy loading
+
+- https://gist.github.com/asterisk37n/7a0425f8d2f68a46820cca640410ead5
+
