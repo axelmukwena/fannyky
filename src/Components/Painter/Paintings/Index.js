@@ -269,7 +269,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             width: painting.images ? "fit-content" : paintingWidth,
           }}
         >
-          {painting.images && (
+          {painting.images.length > 0 && (
             <>
               <CardMedia
                 component="img"
