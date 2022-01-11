@@ -225,7 +225,7 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
 };
 
 const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const placeholderRef = useRef(null);
 
   useEffect(() => {
@@ -235,6 +235,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           setVisible(true);
         }
       });
+
       observer.observe(placeholderRef.current);
       return () => observer.disconnect();
     }
@@ -266,7 +267,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             src={`${painting.images[0].url}`}
             alt={painting.title}
             height={paintingWidth}
-            // loading="lazy"
+            loading="lazy"
             className="painting-card-index"
             sx={{
               height: paintingWidth,
