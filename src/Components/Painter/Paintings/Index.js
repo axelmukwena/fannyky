@@ -290,8 +290,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           className="painting-title-index"
           style={{ fontWeight: 500 }}
         >
-          {painting.title.length > 20
-            ? `${painting.title.substring(0, 20)}...`
+          {painting.title.length > 17
+            ? `${painting.title.substring(0, 17)}...`
             : painting.title}
         </Link>
       </Typography>

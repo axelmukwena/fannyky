@@ -339,8 +339,8 @@ const GetDescription = function GetDescription({ painting }) {
         <CustomHorizontal />
 
         <Typography
-          className="justify"
-          sx={{ marginTop: 5, fontSize: 14 }}
+          className="justify description"
+          sx={{ marginTop: "5px", fontSize: "14px" }}
           dangerouslySetInnerHTML={description}
         />
       </div>
