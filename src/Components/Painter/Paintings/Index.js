@@ -243,15 +243,13 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
   }, [visible, placeholderRef]);
 
   let paintingWidth = "120px";
+  let height = "120px";
   let trim = 17;
   let trimEnd = "...";
 
-  if (width > 900) {
-    paintingWidth = "120px";
-    trim = 17;
-    trimEnd = "...";
-  } else {
+  if (width <= 900) {
     paintingWidth = `${window.innerWidth - 60}px`;
+    height = "100%";
     trim = 1000;
     trimEnd = "";
   }
@@ -272,11 +270,11 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             component="img"
             src={`${painting.images[0].url}`}
             alt={painting.title}
-            height={paintingWidth}
+            height={height}
             loading="lazy"
             className="painting-card-index"
             sx={{
-              height: paintingWidth,
+              height,
               width: paintingWidth,
             }}
             onClick={() => handleOpenImages(painting)}
@@ -285,7 +283,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         </Card>
       ) : (
         <Box
-          sx={{ height: paintingWidth, backgroundColor: "#f1f1f1" }}
+          sx={{ height, backgroundColor: "#f1f1f1" }}
           aria-label={painting.title}
           ref={placeholderRef}
         />
