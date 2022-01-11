@@ -296,7 +296,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         </Link>
       </Typography>
 
-      {painting.date_created && (
+      {/* {painting.date_created && (
         <Typography
           sx={{
             fontWeight: 400,
@@ -310,7 +310,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         >
           {painting.date_created.split("-")[0]}
         </Typography>
-      )}
+      )} */}
 
       {painting.abstract && (
         <Typography
@@ -324,8 +324,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             },
           }}
         >
-          {painting.abstract.length > 20
-            ? `${painting.abstract.substring(0, 20)}...`
+          {painting.abstract.length > 17
+            ? `${painting.abstract.substring(0, 17)}...`
             : painting.abstract}
         </Typography>
       )}
@@ -342,8 +342,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             width: "120px",
           }}
         >
-          {painting.dimension.length > 20
-            ? `${painting.dimension.substring(0, 20)}...`
+          {painting.dimension.length > 17
+            ? `${painting.dimension.substring(0, 17)}...`
             : painting.dimension}
         </Typography>
       )}
