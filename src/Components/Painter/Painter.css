@@ -48,7 +48,7 @@ and (max-width: 900px) {
 
 .title {
   font-weight: 600 !important;
-  font-size: 13px !important;
+  font-size: 0.813rem !important;
   color: #646464 !important;
 }
 
@@ -95,10 +95,15 @@ and (max-width: 899px) {
 
 .painting-title-index {
   font-weight: 400;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-decoration: none;
   color: #525252;
-  
+}
+
+@media (max-width: 600px) {
+  .painting-title-index {
+    font-size: 1rem;
+  }
 }
 
 .painting-title-index-typography {
@@ -108,14 +113,14 @@ and (max-width: 899px) {
 
 @media (max-width: 600px) {
   .painting-title-index-typography {
-    margin: 5px 0;
+    margin: 15px 4px 0 4px;
     width: 94%;
   }
 }
 
 .publication-title-index {
   font-weight: 600;
-  font-size: 17px;
+  font-size: 1.063rem;
   text-decoration: none;
   color: #585858;
 }
@@ -141,7 +146,7 @@ and (max-width: 899px) {
 
 .painting-title-popup {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-decoration: none;
   color: #727272;
 }

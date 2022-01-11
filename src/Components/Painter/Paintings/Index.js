@@ -243,11 +243,17 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
   }, [visible, placeholderRef]);
 
   let paintingWidth = "120px";
+  let trim = 17;
+  let trimEnd = "...";
 
   if (width > 900) {
     paintingWidth = "120px";
+    trim = 17;
+    trimEnd = "...";
   } else {
     paintingWidth = `${window.innerWidth - 60}px`;
+    trim = 1000;
+    trimEnd = "";
   }
 
   return paintings.map((painting) => (
@@ -291,8 +297,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           className="painting-title-index"
           style={{ fontWeight: 500 }}
         >
-          {painting.title.length > 17
-            ? `${painting.title.substring(0, 17)}...`
+          {painting.title.length > trim
+            ? painting.title.substring(0, trim) + trimEnd
             : painting.title}
         </Link>
       </Typography>
@@ -301,11 +307,11 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "12px",
+            fontSize: "0.75rem",
             margin: "0 8px",
             width: paintingWidth,
             "@media (max-width: 600px)": {
-              margin: "0",
+              margin: "0 4px",
             },
           }}
         >
@@ -317,16 +323,17 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "12px",
+            fontSize: "0.75rem",
             margin: "0 8px",
             width: paintingWidth,
             "@media (max-width: 600px)": {
-              margin: "0",
+              margin: "0 4px",
+              fontSize: "0.875rem",
             },
           }}
         >
-          {painting.abstract.length > 17
-            ? `${painting.abstract.substring(0, 17)}...`
+          {painting.abstract.length > trim
+            ? painting.abstract.substring(0, trim) + trimEnd
             : painting.abstract}
         </Typography>
       )}
@@ -335,16 +342,17 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "12px",
+            fontSize: "0.75rem",
             margin: "0 8px",
+            width: paintingWidth,
             "@media (max-width: 600px)": {
-              margin: "0",
+              margin: "0 4px",
+              fontSize: "0.875rem",
             },
-            width: "120px",
           }}
         >
-          {painting.dimension.length > 17
-            ? `${painting.dimension.substring(0, 17)}...`
+          {painting.dimension.length > trim
+            ? painting.dimension.substring(0, trim) + trimEnd
             : painting.dimension}
         </Typography>
       )}
@@ -377,7 +385,7 @@ const DeletePainting = function DeletePainting({ painting }) {
           padding: 0,
           cursor: "pointer",
           color: "black",
-          fontSize: 21,
+          fontSize: "1.313rem",
           backgroundColor: "rgb(255 255 255 / 28%)",
           borderRadius: "2px",
         }}
