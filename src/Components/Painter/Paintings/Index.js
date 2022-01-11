@@ -264,22 +264,29 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             margin: 0,
             position: "relative",
             borderRadius: 0,
+            backgroundColor: "#f1f1f1",
+            height: painting.images ? "fit-content" : paintingWidth,
+            width: painting.images ? "fit-content" : paintingWidth,
           }}
         >
-          <CardMedia
-            component="img"
-            src={`${painting.images[0].url}`}
-            alt={painting.title}
-            height={height}
-            loading="lazy"
-            className="painting-card-index"
-            sx={{
-              height,
-              width: paintingWidth,
-            }}
-            onClick={() => handleOpenImages(painting)}
-          />
-          <DeletePainting painting={painting} />
+          {painting.images && (
+            <>
+              <CardMedia
+                component="img"
+                src={`${painting.images[0].url}`}
+                alt={painting.title}
+                height={height}
+                loading="lazy"
+                className="painting-card-index"
+                sx={{
+                  height,
+                  width: paintingWidth,
+                }}
+                onClick={() => handleOpenImages(painting)}
+              />
+              <DeletePainting painting={painting} />
+            </>
+          )}
         </Card>
       ) : (
         <Box
@@ -289,17 +296,19 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         />
       )}
 
-      <Typography className="painting-title-index-typography">
-        <Link
-          to={`${painting.painter.slug}/works/${painting.slug}`}
-          className="painting-title-index"
-          style={{ fontWeight: 500 }}
-        >
-          {painting.title.length > trim
-            ? painting.title.substring(0, trim) + trimEnd
-            : painting.title}
-        </Link>
-      </Typography>
+      {painting.title && (
+        <Typography className="painting-title-index-typography">
+          <Link
+            to={`${painting.painter.slug}/works/${painting.slug}`}
+            className="painting-title-index"
+            style={{ fontWeight: 500 }}
+          >
+            {painting.title.length > trim
+              ? painting.title.substring(0, trim) + trimEnd
+              : painting.title}
+          </Link>
+        </Typography>
+      )}
 
       {/* {painting.date_created && (
         <Typography
