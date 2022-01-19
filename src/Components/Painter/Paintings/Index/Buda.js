@@ -86,14 +86,19 @@ const CategoryPaintings = function CategoryPaintings({ category }) {
     setWidth(window.innerWidth);
   }
 
+  function handlePaintings(newPaintings) {
+    if (newPaintings.length > 0) {
+      setPaintings(newPaintings);
+      setLoaded(true);
+    }
+  }
+
   // You need to add `/paintings` to path
   // because `/paintings` is root for a painter
   // If you see in publications, no need
   // to add `/publications` to `path`
   useEffect(() => {
-    getResource(`${path}/paintings_category/${category}`, setPaintings).then(
-      setLoaded(true)
-    );
+    getResource(`${path}/paintings_category/${category}`, handlePaintings);
 
     handleResize();
     window.addEventListener("resize", handleResize);
