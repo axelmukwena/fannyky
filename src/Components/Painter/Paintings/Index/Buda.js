@@ -1,21 +1,79 @@
-import { DeleteOutline } from "@mui/icons-material";
-import { Button, Typography, Grid, Box, CardMedia, Card } from "@mui/material";
+import { DeleteOutline, ExpandMore } from "@mui/icons-material";
+import {
+  Button,
+  Typography,
+  Grid,
+  Box,
+  CardMedia,
+  Card,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
-import { deleteResource, getResource } from "../../../utils/requests";
-import Toast from "../../../utils/toast";
-import ImagesDialog from "../ImagesDialog";
-import NewDialog from "./NewDialog";
-import Loading from "../../Loading/Loading";
+import { deleteResource, getResource } from "../../../../utils/requests";
+import Toast from "../../../../utils/toast";
+import ImagesDialog from "../../ImagesDialog";
+import NewDialog from "../NewDialog";
+import Loading from "../../../Loading/Loading";
 
-const Index = function Index() {
+const Buda = function ParseBuda({ painter }) {
+  const [expanded, setExpanded] = useState(false);
+  const [show, setShow] = useState("");
+
+  const handleChange = (category) => (event, isExpanded) => {
+    const panel = category.replace(/\s/g, "");
+    setShow(isExpanded ? category : "");
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  if (painter.paintings_categories.length === 0) return null;
+
+  return (
+    <>
+      <IsLoggedIn />
+      {painter.paintings_categories.map((category) => {
+        return (
+          <Accordion
+            key={category}
+            elevation={0}
+            expanded={expanded === category.replace(/\s/g, "")}
+            onChange={handleChange(category)}
+            sx={{ borderBottom: "1px solid #00000012" }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls={`${category.replace(/\s/g, "")}-content`}
+              id={category.replace(/\s/g, "")}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  fontFamily: "Roboto",
+                  margin: "0 0 0 5px",
+                  color: "#525252",
+                }}
+              >
+                {category}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {show === category && <CategoryPaintings category={category} />}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+    </>
+  );
+};
+
+const CategoryPaintings = function CategoryPaintings({ category }) {
   const { path } = useRouteMatch();
-  const [groupOne, setGroupOne] = useState([]);
-  const [groupTwo, setGroupTwo] = useState([]);
-  const [groupThree, setGroupThree] = useState([]);
-  const [groupFour, setGroupFour] = useState([]);
-  const [groupFive, setGroupFive] = useState([]);
+
+  const [paintings, setPaintings] = useState(null);
   const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
@@ -23,76 +81,6 @@ const Index = function Index() {
   const [loaded, setLoaded] = useState(false);
 
   const history = useHistory();
-
-  function setPaintings(paintings) {
-    setGroupOne([]);
-    setGroupTwo([]);
-    setGroupThree([]);
-    setGroupFour([]);
-    setGroupFive([]);
-
-    // If fanny wong
-    if (paintings.length > 0 && paintings[0].painter.rank === 1) {
-      const key = "group_type";
-
-      // https://stackoverflow.com/a/47385953/8050183
-      const groups = paintings.reduce((hash, obj) => {
-        if (obj[key] === undefined) return hash;
-        return Object.assign(hash, {
-          [obj[key]]: (hash[obj[key]] || []).concat(obj),
-        });
-      }, {});
-
-      const setGroups = [
-        setGroupOne,
-        setGroupTwo,
-        setGroupThree,
-        setGroupFour,
-        setGroupFive,
-      ];
-
-      const keys = Object.keys(groups);
-      for (let i = 0; i < keys.length; i += 1) {
-        const setGroup = setGroups[i];
-        const group = groups[keys[i]];
-        setGroup(group);
-      }
-    }
-
-    // If fanny wong
-    if (paintings.length > 0 && paintings[0].painter.rank === 2) {
-      const currentYear = new Date().getFullYear();
-      const startDate = new Date("2000-01-01");
-      const diff = currentYear - 2000;
-      const groupSize = Math.floor(diff / 5);
-
-      const years = [];
-      for (let i = 0; i < diff; i += groupSize) {
-        const yearRoof = startDate.getFullYear() + i;
-        years.push(yearRoof);
-      }
-
-      // console.log(years);
-      for (let i = 0; i < paintings.length; i += 1) {
-        if (paintings[i].rankdate) {
-          const paintingYear = paintings[i].rankdate.split("-")[0];
-
-          if (paintingYear <= years[1]) {
-            setGroupFive((old) => [...old, paintings[i]]);
-          } else if (paintingYear <= years[2]) {
-            setGroupFour((old) => [...old, paintings[i]]);
-          } else if (paintingYear <= years[3]) {
-            setGroupThree((old) => [...old, paintings[i]]);
-          } else if (paintingYear <= years[4]) {
-            setGroupTwo((old) => [...old, paintings[i]]);
-          } else if (paintingYear > years[4]) {
-            setGroupOne((old) => [...old, paintings[i]]);
-          }
-        }
-      }
-    }
-    setLoaded(true);
-  }
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -103,7 +91,9 @@ const Index = function Index() {
   // If you see in publications, no need
   // to add `/publications` to `path`
   useEffect(() => {
-    getResource(`${path}/paintings`, setPaintings);
+    getResource(`${path}/paintings_category/${category}`, setPaintings).then(
+      setLoaded(true)
+    );
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -133,32 +123,12 @@ const Index = function Index() {
 
   return (
     <>
-      <IsLoggedIn />
-      <Group
+      <Paintings
         width={width}
-        paintings={groupOne}
+        paintings={paintings}
         handleOpenImages={handleOpenImages}
       />
-      <Group
-        width={width}
-        paintings={groupTwo}
-        handleOpenImages={handleOpenImages}
-      />
-      <Group
-        width={width}
-        paintings={groupThree}
-        handleOpenImages={handleOpenImages}
-      />
-      <Group
-        width={width}
-        paintings={groupFour}
-        handleOpenImages={handleOpenImages}
-      />
-      <Group
-        width={width}
-        paintings={groupFive}
-        handleOpenImages={handleOpenImages}
-      />
+
       <ImagesDialog
         resource={selected}
         current={current}
@@ -171,7 +141,7 @@ const Index = function Index() {
   );
 };
 
-const Group = function Group({ width, paintings, handleOpenImages }) {
+const Paintings = function Paintings({ width, paintings, handleOpenImages }) {
   let justifyContent = "flex-start";
   let spacing = 0;
   if (width <= 900 && width > 600) {
@@ -184,41 +154,21 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
     spacing = 0;
   }
 
-  if (paintings.length > 0) {
-    let title = "";
-    if (paintings[0].painter.rank === 1) {
-      title = paintings[0].group_type;
-    } else {
-      title = `${paintings[0].rankdate.split("-")[0]} Works`;
-    }
-
+  if (paintings) {
     return (
-      <Box sx={{ marginBottom: "50px" }}>
-        <Typography
-          style={{
-            fontWeight: 600,
-            fontSize: "1rem",
-            fontFamily: "Roboto",
-            margin: "0 0 0 5px",
-          }}
-        >
-          {title}
-        </Typography>
-
-        <Grid
-          direction="row"
-          justifyContent={justifyContent}
-          alignItems="flex-start"
-          container
-          spacing={spacing}
-        >
-          <AddPhotos
-            width={width}
-            paintings={paintings}
-            handleOpenImages={handleOpenImages}
-          />
-        </Grid>
-      </Box>
+      <Grid
+        direction="row"
+        justifyContent={justifyContent}
+        alignItems="flex-start"
+        container
+        spacing={spacing}
+      >
+        <AddPhotos
+          width={width}
+          paintings={paintings}
+          handleOpenImages={handleOpenImages}
+        />
+      </Grid>
     );
   }
   return null;
@@ -440,4 +390,43 @@ const IsLoggedIn = function IsLoggedIn() {
   return "";
 };
 
-export default Index;
+export default Buda;
+
+/* function setPaintings(paintings) {
+    setGroupOne([]);
+    setGroupTwo([]);
+    setGroupThree([]);
+    setGroupFour([]);
+    setGroupFive([]);
+
+    // If fanny wong
+    if (paintings.length > 0) {
+      const key = "category";
+
+      // https://stackoverflow.com/a/47385953/8050183
+      const groups = paintings.reduce((hash, obj) => {
+        if (obj[key] === undefined) return hash;
+        return Object.assign(hash, {
+          [obj[key]]: (hash[obj[key]] || []).concat(obj),
+        });
+      }, {});
+
+      const setGroups = [
+        setGroupOne,
+        setGroupTwo,
+        setGroupThree,
+        setGroupFour,
+        setGroupFive,
+      ];
+
+      const keys = Object.keys(groups);
+      for (let i = 0; i < keys.length; i += 1) {
+        const setGroup = setGroups[i];
+        const group = groups[keys[i]];
+        setGroup(group);
+      }
+    }
+
+    setLoaded(true);
+  }
+ */

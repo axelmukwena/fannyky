@@ -140,10 +140,10 @@ const Show = function Show({ match }) {
               </Typography>
             )}
 
-            {painting.group_type && (
+            {painting.category && (
               <Typography>
                 <span style={{ fontWeight: 500 }}>Category: </span>
-                {painting.group_type}
+                {painting.category}
               </Typography>
             )}
 

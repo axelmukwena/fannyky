@@ -2,11 +2,14 @@
 import { Close } from "@mui/icons-material";
 import {
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
+  ListItem,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,6 +31,8 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const [phone, setPhone] = useState("");
   const [link, setLink] = useState("");
   const [images, setImages] = useState([]);
+  const [paintingsCategories, setPaintingsCategories] = useState([]);
+  const [category, setCategory] = useState("");
   const required = false;
 
   useEffect(() => {
@@ -51,10 +56,12 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     }
 
     setName(painterObject.name);
+    setRank(painterObject.rank);
     setPagelink(painterObject.pagelink);
     setEmail(painterObject.email);
     setPhone(painterObject.phone);
     setLink(painterObject.link);
+    setPaintingsCategories(painterObject.paintings_categories);
   }, [painter]);
 
   const handleImagesResponse = (data) => {
@@ -80,7 +87,6 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     const stringAbout = JSON.stringify(rawAbout);
 
     const data = {
-      id: painter.id,
       rank,
       name,
       pagelink,
@@ -88,12 +94,23 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
       email,
       phone,
       link,
+      paintings_categories: paintingsCategories,
     };
 
     const params = parseGeneralParams(data);
-    // console.log(params);
     const path = `/${painter.id}`;
     putResource(path, params, handlePainterResponse);
+  };
+
+  const handleAddCategory = () => {
+    const currentCategory = category.trim();
+    if (!currentCategory) return;
+
+    const included = paintingsCategories.includes(currentCategory);
+    if (included) return;
+
+    setPaintingsCategories((oldArray) => [...oldArray, currentCategory]);
+    setCategory("");
   };
 
   return (
@@ -177,7 +194,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <TextField
                 fullWidth
                 label="Email"
@@ -188,7 +205,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <TextField
                 fullWidth
                 label="Phone"
@@ -209,6 +226,37 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
                 onChange={(e) => setLink(e.target.value)}
               />
             </Grid>
+
+            {painter.rank === 1 && (
+              <>
+                <Grid item xs={8}>
+                  <TextField
+                    fullWidth
+                    label="Artworks Category"
+                    variant="outlined"
+                    name="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  />
+                </Grid>
+
+                <Grid item xs={4}>
+                  <Button
+                    style={{ height: 55, width: "100%" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleAddCategory()}
+                  >
+                    Add Category
+                  </Button>
+                </Grid>
+
+                <Categories
+                  paintingsCategories={paintingsCategories}
+                  setPaintingsCategories={setPaintingsCategories}
+                />
+              </>
+            )}
 
             <Grid item xs={12}>
               <Typography style={{ margin: 9, color: "#626262" }}>
@@ -264,6 +312,52 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
       </DialogContent>
     </Dialog>
   );
+};
+
+const Categories = function Categories({
+  paintingsCategories,
+  setPaintingsCategories,
+}) {
+  const handleDelete = (currentCategory) => () => {
+    setPaintingsCategories((categories) =>
+      categories.filter((category) => category !== currentCategory)
+    );
+  };
+
+  if (paintingsCategories.length > 0) {
+    return (
+      <Grid item xs={12}>
+        <Paper
+          elevation={0}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexWrap: "wrap",
+            listStyle: "none",
+            p: 0.5,
+            m: 0,
+          }}
+          component="ul"
+        >
+          {paintingsCategories.map((category) => {
+            return (
+              <ListItem
+                key={category}
+                sx={{ width: "fit-content", paddingLeft: "0" }}
+              >
+                <Chip
+                  icon={null}
+                  label={category}
+                  onDelete={handleDelete(category)}
+                />
+              </ListItem>
+            );
+          })}
+        </Paper>
+      </Grid>
+    );
+  }
+  return null;
 };
 
 export default EditDialog;

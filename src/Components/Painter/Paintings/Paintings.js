@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
-import Index from "./Index";
+import Index from "./Index/Index";
 import Show from "./Show";
 
 const Paintings = function Paintings({ match }) {

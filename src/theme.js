@@ -47,6 +47,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          "&:before": {
+            backgroundColor: "transparent",
+          },
+        },
+      },
+    },
   },
 });
 export default theme;
