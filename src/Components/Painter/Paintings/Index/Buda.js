@@ -73,7 +73,7 @@ const Buda = function ParseBuda({ painter }) {
 const CategoryPaintings = function CategoryPaintings({ category }) {
   const { path } = useRouteMatch();
 
-  const [paintings, setPaintings] = useState(null);
+  const [paintings, setPaintings] = useState([]);
   const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
@@ -154,7 +154,7 @@ const Paintings = function Paintings({ width, paintings, handleOpenImages }) {
     spacing = 0;
   }
 
-  if (paintings) {
+  if (paintings.length > 0) {
     return (
       <Grid
         direction="row"
@@ -170,6 +170,10 @@ const Paintings = function Paintings({ width, paintings, handleOpenImages }) {
         />
       </Grid>
     );
+  }
+
+  if (paintings.length === 0) {
+    return <Typography>No paintings in this category</Typography>;
   }
   return null;
 };
