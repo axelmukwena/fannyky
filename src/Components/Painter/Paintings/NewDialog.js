@@ -32,7 +32,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [rankdate, setRankdate] = useState(null);
   const [dimension, setDimension] = useState("");
   const [abstract, setAbstract] = useState("");
-  const [groupType, setGroupType] = useState("");
+  const [category, setCategory] = useState("");
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
@@ -74,7 +74,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       setDateCreated(painting.date_created);
       setDimension(painting.dimension);
       setAbstract(painting.abstract);
-      setGroupType(painting.group_type);
+      setCategory(painting.category);
     }
 
     if (painting && painting.images.length > 0) {
@@ -114,7 +114,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       rankdate,
       dimension,
       abstract,
-      group_type: groupType,
+      category,
       description: stringDescription,
       painter,
     };
@@ -242,21 +242,21 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
             {painter.rank === 1 ? (
               <Grid item xs={4}>
                 <FormControl fullWidth required>
-                  <InputLabel id="group-type">Group Type</InputLabel>
+                  <InputLabel id="category">Category</InputLabel>
                   <Select
-                    labelId="group-type"
-                    id="group-type-select"
-                    value={groupType}
-                    label="Group Type"
-                    onChange={(e) => setGroupType(e.target.value)}
+                    labelId="category"
+                    id="category-select"
+                    value={category}
+                    label="Category"
+                    onChange={(e) => setCategory(e.target.value)}
                   >
-                    <MenuItem value="Creative Works">Creative Works</MenuItem>
-                    <MenuItem value="Landscapes in Japan">
-                      Landscapes in Japan
-                    </MenuItem>
-                    <MenuItem value="Sketches with Themes">
-                      Sketches with Themes
-                    </MenuItem>
+                    {painter.paintings_categories.map((menuCategory) => {
+                      return (
+                        <MenuItem key={menuCategory} value={menuCategory}>
+                          {menuCategory}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>

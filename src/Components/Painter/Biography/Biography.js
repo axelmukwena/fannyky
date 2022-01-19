@@ -225,34 +225,36 @@ const IsLoggedIn = function IsLoggedIn() {
             handleClose={handleCloseNew}
           />
         </Grid>
-        <Grid item xs={12}>
-          <Typography sx={{ width: "fit-content", p: 0.5 }}>
-            Artworks Categories
-          </Typography>
-          <Paper
-            elevation={0}
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              flexWrap: "wrap",
-              listStyle: "none",
-              p: 0.5,
-              m: 0,
-            }}
-            component="ul"
-          >
-            {painter.paintings_categories.map((category) => {
-              return (
-                <ListItem
-                  key={category}
-                  sx={{ width: "fit-content", paddingLeft: "0" }}
-                >
-                  <Chip icon={null} label={category} />
-                </ListItem>
-              );
-            })}
-          </Paper>
-        </Grid>
+        {painter.paintings_categories.length > 0 && (
+          <Grid item xs={12}>
+            <Typography sx={{ width: "fit-content", p: 0.5 }}>
+              Artworks Categories
+            </Typography>
+            <Paper
+              elevation={0}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+                listStyle: "none",
+                p: 0.5,
+                m: 0,
+              }}
+              component="ul"
+            >
+              {painter.paintings_categories.map((category) => {
+                return (
+                  <ListItem
+                    key={category}
+                    sx={{ width: "fit-content", paddingLeft: "0" }}
+                  >
+                    <Chip icon={null} label={category} />
+                  </ListItem>
+                );
+              })}
+            </Paper>
+          </Grid>
+        )}
       </>
     );
   }

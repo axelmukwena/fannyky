@@ -25,8 +25,8 @@ const Buda = function ParseBuda({ painter }) {
 
   const handleChange = (category) => (event, isExpanded) => {
     const panel = category.replace(/\s/g, "");
-    setShow(isExpanded ? category : "");
     setExpanded(isExpanded ? panel : false);
+    setShow(isExpanded ? category : "");
   };
 
   if (painter.paintings_categories.length === 0) return null;
@@ -60,7 +60,7 @@ const Buda = function ParseBuda({ painter }) {
                 {category}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ padding: 0 }}>
               {show === category && <CategoryPaintings category={category} />}
             </AccordionDetails>
           </Accordion>
