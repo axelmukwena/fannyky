@@ -23,6 +23,24 @@ const Buda = function ParseBuda({ painter }) {
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
 
+  function handleResize() {
+    const categories = painter.paintings_categories;
+    if (categories.length > 0 && window.innerWidth > 900) {
+      const first = categories[0];
+      setExpanded(first.replace(/\s/g, ""));
+      setShow(first);
+    }
+  }
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    // remove resize listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const handleChange = (category) => (event, isExpanded) => {
     const panel = category.replace(/\s/g, "");
     setExpanded(isExpanded ? panel : false);
