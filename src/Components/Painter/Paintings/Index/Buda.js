@@ -87,7 +87,7 @@ const CategoryPaintings = function CategoryPaintings({ category }) {
   }
 
   function handlePaintings(newPaintings) {
-    if (newPaintings.length > 0 || newPaintings.length === 0) {
+    if (newPaintings.length >= 0) {
       setPaintings(newPaintings);
       setLoaded(true);
     }
