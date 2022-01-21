@@ -1,5 +1,13 @@
 import { DeleteOutline } from "@mui/icons-material";
-import { Button, Typography, Grid, Box, CardMedia, Card } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Grid,
+  Box,
+  CardMedia,
+  Card,
+  Skeleton,
+} from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
@@ -216,12 +224,16 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
 
   let paintingWidth = "120px";
   let height = "120px";
+  let skeletonHeight = 120;
+  let skeletonWidth = 120;
   let trim = 17;
   let trimEnd = "...";
 
   if (width <= 900) {
     paintingWidth = `${window.innerWidth - 60}px`;
     height = "100%";
+    skeletonHeight = width - 60;
+    skeletonWidth = width - 60;
     trim = 1000;
     trimEnd = "";
   }
@@ -261,9 +273,10 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           )}
         </Card>
       ) : (
-        <Box
-          sx={{ height, backgroundColor: "#f1f1f1" }}
-          aria-label={painting.title}
+        <Skeleton
+          variant="rectangular"
+          height={skeletonHeight}
+          width={skeletonWidth}
           ref={placeholderRef}
         />
       )}

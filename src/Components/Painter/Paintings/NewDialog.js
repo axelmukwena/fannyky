@@ -82,9 +82,23 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     }
   }, [painting]);
 
-  const handleImagesResponse = (data) => {
+  const resetForm = () => {
+    setTitle("");
+    setPagelink("");
+    setDateCreated("");
+    setRankdate(null);
+    setDimension("");
+    setAbstract("");
+    setCategory("");
+    setDescription(EditorState.createEmpty());
+    setImages([]);
+  };
+
+  const handleToastMessage = (data) => {
     Toast({ message: data.message, type: "success" });
-    handleClose();
+    if (data.success) {
+      resetForm();
+    }
   };
 
   const handlePaintingResponse = (data) => {
@@ -95,9 +109,9 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       const params = parseImages(id, images);
       const path = `/${painter.id}/paintings/${id}/images`;
 
-      postResource(path, params, handleImagesResponse);
+      postResource(path, params, handleToastMessage);
     } else {
-      handleClose();
+      handleToastMessage(data);
     }
   };
 

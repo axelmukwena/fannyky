@@ -84,7 +84,6 @@ const Show = function Show({ match }) {
                     id={image.url}
                     src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
                     alt={painting.title}
-                    loading="lazy"
                     component="img"
                     onClick={() => handleOpen(index)}
                     sx={{
