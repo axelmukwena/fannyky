@@ -35,7 +35,11 @@ const FrontTwo = function FrontTwo() {
       <Carousel controls={false} indicators={false}>
         {images.map((image) => {
           return (
-            <Carousel.Item key={image} interval={6000}>
+            <Carousel.Item
+              key={image}
+              interval={6000}
+              style={{ color: "red", marginRight: "-150%" }}
+            >
               <CardMedia
                 className="d-block w-100"
                 component="img"

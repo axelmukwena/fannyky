@@ -60,7 +60,11 @@ const FrontFour = function FrontFour() {
       <Carousel controls={false} indicators={false}>
         {images.map((image) => {
           return (
-            <Carousel.Item key={image} interval={5000}>
+            <Carousel.Item
+              key={image}
+              interval={5000}
+              style={{ marginRight: "-200%" }}
+            >
               {/* <div
                 className="d-block w-100 ripples"
                 style={{
