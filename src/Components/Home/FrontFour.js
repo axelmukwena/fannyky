@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, CardMedia, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import one from "../../images/slide/1.png";
@@ -61,7 +61,7 @@ const FrontFour = function FrontFour() {
         {images.map((image) => {
           return (
             <Carousel.Item key={image} interval={5000}>
-              <div
+              {/* <div
                 className="d-block w-100 ripples"
                 style={{
                   height: `${height}px`,
@@ -71,6 +71,13 @@ const FrontFour = function FrontFour() {
                   backgroundPosition: "center",
                   backgroundSize: "cover",
                 }}
+              /> */}
+              <CardMedia
+                className="d-block w-100"
+                component="img"
+                src={image}
+                alt={image}
+                sx={{ height: `${height}px`, width: `${width}px` }}
               />
             </Carousel.Item>
           );

@@ -38,7 +38,9 @@ const FrontTwo = function FrontTwo() {
             <Carousel.Item key={image} interval={6000}>
               <CardMedia
                 className="d-block w-100"
-                image={image}
+                component="img"
+                src={image}
+                alt={image}
                 sx={{ height: `${height}px`, width: `${width}px` }}
               />
             </Carousel.Item>
