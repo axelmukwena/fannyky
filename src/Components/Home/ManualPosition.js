@@ -5,7 +5,7 @@ import "./Home.css";
 import { getResource } from "../../utils/requests";
 import BackGround from "./BackGround";
 
-const Second = function Second() {
+const ManualPosition = function ManualPosition() {
   return (
     <div className="canvas-container" id="canvas-container">
       <BackGround />
@@ -90,4 +90,4 @@ const PositionButtons = function PositionButtons() {
   return "";
 };
 
-export default Second;
+export default ManualPosition;

@@ -11,3 +11,9 @@
 .button-one:hover, .button-two:hover {
   background-color: #e7e7e75d;
 }
+
+.caption-one, .caption-two {
+  z-index: 1;
+  margin-top: -200px;
+  position: absolute;
+}

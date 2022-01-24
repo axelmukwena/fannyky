@@ -8,7 +8,12 @@ import Painter from "../Components/Painter/Painter";
 import Login from "../Components/Login/Login";
 import { getResource } from "../utils/requests";
 import Home from "../Components/Home/Home";
+import FrontThree from "../Components/Home/FrontThree";
 import Loading from "../Components/Loading/Loading";
+import FrontTwo from "../Components/Home/FrontTwo";
+import FrontOne from "../Components/Home/FrontOne";
+import "bootstrap/dist/css/bootstrap.min.css";
+import FrontFour from "../Components/Home/FrontFour";
 
 const App = function App() {
   const dispatch = useDispatch();
@@ -38,6 +43,18 @@ const App = function App() {
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route exact path="/front-one">
+          <FrontOne />
+        </Route>
+        <Route exact path="/front-two">
+          <FrontTwo />
+        </Route>
+        <Route exact path="/front-three">
+          <FrontThree />
+        </Route>
+        <Route exact path="/front-four">
+          <FrontFour />
         </Route>
         <Route exact path="/login">
           <Login />

@@ -39,14 +39,8 @@ const Home = function Home() {
     >
       {painters.map((painter) => {
         return (
-          <Grid
-            key={painter.slug}
-            item
-            // xs={12}
-            // sm={6}
-            style={{ margin: 0, padding: 0 }}
-          >
-            <Painter2 painter={painter} />
+          <Grid key={painter.slug} item sx={{ margin: 0, padding: 0 }}>
+            <Painter painter={painter} />
           </Grid>
         );
       })}
@@ -55,7 +49,7 @@ const Home = function Home() {
 };
 
 // eslint-disable-next-line no-unused-vars
-const Painter = function Painter({ painter }) {
+const PainterDummy = function PainterDummy({ painter }) {
   if (painter) {
     return (
       <Link to={`/${painter.slug}`} style={{ textDecoration: "none" }}>
@@ -126,7 +120,7 @@ const Painter = function Painter({ painter }) {
   return "";
 };
 
-const Painter2 = function Painter2({ painter }) {
+const Painter = function Painter({ painter }) {
   if (painter) {
     return (
       <Link to={`/${painter.slug}`} style={{ textDecoration: "none" }}>

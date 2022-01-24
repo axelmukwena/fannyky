@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import background from "../../images/buda-background.png";
 
-const Canvas = function Canvas() {
+const Canvas = function Canvas({ position, margin, top }) {
   const canvasRef = useRef(null);
   const [x, setX] = useState(undefined);
   const [y, setY] = useState(undefined);
@@ -9,14 +8,14 @@ const Canvas = function Canvas() {
   const [width, setWidth] = useState(0);
 
   function handleResize() {
-    setHeight(window.innerHeight);
+    setHeight(window.innerHeight - margin);
     setWidth(window.innerWidth);
 
-    const container = document.getElementById("canvas-container");
-    container.style.backgroundImage = `url(${background})`;
-    container.style.backgroundRepeat = "no-repeat";
-    container.style.backgroundPosition = "center";
-    container.style.backgroundSize = "cover";
+    // const container = document.getElementById("canvas-container");
+    // container.style.backgroundImage = `url(${background})`
+    // container.style.backgroundRepeat = "no-repeat";
+    // container.style.backgroundPosition = "center";
+    // container.style.backgroundSize = "cover";
   }
 
   useEffect(() => {
@@ -58,10 +57,13 @@ const Canvas = function Canvas() {
       className="canvas"
       id="canvas"
       onMouseMove={handleMouseMove}
+      onTouchStart={handleMouseMove}
+      onTouchEnd={clearDrawing}
       onMouseLeave={clearDrawing}
       ref={canvasRef}
       height={height}
       width={width}
+      style={{ position, top, left: top }}
     />
   );
 };
