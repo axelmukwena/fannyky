@@ -73,10 +73,10 @@ const FrontFour = function FrontFour() {
                 }}
               /> */}
               <CardMedia
-                className="d-block w-100"
-                component="img"
-                src={image}
-                alt={image}
+                className="d-block w-100 ripples"
+                // component="img"
+                image={image}
+                // alt={image}
                 sx={{ height: `${height}px`, width: `${width}px` }}
               />
             </Carousel.Item>
