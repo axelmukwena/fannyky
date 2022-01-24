@@ -160,21 +160,21 @@ const PositionButtons = function PositionButtons() {
     const width = window.innerWidth / 4;
 
     const firstButton = document.querySelector(".button-one");
-    firstButton.style.marginTop = `-${height / 2}px`;
+    firstButton.style.marginTop = `-${height / 2 + 20}px`;
     firstButton.style.marginLeft = `${width - firstButton.offsetWidth / 2}px`;
 
     const secondButton = document.querySelector(".button-two");
-    secondButton.style.marginTop = `-${height / 2}px`;
+    secondButton.style.marginTop = `-${height / 2 + 20}px`;
     secondButton.style.marginLeft = `${
       3 * width - secondButton.offsetWidth / 2
     }px`;
 
     const firstCaption = document.querySelector(".caption-one");
-    firstCaption.style.marginTop = `-${height / 2 - 40}px`;
+    firstCaption.style.marginTop = `-${height / 2 - 20}px`;
     firstCaption.style.marginLeft = `${width - firstCaption.offsetWidth / 2}px`;
 
     const secondCaption = document.querySelector(".caption-two");
-    secondCaption.style.marginTop = `-${height / 2 - 40}px`;
+    secondCaption.style.marginTop = `-${height / 2 - 20}px`;
     secondCaption.style.marginLeft = `${
       3 * width - secondCaption.offsetWidth / 2
     }px`;
