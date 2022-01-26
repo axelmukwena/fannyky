@@ -14,6 +14,7 @@ import FrontTwo from "../Components/Home/FrontTwo";
 import FrontOne from "../Components/Home/FrontOne";
 import "bootstrap/dist/css/bootstrap.min.css";
 import FrontFour from "../Components/Home/FrontFour";
+import FrontFive from "../Components/Home/FrontFive";
 
 const App = function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,9 @@ const App = function App() {
         </Route>
         <Route exact path="/front-four">
           <FrontFour />
+        </Route>
+        <Route exact path="/front-five">
+          <FrontFive />
         </Route>
         <Route exact path="/login">
           <Login />

@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, CardMedia, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import Carousel from "react-bootstrap/Carousel";
 import one from "../../images/slide/1.png";
-import two from "../../images/slide/2.png";
-import three from "../../images/slide/3.png";
-import four from "../../images/slide/4.png";
-import five from "../../images/slide/5.png";
-import six from "../../images/slide/6.png";
 import { getResource } from "../../utils/requests";
 
 const FrontFour = function FrontFour() {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
-  const images = [one, four, two, five, three, six];
 
   function handleResize() {
     setHeight(window.innerHeight);
@@ -24,9 +17,9 @@ const FrontFour = function FrontFour() {
     // eslint-disable-next-line no-undef
     // console.log($(".active.carousel-item > .ripples"));
     // eslint-disable-next-line no-undef
-    $(".active.carousel-item > .ripples").ready(function foo() {
+    $(".ripples").ready(function foo() {
       // eslint-disable-next-line no-undef
-      $(".active.carousel-item > .ripples").ripples({
+      $(".ripples").ripples({
         resolution: 512,
         dropRadius: 20,
         perturbance: 0.002,
@@ -57,36 +50,13 @@ const FrontFour = function FrontFour() {
 
   return (
     <>
-      <Carousel controls={false} indicators={false}>
-        {images.map((image) => {
-          return (
-            <Carousel.Item
-              key={image}
-              interval={5000}
-              style={{ marginRight: "-200%" }}
-            >
-              {/* <div
-                className="d-block w-100 ripples"
-                style={{
-                  height: `${height}px`,
-                  width: `${width}px`,
-                  backgroundImage: `url(${image})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                }}
-              /> */}
-              <CardMedia
-                className="d-block w-100 ripples"
-                // component="img"
-                image={image}
-                // alt={image}
-                sx={{ height: `${height}px`, width: `${width}px` }}
-              />
-            </Carousel.Item>
-          );
-        })}
-      </Carousel>
+      <CardMedia
+        className="ripples"
+        // component="img"
+        image={one}
+        // alt={image}
+        sx={{ height: `${height}px`, width: `${width}px` }}
+      />
       <ManualPaintersButtons />
     </>
   );
