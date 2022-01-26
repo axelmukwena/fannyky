@@ -31,13 +31,13 @@ const FrontFive = function FrontFive() {
         alt={backgroundDdesktop}
         sx={{ width: `${width}px`, height: `${height}px` }}
       />
-      <PaintersButtons width={width} />
+      <PaintersButtons width={width} height={height} />
     </>
   );
 };
 
 // eslint-disable-next-line no-unused-vars
-const PaintersButtons = function PaintersButtons({ width }) {
+const PaintersButtons = function PaintersButtons({ width, height }) {
   const [painters, setPainters] = useState([]);
 
   let mob = true;
@@ -60,7 +60,10 @@ const PaintersButtons = function PaintersButtons({ width }) {
         sx={{
           margin: 0,
           padding: 0,
-          height: "100vh",
+          height: `${height}px`,
+          "@media (max-width: 900px)": {
+            height: `${height - 40}px`,
+          },
           position: "absolute",
           top: 0,
           width,
@@ -70,14 +73,10 @@ const PaintersButtons = function PaintersButtons({ width }) {
           item
           sx={{
             paddingTop: "0px !important",
-            "@media (max-width: 900px)": {
-              marginBottom: "40px",
-            },
           }}
         >
           <Link to={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
             <Button
-              elevat
               variant="outlined"
               size="large"
               sx={{
@@ -116,9 +115,6 @@ const PaintersButtons = function PaintersButtons({ width }) {
           item
           sx={{
             paddingTop: "0px !important",
-            "@media (max-width: 900px)": {
-              marginBottom: "40px",
-            },
           }}
         >
           <Link to={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
