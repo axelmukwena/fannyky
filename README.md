@@ -51,9 +51,6 @@ React-based Fannyky Front end application consuming the Ruby on Rails-based API 
 
 - https://auth0.com/docs/quickstart/webapp/rails/01-login
 
-### History
-
-- https://reactrouter.com/web/api/Hooks/usehistory
 
 ### Lints
 
@@ -152,3 +149,9 @@ React-based Fannyky Front end application consuming the Ruby on Rails-based API 
 
 - https://gist.github.com/asterisk37n/7a0425f8d2f68a46820cca640410ead5
 
+
+### Dynamic Import
+```
+const Editor = dynamic( () => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false } )
+```
+- https://stackoverflow.com/a/55223488/8050183
