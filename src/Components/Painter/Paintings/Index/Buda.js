@@ -292,22 +292,6 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         </Typography>
       )}
 
-      {/* {painting.date_created && (
-        <Typography
-          sx={{
-            fontWeight: 400,
-            fontSize: "0.75rem",
-            margin: "0 8px",
-            width: paintingWidth,
-            "@media (max-width: 600px)": {
-              margin: "0 4px",
-            },
-          }}
-        >
-          {painting.date_created.split("-")[0]}
-        </Typography>
-      )} */}
-
       {painting.abstract && (
         <Typography
           sx={{
