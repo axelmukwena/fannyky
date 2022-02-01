@@ -73,6 +73,7 @@ const Painter = function Painter({ painter, width }) {
         variant="outlined"
         size="large"
         fullWidth
+        disableRipple
         sx={{
           backgroundColor: "transparent",
           borderRadius: "100%",
@@ -92,17 +93,17 @@ const Painter = function Painter({ painter, width }) {
             alt={painter.name}
             width={230}
             height={230}
-            style={{ position: "relative", borderRadius: "100%" }}
+            className={styles.image}
           />
         )}
 
-        {width < 600 && width < 900 && (
+        {width >= 600 && width < 900 && (
           <Image
             src={painter.image}
             alt={painter.name}
             width={250}
             height={250}
-            style={{ position: "relative", borderRadius: "100%" }}
+            className={styles.image}
           />
         )}
 

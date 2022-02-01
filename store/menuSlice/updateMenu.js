@@ -30,6 +30,8 @@ async function paintersMenu(dispatch) {
 function parsePainterMenu(painter, url) {
   const menu = [];
 
+  if (!painter) return [];
+
   Object.entries(painter).forEach((item) => {
     const [key, value] = item;
     const splitKey = key.split("_");
@@ -62,7 +64,6 @@ function parsePainterMenu(painter, url) {
     slug: `${url}/biography`,
   });
 
-  // Momentarily, just point contact to biography
   menu.push({
     id: "contact",
     name: "Contact",

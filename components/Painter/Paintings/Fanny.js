@@ -1,17 +1,20 @@
 import { DeleteOutline } from "@mui/icons-material";
-import { Button, Typography, Grid, Box, CardMedia, Card } from "@mui/material";
+import { Button, Typography, Grid, Box, Card } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
+import Image from "next/image";
 import { deleteResource, getResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
 import NewDialog from "./NewDialog";
 import Loading from "../../Loading/Loading";
+import NextLink from "../../NextLink";
+import ImageLoader from "../../ImageLoader";
 
 const Fanny = function Fanny() {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { painterSlug } = router.query;
 
   const [groupOne, setGroupOne] = useState([]);
   const [groupTwo, setGroupTwo] = useState([]);
@@ -75,7 +78,7 @@ const Fanny = function Fanny() {
   // If you see in publications, no need
   // to add `/publications` to `path`
   useEffect(() => {
-    getResource(`${pathname}/paintings`, setPaintings);
+    getResource(`/${painterSlug}/paintings`, setPaintings);
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -83,14 +86,14 @@ const Fanny = function Fanny() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [pathname]);
+  }, [painterSlug]);
 
   const handleOpenImages = (painting) => {
     if (width > 900) {
       setSelected(painting);
       setOpenImages(true);
     } else {
-      navigate(`${painting.painter.slug}/works/${painting.slug}`);
+      router.push(`${painting.painter.slug}/works/${painting.slug}`);
     }
   };
 
@@ -199,67 +202,88 @@ const Group = function Group({ width, paintings, handleOpenImages }) {
 const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
   let paintingWidth = "120px";
   let height = "120px";
-  let maxHeight = "120px";
   let trim = 17;
   let trimEnd = "...";
 
   if (width <= 900) {
     paintingWidth = `${window.innerWidth - 60}px`;
     height = "100%";
-    maxHeight = "100%";
     trim = 1000;
     trimEnd = "";
-
-    if (width <= 400) {
-      maxHeight = `${paintingWidth}!important`;
-    }
   }
 
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
       <Card
         elevation={0}
+        className="painting-card-index"
         sx={{
           padding: 0,
-          margin: 0,
           position: "relative",
           borderRadius: 0,
           backgroundColor: "#f1f1f1",
-          height: painting.images.length > 0 ? "fit-content" : paintingWidth,
-          width: painting.images.length > 0 ? "fit-content" : paintingWidth,
+          height,
+          width: paintingWidth,
         }}
       >
         {painting.images.length > 0 && (
           <>
-            <CardMedia
-              component="img"
-              src={`${painting.images[0].url}`}
-              alt={painting.title}
-              height={height}
-              className="painting-card-index"
-              sx={{
-                maxHeight,
-                height,
-                width: paintingWidth,
-              }}
-              onClick={() => handleOpenImages(painting)}
-            />
+            {width <= 900 && (
+              <Image
+                loader={ImageLoader}
+                src={painting.images[0].url}
+                alt={painting.title}
+                width={width - 60}
+                height={width - 60}
+                objectFit="cover"
+                onClick={() => handleOpenImages(painting)}
+              />
+            )}
+
+            {width > 900 && (
+              <Image
+                loader={ImageLoader}
+                src={painting.images[0].url}
+                alt={painting.title}
+                width={120}
+                height={120}
+                objectFit="cover"
+                onClick={() => handleOpenImages(painting)}
+              />
+            )}
+
             <DeletePainting painting={painting} />
           </>
+        )}
+        {painting.images.length === 0 && (
+          <Typography
+            sx={{
+              fontWeight: 400,
+              fontSize: "0.75rem",
+              margin: "0 8px",
+              width: paintingWidth,
+              "@media (max-width: 600px)": {
+                margin: "0 4px",
+                fontSize: "0.875rem",
+              },
+            }}
+          >
+            No Image
+          </Typography>
         )}
       </Card>
 
       {painting.title && (
         <Typography className="painting-title-index-typography">
-          <Link
-            to={`${painting.painter.slug}/works/${painting.slug}`}
+          <NextLink
+            href={`${painting.painter.slug}/works/${painting.slug}`}
             className="painting-title-index"
             style={{ fontWeight: 500 }}
           >
             {painting.title.length > trim
               ? painting.title.substring(0, trim) + trimEnd
               : painting.title}
-          </Link>
+          </NextLink>
         </Typography>
       )}
 

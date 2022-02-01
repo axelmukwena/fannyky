@@ -72,14 +72,14 @@ and (max-width: 900px) {
 @media screen 
 and (min-width: 900px) {
   .painting-card-index {
-    margin: 5px;
+    margin: 5px !important;
     cursor: pointer;
-    border: 5px solid #f1f1f1;
-    box-shadow: rgb(28 28 28 / 24%) 2px 2px 4px 0px;
+    border: 5px solid #f1f1f1 !important;
+    box-shadow: rgb(28 28 28 / 24%) 1px 1px 1px 0px;
   }
 
   .painting-card-index:hover {
-    box-shadow: rgb(28 28 28 / 24%) 1px 1px 1px 0px;
+    box-shadow: rgb(28 28 28 / 10%) 6px 5px 9px 0px;
   }
 }
 

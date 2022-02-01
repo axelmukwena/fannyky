@@ -3,7 +3,6 @@ import {
   Button,
   Typography,
   Grid,
-  CardMedia,
   Card,
   Accordion,
   AccordionSummary,
@@ -11,14 +10,17 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
+import Image from "next/image";
 import { deleteResource, getResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
 import NewDialog from "./NewDialog";
 import Loading from "../../Loading/Loading";
+import NextLink from "../../NextLink";
+import ImageLoader from "../../ImageLoader";
 
-const Buda = function ParseBuda({ painter }) {
+const Buda = function Buda({ painter }) {
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
 
@@ -64,6 +66,7 @@ const Buda = function ParseBuda({ painter }) {
               expandIcon={<ExpandMore />}
               aria-controls={`${category.replace(/\s/g, "")}-content`}
               id={category.replace(/\s/g, "")}
+              sx={{ padding: "0px" }}
             >
               <Typography
                 sx={{
@@ -88,8 +91,8 @@ const Buda = function ParseBuda({ painter }) {
 };
 
 const CategoryPaintings = function CategoryPaintings({ category }) {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { painterSlug } = router.query;
 
   const [paintings, setPaintings] = useState([]);
   const [openImages, setOpenImages] = useState(false);
@@ -114,7 +117,10 @@ const CategoryPaintings = function CategoryPaintings({ category }) {
   // If you see in publications, no need
   // to add `/publications` to `path`
   useEffect(() => {
-    getResource(`${pathname}/paintings_category/${category}`, handlePaintings);
+    getResource(
+      `/${painterSlug}/paintings_category/${category}`,
+      handlePaintings
+    );
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -122,14 +128,14 @@ const CategoryPaintings = function CategoryPaintings({ category }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [pathname]);
+  }, [painterSlug]);
 
   const handleOpenImages = (painting) => {
     if (width > 900) {
       setSelected(painting);
       setOpenImages(true);
     } else {
-      navigate(`${painting.painter.slug}/works/${painting.slug}`);
+      router.push(`${painting.painter.slug}/works/${painting.slug}`);
     }
   };
 
@@ -216,46 +222,75 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
     <Grid item key={painting.slug} className="painting-grid-item">
       <Card
         elevation={0}
+        className="painting-card-index"
         sx={{
           padding: 0,
-          margin: 0,
           position: "relative",
           borderRadius: 0,
           backgroundColor: "#f1f1f1",
-          height: painting.images.length > 0 ? "fit-content" : paintingWidth,
-          width: painting.images.length > 0 ? "fit-content" : paintingWidth,
+          height,
+          width: paintingWidth,
         }}
       >
         {painting.images.length > 0 && (
           <>
-            <CardMedia
-              component="img"
-              src={`${painting.images[0].url}`}
-              alt={painting.title}
-              height={height}
-              className="painting-card-index"
-              sx={{
-                height,
-                width: paintingWidth,
-              }}
-              onClick={() => handleOpenImages(painting)}
-            />
+            {width <= 900 && (
+              <Image
+                loader={ImageLoader}
+                src={painting.images[0].url}
+                alt={painting.title}
+                width={width - 60}
+                height={width - 60}
+                objectFit="cover"
+                onClick={() => handleOpenImages(painting)}
+              />
+            )}
+
+            {width > 900 && (
+              <Image
+                loader={ImageLoader}
+                quality={40}
+                src={painting.images[0].url}
+                alt={painting.title}
+                width={120}
+                height={120}
+                objectFit="cover"
+                onClick={() => handleOpenImages(painting)}
+              />
+            )}
+
             <DeletePainting painting={painting} />
           </>
+        )}
+        {painting.images.length === 0 && (
+          <Typography
+            sx={{
+              fontWeight: 400,
+              fontSize: "0.75rem",
+              margin: "0 8px",
+              width: paintingWidth,
+              "@media (max-width: 600px)": {
+                margin: "0 4px",
+                fontSize: "0.875rem",
+              },
+            }}
+          >
+            No Image
+          </Typography>
         )}
       </Card>
 
       {painting.title && (
         <Typography className="painting-title-index-typography">
-          <Link
-            to={`${painting.painter.slug}/works/${painting.slug}`}
+          <NextLink
+            href={`${painting.painter.slug}/works/${painting.slug}`}
             className="painting-title-index"
             style={{ fontWeight: 500 }}
           >
             {painting.title.length > trim
               ? painting.title.substring(0, trim) + trimEnd
               : painting.title}
-          </Link>
+          </NextLink>
         </Typography>
       )}
 

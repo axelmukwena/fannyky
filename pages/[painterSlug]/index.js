@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 import {
   parsePainterMenu,
   updateMenuSlice,
@@ -14,26 +14,32 @@ import Layout from "../../components/Layout";
 
 const Index = function Index() {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const [painterObject, setPainterObject] = useState({});
 
-  function setPainter(painter) {
+  const router = useRouter();
+  const { painterSlug } = router.query;
+
+  const setPainter = function setPainter(painter) {
     if (painter) {
-      const menu = parsePainterMenu(painter, pathname);
+      setPainterObject(painter);
+      const menu = parsePainterMenu(painter, `/${painter.slug}`);
       updateMenuSlice(dispatch, menu);
       dispatch(updatePainter(painter));
       dispatch(updateSiteName([painter.name, `/${painter.slug}`]));
     }
-  }
+  };
 
   useEffect(() => {
-    getResource(pathname, setPainter);
-  }, [pathname, dispatch]);
+    if (painterSlug) {
+      getResource(`/${painterSlug}`, setPainter);
+    }
+  }, [painterSlug, dispatch]);
 
   return (
     <>
       <SEO
-        description="Contemporary and abstract paintings by Fanny and Ky"
-        title="Home"
+        description={painterObject.about}
+        title={painterObject.name}
         siteTitle="Buda Fans"
       />
       <Layout>

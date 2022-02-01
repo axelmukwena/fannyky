@@ -1,12 +1,14 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/router";
 import logoutUser from "../../store/currentUser/logout";
 
 const MainMenu = function MainMenu({ handleClose }) {
   const currentMenu = useSelector((state) => state.currentMenu.menu);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const currentYear = new Date().getFullYear();
 
@@ -20,31 +22,35 @@ const MainMenu = function MainMenu({ handleClose }) {
     current.className = "menu-item active";
 
     handleClose();
-    navigate(url);
+    router.replace(url);
   };
 
   if (currentMenu) {
     return (
       <>
         <div>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <Typography sx={{ padding: "5px 0" }}>
-              <span className="menu-item">Home</span>
-            </Typography>
+          <Link href="/">
+            <a style={{ textDecoration: "none" }}>
+              <Typography sx={{ padding: "5px 0" }}>
+                <span className="menu-item">Home</span>
+              </Typography>
+            </a>
           </Link>
         </div>
         {currentMenu.map((item) => (
           <Link
             key={item.id}
             onClick={(event) => handleClick(event, item.slug)}
-            to={item.slug}
+            href={item.slug}
             style={{ textDecoration: "none" }}
           >
-            <Typography sx={{ padding: "5px 0" }}>
-              <span id={item.slug} className="menu-item">
-                {item.name}
-              </span>
-            </Typography>
+            <a style={{ textDecoration: "none" }}>
+              <Typography sx={{ padding: "5px 0" }}>
+                <span id={item.slug} className="menu-item">
+                  {item.name}
+                </span>
+              </Typography>
+            </a>
           </Link>
         ))}
         <IsLoggedIn />
@@ -60,15 +66,14 @@ const MainMenu = function MainMenu({ handleClose }) {
 
 const IsLoggedIn = function IsLoggedIn() {
   const currentUser = useSelector((state) => state.currentUser.user);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
+  const router = useRouter();
 
   const handleLogout = (event) => {
     event.preventDefault();
     const success = logoutUser(dispatch);
     if (success) {
-      navigate(location.pathname, { replace: true });
+      router.replace(router.pathname);
     }
   };
 
@@ -76,15 +81,17 @@ const IsLoggedIn = function IsLoggedIn() {
     return (
       <div className="menu-item">
         <Link
-          to="/logout"
+          href="/logout"
           onClick={handleLogout}
           style={{ textDecoration: "none" }}
         >
-          <Typography sx={{ padding: "5px 0" }}>
-            <span id="logout" className="menu-item">
-              Logout
-            </span>
-          </Typography>
+          <a style={{ textDecoration: "none" }}>
+            <Typography sx={{ padding: "5px 0" }}>
+              <span id="logout" className="menu-item">
+                Logout
+              </span>
+            </Typography>
+          </a>
         </Link>
       </div>
     );
