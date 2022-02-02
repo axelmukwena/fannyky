@@ -10,7 +10,6 @@ import Publications from "./Publications/Publications";
 import Exhibitions from "./Exhibitions/Exhibitions";
 import { updatePainter } from "../../store/painterSlice/currentPainterSlice";
 import { updateSiteName } from "../../store/menuSlice/currentMenuSlice";
-import Paintings from "./Paintings/Index";
 import Talks from "./Talks/Talks";
 import Awards from "./Awards/Awards";
 import Contact from "./Contact/Contact";
@@ -105,7 +104,6 @@ const Painter = function Painter() {
                 component={Contact}
                 key="contact"
               />
-              <Route path={pathname} component={Paintings} key="paintings" />
             </Switch>
           </div>
         </Grid>
