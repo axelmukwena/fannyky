@@ -1,52 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import {
-  parsePainterMenu,
-  updateMenuSlice,
-} from "../../store/menuSlice/updateMenu";
-import { updatePainter } from "../../store/painterSlice/currentPainterSlice";
-import { updateSiteName } from "../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../utilities/requests";
 import SEO from "../../components/SEO";
-import Paintings from "../../components/Painter/Paintings/Index";
-import Layout from "../../components/Layout";
+import Fanny from "../../components/Painter/Paintings/Fanny";
+import Buda from "../../components/Painter/Paintings/Buda";
 
 const Index = function Index() {
-  const dispatch = useDispatch();
-  const [painterObject, setPainterObject] = useState({});
+  const painter = useSelector((state) => state.currentPainter.painter);
 
   const router = useRouter();
   const { painterSlug } = router.query;
 
-  const setPainter = function setPainter(painter) {
-    if (painter) {
-      setPainterObject(painter);
-      const menu = parsePainterMenu(painter, `/${painter.slug}`);
-      updateMenuSlice(dispatch, menu);
-      dispatch(updatePainter(painter));
-      dispatch(updateSiteName([painter.name, `/${painter.slug}`]));
-    }
-  };
-
-  useEffect(() => {
-    if (painterSlug) {
-      getResource(`/${painterSlug}`, setPainter);
-    }
-  }, [painterSlug, dispatch]);
-
-  return (
-    <>
-      <SEO
-        description={painterObject.about}
-        title={painterObject.name}
-        siteTitle="Buda Fans"
-      />
-      <Layout>
-        <Paintings />
-      </Layout>
-    </>
-  );
+  if (painter) {
+    return (
+      <>
+        <SEO
+          description={painter.about}
+          title={painter.name}
+          siteTitle="Buda Fans"
+        />
+        {painter.rank === 1 && painter.slug === painterSlug && (
+          <Buda router={router} />
+        )}
+        {painter.rank === 2 && painter.slug === painterSlug && (
+          <Fanny router={router} />
+        )}
+      </>
+    );
+  }
+  return null;
 };
 
 export default Index;

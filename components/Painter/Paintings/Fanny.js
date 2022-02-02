@@ -2,7 +2,6 @@ import { DeleteOutline } from "@mui/icons-material";
 import { Button, Typography, Grid, Box, Card } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import { deleteResource, getResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
@@ -12,8 +11,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Fanny = function Fanny() {
-  const router = useRouter();
+const Fanny = function Fanny({ router }) {
   const { painterSlug } = router.query;
 
   const [groupOne, setGroupOne] = useState([]);
@@ -47,7 +45,6 @@ const Fanny = function Fanny() {
         years.push(yearRoof);
       }
 
-      // console.log(years);
       for (let i = 0; i < paintings.length; i += 1) {
         if (paintings[i].rankdate) {
           const paintingYear = paintings[i].rankdate.split("-")[0];
@@ -93,7 +90,7 @@ const Fanny = function Fanny() {
       setSelected(painting);
       setOpenImages(true);
     } else {
-      router.push(`${painting.painter.slug}/works/${painting.slug}`);
+      router.push(`/${painting.painter.slug}/works/${painting.slug}`);
     }
   };
 
@@ -222,8 +219,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           position: "relative",
           borderRadius: 0,
           backgroundColor: "#f1f1f1",
-          height,
-          width: paintingWidth,
+          height: painting.images.length > 0 ? height : "fit-content",
+          width: painting.images.length > 0 ? paintingWidth : "fit-content",
         }}
       >
         {painting.images.length > 0 && (
@@ -231,6 +228,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <Image
                 loader={ImageLoader}
+                quality={40}
                 src={painting.images[0].url}
                 alt={painting.title}
                 width={width - 60}
@@ -243,6 +241,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width > 900 && (
               <Image
                 loader={ImageLoader}
+                quality={40}
                 src={painting.images[0].url}
                 alt={painting.title}
                 width={120}
@@ -364,8 +363,8 @@ const DeletePainting = function DeletePainting({ painting }) {
         onClick={() => handleDeletePainting()}
         sx={{
           position: "absolute",
-          top: "20px",
-          right: "25px",
+          top: "5px",
+          right: "5px",
           padding: 0,
           cursor: "pointer",
           color: "black",

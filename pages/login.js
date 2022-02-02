@@ -14,18 +14,13 @@ import {
 import makeStyles from "@mui/styles/makeStyles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import loginUser from "../../store/currentUser/login";
+import { useRouter } from "next/router";
+import loginUser from "../store/currentUser/login";
+import { AUTHORIZE } from "../utilities/constants";
+import { setUserCookie } from "../utilities/cookies";
+import { authorize } from "../store/currentUser/currentUserSlice";
 
 const useStyles = makeStyles((theme) => ({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: theme.spacing(4),
-    maxWidth: 400,
-  },
   textField: {
     margin: theme.spacing(1),
   },
@@ -55,7 +50,7 @@ const Login = function Login() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // create state variables for each input
   const [email, setEmail] = useState("");
@@ -66,8 +61,19 @@ const Login = function Login() {
 
   const handleCancel = (e) => {
     e.preventDefault();
-    navigate("/", { replace: true });
+    router.replace("/");
   };
+
+  function handleResponse(data) {
+    console.log(data);
+    if (data.success === true) {
+      setUserCookie(AUTHORIZE, data.token, 7);
+      dispatch(authorize(data));
+      router.replace("/");
+      return;
+    }
+    dispatch(authorize(null));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -79,10 +85,7 @@ const Login = function Login() {
       },
     };
 
-    const success = loginUser(dispatch, params);
-    if (success) {
-      navigate("/", { replace: true });
-    }
+    loginUser(params, handleResponse);
   };
 
   const handleChange = (prop) => (event) => {
@@ -101,14 +104,29 @@ const Login = function Login() {
   };
 
   return (
-    <div>
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <Typography variant="h3" className={classes.title}>
-          Admin Login Panel
-        </Typography>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}
+      sx={{ height: "100vh" }}
+    >
+      <Grid item xs={12} sm={6} md={3} sx={{ margin: "20px" }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid item xs={12}>
+            <Typography variant="h3" className={classes.title}>
+              Admin Login Panel
+            </Typography>
+          </Grid>
 
-        <Grid container spacing={2}>
-          <Grid item lg={12} xs={12} md={12}>
+          <Grid item xs={12}>
             <TextField
               fullWidth
               autoFocus
@@ -123,7 +141,7 @@ const Login = function Login() {
             />
           </Grid>
 
-          <Grid item lg={12} xs={12} md={12}>
+          <Grid item xs={12}>
             <FormControl required fullWidth variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
@@ -157,7 +175,7 @@ const Login = function Login() {
             </FormControl>
           </Grid>
 
-          <Grid item lg={6} xs={6} md={6}>
+          <Grid item xs={6}>
             <Button
               className={classes.button}
               variant="outlined"
@@ -166,23 +184,27 @@ const Login = function Login() {
               Cancel
             </Button>
           </Grid>
-          <Grid item lg={6} xs={6} md={6}>
+
+          <Grid item xs={6}>
             <Button
               className={classes.button}
-              type="submit"
+              type="button"
               variant="contained"
               color="primary"
+              onClick={handleSubmit}
             >
               Login
             </Button>
           </Grid>
-        </Grid>
 
-        <Link href="/" className={classes.forgotPassword}>
-          Forgot password?
-        </Link>
-      </form>
-    </div>
+          <Grid item xs={12}>
+            <Link href="/" className={classes.forgotPassword}>
+              Forgot password?
+            </Link>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

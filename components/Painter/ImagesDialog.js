@@ -13,11 +13,11 @@ import {
 import { Close } from "@mui/icons-material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Link } from "react-router-dom";
 import { convertFromRaw } from "draft-js";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import CustomHorizontal from "./CustomHorizontal";
+import NextLink from "../NextLink";
 
 const ImageDialog = function ImageDialog({
   resource,
@@ -274,13 +274,12 @@ const PaintingsDialogContent = function PaintingsDialogContent({
   if (show) {
     return (
       <Box className="painting-dialog-content" sx={{ width: "fit-content" }}>
-        <Link
+        <NextLink
           to={`${resource.painter.slug}/works/${resource.slug}`}
           className="painting-title-popup"
-          replace
         >
           {resource.title}
-        </Link>
+        </NextLink>
 
         <Typography
           sx={{ marginTop: "10px", fontSize: "0.975rem", color: "#525252" }}

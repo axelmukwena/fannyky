@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import { deleteResource, getResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
@@ -20,7 +19,9 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Buda = function Buda({ painter }) {
+const Buda = function Buda({ router }) {
+  const painter = useSelector((state) => state.currentPainter.painter);
+
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
 
@@ -81,7 +82,9 @@ const Buda = function Buda({ painter }) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              {show === category && <CategoryPaintings category={category} />}
+              {show === category && (
+                <CategoryPaintings category={category} router={router} />
+              )}
             </AccordionDetails>
           </Accordion>
         );
@@ -90,8 +93,7 @@ const Buda = function Buda({ painter }) {
   );
 };
 
-const CategoryPaintings = function CategoryPaintings({ category }) {
-  const router = useRouter();
+const CategoryPaintings = function CategoryPaintings({ category, router }) {
   const { painterSlug } = router.query;
 
   const [paintings, setPaintings] = useState([]);
@@ -128,14 +130,14 @@ const CategoryPaintings = function CategoryPaintings({ category }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [painterSlug]);
+  }, [painterSlug, category]);
 
   const handleOpenImages = (painting) => {
     if (width > 900) {
       setSelected(painting);
       setOpenImages(true);
     } else {
-      router.push(`${painting.painter.slug}/works/${painting.slug}`);
+      router.push(`/${painting.painter.slug}/works/${painting.slug}`);
     }
   };
 
@@ -250,6 +252,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
+                priority
                 src={painting.images[0].url}
                 alt={painting.title}
                 width={120}
@@ -355,8 +358,8 @@ const DeletePainting = function DeletePainting({ painting }) {
         onClick={() => handleDeletePainting()}
         sx={{
           position: "absolute",
-          top: "20px",
-          right: "25px",
+          top: "5px",
+          right: "5px",
           padding: 0,
           cursor: "pointer",
           color: "black",

@@ -1,32 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { CardMedia, Typography, Button, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { Typography, Button, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
+import Image from "next/image";
 import ImagesDialog from "../ImagesDialog";
-import {
-  deleteResource,
-  getResource,
-  postResource,
-} from "../../../utilities/requests";
+import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
 import Loading from "../../Loading/Loading";
+import ImageLoader from "../../ImageLoader";
 
-const Show = function Show({ match }) {
-  const { url } = match;
-  const [painting, setPainting] = useState(null);
+const Show = function Show({ painting, width }) {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
-  // const painter = useSelector((state) => state.currentPainter.painter);
-
-  useEffect(() => {
-    const path = url.replace("works", "paintings");
-    getResource(path, setPainting);
-  }, [url]);
 
   const handleOpen = (index) => {
     setCurrent(index);
@@ -72,32 +62,44 @@ const Show = function Show({ match }) {
                   xs={12}
                   sm={4}
                   sx={{
-                    margin: "0 20px 20px 0",
+                    margin: "20px 0",
                     position: "relative",
                     "@media (max-width: 600px)": {
                       margin: "20px 0",
                     },
                   }}
                 >
-                  <CardMedia
-                    elevation={0}
-                    id={image.url}
-                    src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
-                    alt={painting.title}
-                    component="img"
-                    onClick={() => handleOpen(index)}
-                    sx={{
-                      cursor: "pointer",
-                      width: "260px",
-                      height: "260px",
-                      position: "relative",
-                      borderRadius: 0,
-                      "@media (max-width: 600px)": {
-                        width: "100%",
-                        height: "100%",
-                      },
-                    }}
-                  />
+                  {width <= 600 && (
+                    <div style={{ cursor: "pointer", position: "relative" }}>
+                      <Image
+                        loader={ImageLoader}
+                        quality={40}
+                        priority
+                        src={painting.images[0].url}
+                        alt={painting.title}
+                        width={width}
+                        height={width}
+                        objectFit="cover"
+                        onClick={() => handleOpen(index)}
+                      />
+                    </div>
+                  )}
+
+                  {width > 600 && (
+                    <div style={{ cursor: "pointer", position: "relative" }}>
+                      <Image
+                        loader={ImageLoader}
+                        quality={40}
+                        priority
+                        src={painting.images[0].url}
+                        alt={painting.title}
+                        width={260}
+                        height={260}
+                        objectFit="cover"
+                        onClick={() => handleOpen(index)}
+                      />
+                    </div>
+                  )}
                   <DeleteImage painting={painting} index={index} />
                 </Grid>
               ))}
