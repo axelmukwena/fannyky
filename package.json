@@ -42,7 +42,7 @@
     "lint": "next lint"
   },
   "eslintConfig": {
-    "extends": "@imaginary-cloud/react",
+    "extends": ["eslint:recommended", "next"],
     "rules": {
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
@@ -76,6 +76,7 @@
     ]
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^12.0.10",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.0",
     "eslint-config-prettier": "^8.3.0",
