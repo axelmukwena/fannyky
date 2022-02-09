@@ -15,6 +15,8 @@ const Index = function Index() {
 
   const dispatch = useDispatch();
   if (painter && pathItems) {
+    console.log("painter", painter);
+    console.log("pathItems", pathItems);
     dispatch(updateActiveMenu("Works"));
     return (
       <>
