@@ -37,7 +37,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(content) {
-  const painterSlug = content.params?.painterSlug || null;
+  const { painterSlug } = content.params;
   // fetch list of posts
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
