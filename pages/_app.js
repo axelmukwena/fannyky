@@ -76,7 +76,6 @@ const Painter = function Painter({ children }) {
   useEffect(() => {
     authorizeUser(dispatch);
     if (pathItems[0] && pathItems[0] !== "[painterSlug]") {
-      console.log("PathItem:", pathItems[0]);
       getResource(`/${pathItems[0]}`, parsePainter);
     }
   }, [pathItems]);

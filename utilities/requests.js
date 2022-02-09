@@ -21,9 +21,10 @@ export async function getResource(path, handleResponse) {
     .then(function foo(response) {
       if (response.data.record === false) {
         handleMissingRecords(response.data);
-      } else {
-        handleResponse(response.data);
+        return null;
       }
+      handleResponse(response.data);
+      return response.data;
     })
     .catch(function foo(error) {
       console.log("Public Data Error");

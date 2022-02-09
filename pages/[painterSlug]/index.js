@@ -7,7 +7,6 @@ import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 
 const Index = function Index() {
   const painter = useSelector((state) => state.currentPainter.painter);
-  console.log("painterSlug:", painter);
 
   const router = useRouter();
   const { painterSlug } = router.query;
@@ -33,5 +32,38 @@ const Index = function Index() {
   }
   return null;
 };
+
+/* export const getStaticPaths = async () => {
+  let paths = [];
+  function setPainters(painters) {
+    if (painters) {
+      paths = painters.map((painter) => ({
+        params: { painterSlug: painter.slug },
+      }));
+    }
+  }
+
+  getResource("/", setPainters).then(function foo() {
+    return { paths, fallback: false };
+  });
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps = async (context) => {
+  let paintings = [];
+  function setPaintings(data) {
+    if (data) {
+      paintings = data;
+    }
+  }
+
+  const painterSlug = context.params?.painterSlug || "";
+  getResource(`/${painterSlug}/paintings`, setPaintings).then(function foo() {
+    console.log("getStaticProps:", paintings);
+    return { paintings };
+  });
+  return { paintings };
+}; */
 
 export default Index;
