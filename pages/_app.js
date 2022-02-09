@@ -59,15 +59,12 @@ const Painter = function Painter({ children }) {
   const router = useRouter();
   const pathItems = parsePath(router.asPath);
 
-  const [ready, setReady] = useState(false);
-
   const parsePainter = function parsePainter(painter) {
     if (painter) {
       const menu = parsePainterMenu(painter, `/${painter.slug}`);
       updateMenuSlice(dispatch, menu);
       dispatch(updatePainter(painter));
       dispatch(updateSiteName([painter.name, `/${painter.slug}`]));
-      setReady(true);
     } else {
       dispatch(updateActiveMenu(null));
     }
@@ -80,7 +77,7 @@ const Painter = function Painter({ children }) {
     }
   }, [pathItems]);
 
-  if (ready && router.pathname !== "/") {
+  if (router.pathname !== "/") {
     return <Layout>{children}</Layout>;
   }
 

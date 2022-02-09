@@ -7,8 +7,6 @@ import { apiUrl } from "../../utilities/helpers";
 // import { getResource } from "../../utilities/requests";
 
 const Index = function Index({ painter }) {
-  console.log("painter:", painter);
-
   const dispatch = useDispatch();
   if (painter) {
     dispatch(updateActiveMenu("Works"));
