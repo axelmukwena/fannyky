@@ -20,6 +20,8 @@ import { Link } from "react-router-dom";
 import { postResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import Loading from "../../Loading/Loading";
+import NextLink from "../../NextLink";
+import EditDialog from "./EditDialog";
 
 const Biography = function Biography() {
   const painter = useSelector((state) => state.currentPainter.painter);
@@ -58,7 +60,7 @@ const Biography = function Biography() {
     about = createMarkup(about);
 
     return (
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ marginTop: "0px" }}>
         <IsLoggedIn />
 
         <Grid
@@ -105,9 +107,9 @@ const Biography = function Biography() {
 
             <Typography className="justify" dangerouslySetInnerHTML={about} />
 
-            <Link
-              to={`/${painter.slug}/contact`}
-              replace
+            <NextLink
+              href="/[painterSlug]/contact"
+              as={`/${painter.slug}/contact`}
               style={{ textDecoration: "none" }}
             >
               <Button
@@ -118,7 +120,7 @@ const Biography = function Biography() {
               >
                 Get in touch
               </Button>
-            </Link>
+            </NextLink>
           </Grid>
         </Grid>
       </Grid>
@@ -142,10 +144,8 @@ const GetImage = function GetImage({ painter }) {
         >
           <CardMedia
             component="img"
-            // src={`${painting.image}?w=700&h=700&fit=crop&auto=format`}
-            src={`${image.url}`}
+            src={image.medium}
             alt={painter.name}
-            loading="lazy"
             className="painting-image"
             style={{
               borderRadius: "100%",
@@ -220,11 +220,11 @@ const IsLoggedIn = function IsLoggedIn() {
           >
             Edit Painter
           </Button>
-          {/* <EditDialog
+          <EditDialog
             painter={painter}
             open={openNew}
             handleClose={handleCloseNew}
-          /> */}
+          />
         </Grid>
         {painter.paintings_categories.length > 0 && (
           <Grid item xs={12}>

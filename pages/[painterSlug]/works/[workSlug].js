@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Paintings/Show";
 import SEO from "../../../components/SEO";
+import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
 import { getResource } from "../../../utilities/requests";
 
 const Work = function Work() {
@@ -15,7 +18,9 @@ const Work = function Work() {
     setWidth(window.innerWidth);
   }
 
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(updateActiveMenu("Works"));
     if (painterSlug && workSlug) {
       getResource(`/${painterSlug}/paintings/${workSlug}`, setPainting);
     }
@@ -34,13 +39,13 @@ const Work = function Work() {
         <SEO
           description={painting.description}
           title={painting.title}
-          siteTitle="Buda Fans"
+          siteTitle={`Works by ${painting.painter.name}`}
         />
         <Show painting={painting} width={width} />
       </>
     );
   }
-  return null;
+  return <Loading />;
 };
 
 export default Work;

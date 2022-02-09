@@ -231,7 +231,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           borderRadius: 0,
           backgroundColor: "#f1f1f1",
           height,
-          width: paintingWidth,
+          width: painting.images.length > 0 ? paintingWidth : "fit-content",
         }}
       >
         {painting.images.length > 0 && (
@@ -239,7 +239,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <Image
                 loader={ImageLoader}
-                src={painting.images[0].url}
+                src={painting.images[0].large}
                 alt={painting.title}
                 width={width - 60}
                 height={width - 60}
@@ -253,7 +253,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 loader={ImageLoader}
                 quality={40}
                 priority
-                src={painting.images[0].url}
+                src={painting.images[0].small}
                 alt={painting.title}
                 width={120}
                 height={120}
@@ -286,7 +286,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
       {painting.title && (
         <Typography className="painting-title-index-typography">
           <NextLink
-            href={`${painting.painter.slug}/works/${painting.slug}`}
+            href="[painterSlug]/works/[workSlug]"
+            as={`${painting.painter.slug}/works/${painting.slug}`}
             className="painting-title-index"
             style={{ fontWeight: 500 }}
           >

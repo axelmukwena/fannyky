@@ -23,8 +23,7 @@ import UploadImages from "../UploadImages";
 import Toast from "../../../utilities/toast";
 
 const Editor = dynamic(
-  // eslint-disable-next-line global-require
-  () => require("react-draft-wysiwyg").then((mod) => mod.Editor),
+  () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
 );
 

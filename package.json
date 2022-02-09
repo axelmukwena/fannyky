@@ -37,12 +37,15 @@
   },
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "eslintConfig": {
-    "extends": ["eslint:recommended", "next"],
+    "extends": [
+      "eslint:recommended",
+      "next"
+    ],
     "rules": {
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
@@ -77,6 +80,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.10",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.0",
     "eslint-config-prettier": "^8.3.0",

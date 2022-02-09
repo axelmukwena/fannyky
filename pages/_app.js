@@ -8,18 +8,22 @@ import theme from "../theme";
 import * as serviceWorker from "../utilities/serviceWorker";
 import reportWebVitals from "../utilities/reportWebVitals";
 import store from "../store/store";
-import "../styles/globals.css";
-import "../styles/menu.css";
-import "../styles/painter.css";
 import { getResource } from "../utilities/requests";
 import {
   parsePainterMenu,
   updateMenuSlice,
 } from "../store/menuSlice/updateMenu";
 import { updatePainter } from "../store/painterSlice/currentPainterSlice";
-import { updateSiteName } from "../store/menuSlice/currentMenuSlice";
+import {
+  updateActiveMenu,
+  updateSiteName,
+} from "../store/menuSlice/currentMenuSlice";
 import Layout from "../components/Layout";
 import authorizeUser from "../store/currentUser/authorize";
+import "../styles/globals.css";
+import "../styles/menu.css";
+import "../styles/painter.css";
+import "../styles/toast.css";
 
 const App = function App({ Component, pageProps }) {
   const [ready, setReady] = useState(false);
@@ -41,6 +45,7 @@ const App = function App({ Component, pageProps }) {
                 {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 <Component {...pageProps} />
               </Painter>
+              <div id="toasts-root" />
             </BrowserRouter>
           </Provider>
         </ThemeProvider>
@@ -64,6 +69,8 @@ const Painter = function Painter({ children }) {
       dispatch(updatePainter(painter));
       dispatch(updateSiteName([painter.name, `/${painter.slug}`]));
       setReady(true);
+    } else {
+      dispatch(updateActiveMenu(null));
     }
   };
 

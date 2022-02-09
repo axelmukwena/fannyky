@@ -90,7 +90,6 @@ const ImageDialog = function ImageDialog({
     }
   };
 
-  // console.log(painting);
   if (resource && resource.images.length > 0) {
     let justifyContent = "center";
     if (width > 900 && !(resource.images.length === 1)) {
@@ -167,16 +166,30 @@ const ImageDialog = function ImageDialog({
               }}
             >
               <div className="dialog-image">
-                <CardMedia
-                  component="img"
-                  src={resource.images[current].url}
-                  alt={resource.title}
-                  onTouchStart={() => toggleMobile()}
-                  sx={{
-                    width: width > 900 ? "fit-content" : "100%",
-                    height: width > 900 ? height : "100%",
-                  }}
-                />
+                {width <= 900 && (
+                  <CardMedia
+                    component="img"
+                    src={resource.images[current].large}
+                    alt={resource.title}
+                    onTouchStart={() => toggleMobile()}
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                )}
+                {width > 900 && (
+                  <CardMedia
+                    component="img"
+                    src={resource.images[current].original}
+                    alt={resource.title}
+                    onTouchStart={() => toggleMobile()}
+                    sx={{
+                      width: "fit-content",
+                      height,
+                    }}
+                  />
+                )}
               </div>
               <BackForwardButtonsMobile
                 resource={resource}
@@ -275,8 +288,10 @@ const PaintingsDialogContent = function PaintingsDialogContent({
     return (
       <Box className="painting-dialog-content" sx={{ width: "fit-content" }}>
         <NextLink
-          to={`${resource.painter.slug}/works/${resource.slug}`}
+          href="[painterSlug]/works/[workSlug]"
+          as={`${resource.painter.slug}/works/${resource.slug}`}
           className="painting-title-popup"
+          style={{ fontWeight: 500 }}
         >
           {resource.title}
         </NextLink>

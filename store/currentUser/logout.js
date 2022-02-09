@@ -11,7 +11,6 @@ function handleResponse(dispatch, data) {
     dispatch(authorize(null));
     return true;
   }
-  console.log(data.message);
   return false;
 }
 

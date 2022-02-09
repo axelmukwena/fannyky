@@ -15,11 +15,16 @@ import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import dynamic from "next/dynamic";
 import { postResource, putResource } from "../../../utilities/requests";
 import UploadImages from "../UploadImages";
 import { parseImages, parseGeneralParams } from "../../../utilities/helpers";
 import Toast from "../../../utilities/toast";
-import Editor from "../../Editor";
+
+const Editor = dynamic(
+  () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
+  { ssr: false }
+);
 
 const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
   const [title, setTitle] = useState("");

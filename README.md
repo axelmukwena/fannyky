@@ -1,5 +1,10 @@
 React-based Fannyky Front end application consuming the Ruby on Rails-based API at https://github.com/axelmukwena/fannyky-api.
 
+Start up on dev
+```
+npm run dev
+```
+
 ## Resources
 
 ### Set up and going

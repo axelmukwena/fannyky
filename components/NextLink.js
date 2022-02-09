@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import Link from "next/link";
 
-const NextLink = function NextLink({ href, className, style, children }) {
+const NextLink = function NextLink({ href, as, className, style, children }) {
   return (
-    <Link href={href}>
+    <Link href={href} as={as}>
       <a className={className || ""} style={style || {}}>
         {children}
       </a>

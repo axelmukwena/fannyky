@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline, Link } from "@mui/icons-material";
@@ -6,24 +6,12 @@ import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
 import ImagesDialog from "../ImagesDialog";
-import {
-  deleteResource,
-  getResource,
-  postResource,
-} from "../../../utilities/requests";
+import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
-import Loading from "../../Loading/Loading";
 
-const Show = function Show({ match }) {
-  const { url } = match;
-  const [talk, setTalk] = useState(null);
-
-  useEffect(() => {
-    getResource(url, setTalk);
-  }, [url]);
-
+const Show = function Show({ talk }) {
   const convertContentToHTML = (content) => {
     if (content) {
       const object = JSON.parse(content);
@@ -40,16 +28,12 @@ const Show = function Show({ match }) {
     };
   };
 
-  if (!talk) {
-    return <Loading />;
-  }
-
   if (talk) {
     let description = convertContentToHTML(talk.description);
     description = createMarkup(description);
 
     return (
-      <div style={{}}>
+      <div style={{ marginTop: "15px" }}>
         <IsLoggedIn talk={talk} />
         <Grid container spacing={2}>
           <GetImages talk={talk} />
@@ -111,7 +95,6 @@ const GetImages = function GetImages({ talk }) {
 
   const { images } = talk;
 
-  // console.log()
   if (images.length <= 0) {
     return null;
   }
@@ -137,9 +120,8 @@ const GetImages = function GetImages({ talk }) {
             }}
           >
             <CardMedia
-              src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+              src={image.medium}
               alt={talk.title}
-              loading="lazy"
               component="img"
               onClick={() => handleOpen(index)}
               style={{

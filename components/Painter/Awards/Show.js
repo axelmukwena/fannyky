@@ -1,33 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
 import ImagesDialog from "../ImagesDialog";
-import {
-  deleteResource,
-  getResource,
-  postResource,
-} from "../../../utilities/requests";
+import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
-import Loading from "../../Loading/Loading";
 
-const Show = function Show({ match }) {
-  const { url } = match;
-  const [award, setAward] = useState(null);
-
-  useEffect(() => {
-    getResource(url, setAward);
-  }, [url]);
-
-  if (!award) {
-    return <Loading />;
-  }
-
-  if (award.id) {
+const Show = function Show({ award }) {
+  if (award) {
     return (
-      <div style={{}}>
+      <div style={{ marginTop: "15px" }}>
         <IsLoggedIn award={award} />
         <Grid container spacing={2}>
           <GetImages award={award} />
@@ -76,7 +60,6 @@ const GetImages = function GetImages({ award }) {
 
   const { images } = award;
 
-  // console.log()
   if (images.length <= 0) {
     return null;
   }
@@ -91,8 +74,7 @@ const GetImages = function GetImages({ award }) {
       <div className="row">
         {images.map((image, index) => (
           <Card
-            key={image.url}
-            id={image.url}
+            key={image.medium}
             elevation={0}
             style={{
               padding: 0,
@@ -102,9 +84,8 @@ const GetImages = function GetImages({ award }) {
             }}
           >
             <CardMedia
-              src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+              src={image.medium}
               alt={award.prize}
-              loading="lazy"
               component="img"
               onClick={() => handleOpen(index)}
               style={{

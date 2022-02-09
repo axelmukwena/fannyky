@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Grid } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Email, Link, Phone } from "@mui/icons-material";
-import Loading from "../../Loading/Loading";
+import Loading from "../../components/Loading/Loading";
+import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 
 const Contact = function Contact() {
   const painter = useSelector((state) => state.currentPainter.painter);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(updateActiveMenu("Contact"));
+  }, []);
 
   if (!painter) {
     return <Loading />;

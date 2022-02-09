@@ -70,10 +70,6 @@ const Fanny = function Fanny({ router }) {
     setWidth(window.innerWidth);
   }
 
-  // You need to add `/paintings` to path
-  // because `/paintings` is root for a painter
-  // If you see in publications, no need
-  // to add `/publications` to `path`
   useEffect(() => {
     getResource(`/${painterSlug}/paintings`, setPaintings);
 
@@ -218,8 +214,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           padding: 0,
           position: "relative",
           borderRadius: 0,
-          backgroundColor: "#f1f1f1",
-          height: painting.images.length > 0 ? height : "fit-content",
+          backgroundColor: width > 900 ? "#f1f1f1" : "none",
+          height,
           width: painting.images.length > 0 ? paintingWidth : "fit-content",
         }}
       >
@@ -229,7 +225,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
-                src={painting.images[0].url}
+                src={painting.images[0].large}
                 alt={painting.title}
                 width={width - 60}
                 height={width - 60}
@@ -242,7 +238,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
-                src={painting.images[0].url}
+                src={painting.images[0].small}
                 alt={painting.title}
                 width={120}
                 height={120}
@@ -275,7 +271,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
       {painting.title && (
         <Typography className="painting-title-index-typography">
           <NextLink
-            href={`${painting.painter.slug}/works/${painting.slug}`}
+            href="[painterSlug]/works/[workSlug]"
+            as={`${painting.painter.slug}/works/${painting.slug}`}
             className="painting-title-index"
             style={{ fontWeight: 500 }}
           >

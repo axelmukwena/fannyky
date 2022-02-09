@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import SEO from "../../components/SEO";
-import Fanny from "../../components/Painter/Paintings/Fanny";
-import Buda from "../../components/Painter/Paintings/Buda";
-import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
+import SEO from "../../../components/SEO";
+import Fanny from "../../../components/Painter/Paintings/Fanny";
+import Buda from "../../../components/Painter/Paintings/Buda";
+import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
 
 const Index = function Index() {
   const painter = useSelector((state) => state.currentPainter.painter);

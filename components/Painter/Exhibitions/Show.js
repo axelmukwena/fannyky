@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline, Link } from "@mui/icons-material";
@@ -6,25 +6,13 @@ import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
 import ImagesDialog from "../ImagesDialog";
-import {
-  deleteResource,
-  getResource,
-  postResource,
-} from "../../../utilities/requests";
+import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import { capitalize } from "../../../utilities/helpers";
 import Toast from "../../../utilities/toast";
-import Loading from "../../Loading/Loading";
 
-const Show = function Show({ match }) {
-  const { url } = match;
-  const [exhibition, setExhibition] = useState(null);
-
-  useEffect(() => {
-    getResource(url, setExhibition);
-  }, [url]);
-
+const Show = function Show({ exhibition }) {
   const convertContentToHTML = (content) => {
     if (content) {
       const object = JSON.parse(content);
@@ -41,10 +29,6 @@ const Show = function Show({ match }) {
     };
   };
 
-  if (!exhibition) {
-    return <Loading />;
-  }
-
   if (exhibition) {
     let description = convertContentToHTML(exhibition.description);
     description = createMarkup(description);
@@ -52,7 +36,7 @@ const Show = function Show({ match }) {
     return (
       <div style={{}}>
         <IsLoggedIn exhibition={exhibition} />
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ marginTop: "-2px" }}>
           <GetImages exhibition={exhibition} />
 
           <Grid item xs={12} sm={exhibition.images.length > 0 ? 6 : 12}>
@@ -115,7 +99,6 @@ const GetImages = function GetImages({ exhibition }) {
 
   const { images } = exhibition;
 
-  // console.log()
   if (images.length <= 0) {
     return null;
   }
@@ -130,8 +113,7 @@ const GetImages = function GetImages({ exhibition }) {
       <div className="row">
         {images.map((image, index) => (
           <Card
-            key={image.url}
-            id={image.url}
+            key={image.original}
             elevation={0}
             style={{
               padding: 0,
@@ -141,9 +123,8 @@ const GetImages = function GetImages({ exhibition }) {
             }}
           >
             <CardMedia
-              src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+              src={image.medium}
               alt={exhibition.title}
-              loading="lazy"
               component="img"
               onClick={() => handleOpen(index)}
               style={{

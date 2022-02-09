@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DeleteOutline, Link } from "@mui/icons-material";
@@ -6,34 +6,18 @@ import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
 import ImagesDialog from "../ImagesDialog";
-import {
-  deleteResource,
-  getResource,
-  postResource,
-} from "../../../utilities/requests";
+import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
-import Loading from "../../Loading/Loading";
 
-const Show = function Show({ match }) {
-  const { url } = match;
-  const [publication, setPublication] = useState(null);
-
-  useEffect(() => {
-    getResource(url, setPublication);
-  }, [url]);
-
-  if (!publication) {
-    return <Loading />;
-  }
-
+const Show = function Show({ publication }) {
   if (publication) {
     return (
       <>
         <IsLoggedIn publication={publication} />
 
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ marginTop: "-2px" }}>
           <GetImages publication={publication} />
 
           <Grid item xs={12} sm={publication.images.length > 0 ? 6 : 12}>
@@ -87,7 +71,6 @@ const GetImages = function GetImages({ publication }) {
 
   const { images } = publication;
 
-  // console.log()
   if (images.length <= 0) {
     return null;
   }
@@ -101,8 +84,7 @@ const GetImages = function GetImages({ publication }) {
     >
       {images.map((image, index) => (
         <Card
-          key={image.url}
-          id={image.url}
+          key={image.large}
           elevation={0}
           style={{
             padding: 0,
@@ -112,9 +94,8 @@ const GetImages = function GetImages({ publication }) {
           }}
         >
           <CardMedia
-            src={`${image.url}?w=700&h=700&fit=crop&auto=format`}
+            src={image.medium}
             alt={publication.title}
-            loading="lazy"
             component="img"
             onClick={() => handleOpen(index)}
             style={{

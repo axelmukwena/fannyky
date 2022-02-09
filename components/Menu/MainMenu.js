@@ -8,6 +8,7 @@ import logoutUser from "../../store/currentUser/logout";
 
 const MainMenu = function MainMenu({ handleClose }) {
   const currentMenu = useSelector((state) => state.currentMenu.menu);
+  const activeMenu = useSelector((state) => state.currentMenu.activeMenu);
   const router = useRouter();
 
   const currentYear = new Date().getFullYear();
@@ -28,15 +29,13 @@ const MainMenu = function MainMenu({ handleClose }) {
   if (currentMenu) {
     return (
       <>
-        <div>
-          <Link href="/">
-            <a style={{ textDecoration: "none" }}>
-              <Typography sx={{ padding: "5px 0" }}>
-                <span className="menu-item">Home</span>
-              </Typography>
-            </a>
-          </Link>
-        </div>
+        <Link href="/">
+          <a style={{ textDecoration: "none" }}>
+            <Typography sx={{ padding: "5px 0" }}>
+              <span className="menu-item">Home</span>
+            </Typography>
+          </a>
+        </Link>
         {currentMenu.map((item) => (
           <Link
             key={item.id}
@@ -46,7 +45,12 @@ const MainMenu = function MainMenu({ handleClose }) {
           >
             <a style={{ textDecoration: "none" }}>
               <Typography sx={{ padding: "5px 0" }}>
-                <span id={item.slug} className="menu-item">
+                <span
+                  id={item.slug}
+                  className={
+                    activeMenu === item.name ? "menu-item-active" : "menu-item"
+                  }
+                >
                   {item.name}
                 </span>
               </Typography>

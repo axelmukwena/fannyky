@@ -65,7 +65,6 @@ const Login = function Login() {
   };
 
   function handleResponse(data) {
-    console.log(data);
     if (data.success === true) {
       setUserCookie(AUTHORIZE, data.token, 7);
       dispatch(authorize(data));

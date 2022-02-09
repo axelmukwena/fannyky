@@ -11,7 +11,6 @@ import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
-import Loading from "../../Loading/Loading";
 import ImageLoader from "../../ImageLoader";
 
 const Show = function Show({ painting, width }) {
@@ -27,10 +26,6 @@ const Show = function Show({ painting, width }) {
     setOpen(false);
   };
 
-  if (!painting) {
-    return <Loading />;
-  }
-
   if (painting) {
     const { images } = painting;
     return (
@@ -41,6 +36,7 @@ const Show = function Show({ painting, width }) {
           direction="row"
           justifyContent="center"
           alignItems="center"
+          sx={{ marginTop: "-2px" }}
         >
           <Grid item xs={12}>
             <Grid
@@ -57,7 +53,7 @@ const Show = function Show({ painting, width }) {
             >
               {images.map((image, index) => (
                 <Grid
-                  key={image.url}
+                  key={image.original}
                   item
                   xs={12}
                   sm={4}
@@ -69,37 +65,35 @@ const Show = function Show({ painting, width }) {
                     },
                   }}
                 >
-                  {width <= 600 && (
-                    <div style={{ cursor: "pointer", position: "relative" }}>
+                  <div style={{ cursor: "pointer", position: "relative" }}>
+                    {width <= 600 && (
                       <Image
                         loader={ImageLoader}
                         quality={40}
                         priority
-                        src={painting.images[0].url}
+                        src={painting.images[0].medium}
                         alt={painting.title}
                         width={width}
                         height={width}
                         objectFit="cover"
                         onClick={() => handleOpen(index)}
                       />
-                    </div>
-                  )}
+                    )}
 
-                  {width > 600 && (
-                    <div style={{ cursor: "pointer", position: "relative" }}>
+                    {width > 600 && (
                       <Image
                         loader={ImageLoader}
                         quality={40}
                         priority
-                        src={painting.images[0].url}
+                        src={painting.images[0].medium}
                         alt={painting.title}
                         width={260}
                         height={260}
                         objectFit="cover"
                         onClick={() => handleOpen(index)}
                       />
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <DeleteImage painting={painting} index={index} />
                 </Grid>
               ))}

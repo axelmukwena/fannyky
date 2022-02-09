@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import Link from "next/link";
@@ -6,6 +5,7 @@ import Image from "next/image";
 import { getResource } from "../../utilities/requests";
 import Loading from "../Loading/Loading";
 import styles from "../../styles/home.module.css";
+import NextLink from "../NextLink";
 
 const Home = function Home() {
   const budaBackground = "/static/assets/buda-background.png";
@@ -54,11 +54,13 @@ const Home = function Home() {
       {painters.map((painter) => {
         return (
           <Grid key={painter.slug} item sx={{ margin: 0, padding: 0 }}>
-            <Link href={`/${painter.slug}`} style={{ textDecoration: "none" }}>
-              <a>
-                <Painter painter={painter} width={width} />
-              </a>
-            </Link>
+            <NextLink
+              href="[painterSlug]"
+              as={`/${painter.slug}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Painter painter={painter} width={width} />
+            </NextLink>
           </Grid>
         );
       })}
