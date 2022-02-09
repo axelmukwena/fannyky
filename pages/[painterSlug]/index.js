@@ -1,12 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import SEO from "../../components/SEO";
 import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
+import { getResource } from "../../utilities/requests";
 
-const Index = function Index() {
-  const painter = useSelector((state) => state.currentPainter.painter);
+const Index = function Index({ paintings }) {
+  console.log("Paintings:", paintings);
+  // const painter = useSelector((state) => state.currentPainter.painter);
+  const { painter } = paintings[0];
 
   const router = useRouter();
   const { painterSlug } = router.query;
@@ -33,7 +36,7 @@ const Index = function Index() {
   return null;
 };
 
-/* export const getStaticPaths = async () => {
+export const getStaticPaths = async () => {
   let paths = [];
   function setPainters(painters) {
     if (painters) {
@@ -64,6 +67,6 @@ export const getStaticProps = async (context) => {
     return { paintings };
   });
   return { paintings };
-}; */
+};
 
 export default Index;
