@@ -12,11 +12,11 @@ const Index = function Index() {
 
   const router = useRouter();
   const pathItems = parsePath(router.asPath);
+  console.log("painter", painter);
+  console.log("pathItems", pathItems);
 
   const dispatch = useDispatch();
   if (painter && pathItems) {
-    console.log("painter", painter);
-    console.log("pathItems", pathItems);
     dispatch(updateActiveMenu("Works"));
     return (
       <>
