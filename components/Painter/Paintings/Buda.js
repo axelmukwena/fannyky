@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { deleteResource, getResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
@@ -19,8 +20,8 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Buda = function Buda({ router }) {
-  const painter = useSelector((state) => state.currentPainter.painter);
+const Buda = function Buda({ painter }) {
+  const router = useRouter();
 
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");

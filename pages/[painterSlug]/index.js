@@ -1,22 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import SEO from "../../components/SEO";
 import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
-import { parsePath } from "../../utilities/helpers";
+import { apiUrl } from "../../utilities/helpers";
 // import { getResource } from "../../utilities/requests";
 
-const Index = function Index() {
-  const painter = useSelector((state) => state.currentPainter.painter);
-
-  const router = useRouter();
-  const pathItems = parsePath(router.asPath);
-  console.log("painter", painter);
-  console.log("pathItems", pathItems);
+const Index = function Index({ painter }) {
+  console.log("painter:", painter);
 
   const dispatch = useDispatch();
-  if (painter && pathItems) {
+  if (painter) {
     dispatch(updateActiveMenu("Works"));
     return (
       <>
@@ -25,49 +19,35 @@ const Index = function Index() {
           title="Works"
           siteTitle={painter.name}
         />
-        {painter.rank === 1 && painter.slug === pathItems[0] && (
-          <Buda router={router} />
-        )}
-        {painter.rank === 2 && painter.slug === pathItems[0] && (
-          <Fanny router={router} painterSlug={pathItems[0]} />
-        )}
+        {painter.rank === 1 && <Buda painter={painter} />}
+        {painter.rank === 2 && <Fanny painter={painter} />}
       </>
     );
   }
   return null;
 };
 
-/* export const getStaticPaths = async () => {
-  let paths = [];
-  function setPainters(painters) {
-    if (painters) {
-      paths = painters.map((painter) => ({
-        params: { painterSlug: painter.slug },
-      }));
-    }
-  }
+export async function getStaticPaths() {
+  const response = await fetch(apiUrl("/"));
+  const painters = await response.json();
 
-  getResource("/", setPainters).then(function foo() {
-    return { paths, fallback: false };
-  });
+  const paths = painters.map((painter) => ({
+    params: { painterSlug: painter.slug },
+  }));
 
   return { paths, fallback: false };
-};
+}
 
-export const getStaticProps = async (context) => {
-  let paintings = [];
-  function setPaintings(data) {
-    if (data) {
-      paintings = data;
-    }
-  }
-
-  const painterSlug = context.params?.painterSlug || "";
-  getResource(`/${painterSlug}/paintings`, setPaintings).then(function foo() {
-    console.log("getStaticProps", paintings)
-    return { paintings };
-  });
-  return { paintings };
-}; */
+export async function getStaticProps(content) {
+  const painterSlug = content.params?.painterSlug || null;
+  // fetch list of posts
+  const response = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await response.json();
+  return {
+    props: {
+      painter,
+    },
+  };
+}
 
 export default Index;

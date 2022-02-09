@@ -3,6 +3,7 @@ import { Button, Typography, Grid, Box, Card } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { deleteResource, getResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
@@ -11,7 +12,9 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Fanny = function Fanny({ router, painterSlug }) {
+const Fanny = function Fanny({ painter }) {
+  const router = useRouter();
+
   const [groupOne, setGroupOne] = useState([]);
   const [groupTwo, setGroupTwo] = useState([]);
   const [groupThree, setGroupThree] = useState([]);
@@ -69,7 +72,7 @@ const Fanny = function Fanny({ router, painterSlug }) {
   }
 
   useEffect(() => {
-    getResource(`/${painterSlug}/paintings`, setPaintings);
+    getResource(`/${painter.slug}/paintings`, setPaintings);
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -77,7 +80,7 @@ const Fanny = function Fanny({ router, painterSlug }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [painterSlug]);
+  }, [painter]);
 
   const handleOpenImages = (painting) => {
     if (width > 900) {
