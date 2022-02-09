@@ -78,6 +78,7 @@ const Painter = function Painter({ children }) {
     }
   }, [painterSlug]);
 
+  console.log("_app:", ready, router.pathname);
   if (ready && router.pathname !== "/") {
     return <Layout>{children}</Layout>;
   }

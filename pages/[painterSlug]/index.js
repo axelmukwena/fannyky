@@ -7,6 +7,7 @@ import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 
 const Index = function Index() {
   const painter = useSelector((state) => state.currentPainter.painter);
+  console.log("painterSlug:", painter);
 
   const router = useRouter();
   const { painterSlug } = router.query;
