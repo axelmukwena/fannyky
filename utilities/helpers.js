@@ -41,3 +41,10 @@ export function parseGeneralParams(data) {
 
   return params;
 }
+
+// Split asPath from next router
+export function parsePath(path) {
+  let parsed = path.replaceAll("/", " ").trim();
+  parsed = parsed.split(" ");
+  return parsed;
+}

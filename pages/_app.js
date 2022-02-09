@@ -23,6 +23,7 @@ import "../styles/globals.css";
 import "../styles/menu.css";
 import "../styles/painter.css";
 import "../styles/toast.css";
+import { parsePath } from "../utilities/helpers";
 
 const App = function App({ Component, pageProps }) {
   const [ready, setReady] = useState(false);
@@ -54,9 +55,9 @@ const App = function App({ Component, pageProps }) {
 
 const Painter = function Painter({ children }) {
   const dispatch = useDispatch();
+
   const router = useRouter();
-  console.log("Router:", router);
-  const { painterSlug } = router.query;
+  const pathItems = parsePath(router.asPath);
 
   const [ready, setReady] = useState(false);
 
@@ -73,15 +74,13 @@ const Painter = function Painter({ children }) {
   };
 
   useEffect(() => {
-    console.log("PainterSlugBefore:", painterSlug);
     authorizeUser(dispatch);
-    if (painterSlug) {
-      console.log("PainterSlugAfter:", painterSlug);
-      getResource(`/${painterSlug}`, parsePainter);
+    if (pathItems[0] && pathItems[0] !== "[painterSlug]") {
+      console.log("PathItem:", pathItems[0]);
+      getResource(`/${pathItems[0]}`, parsePainter);
     }
-  }, [painterSlug]);
+  }, [pathItems]);
 
-  console.log("_app:", ready, router.pathname);
   if (ready && router.pathname !== "/") {
     return <Layout>{children}</Layout>;
   }
