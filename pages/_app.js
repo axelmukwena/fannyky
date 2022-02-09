@@ -55,6 +55,7 @@ const App = function App({ Component, pageProps }) {
 const Painter = function Painter({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
+  console.log("Router:", router);
   const { painterSlug } = router.query;
 
   const [ready, setReady] = useState(false);
@@ -72,8 +73,10 @@ const Painter = function Painter({ children }) {
   };
 
   useEffect(() => {
+    console.log("PainterSlugBefore:", painterSlug);
     authorizeUser(dispatch);
     if (painterSlug) {
+      console.log("PainterSlugAfter:", painterSlug);
       getResource(`/${painterSlug}`, parsePainter);
     }
   }, [painterSlug]);
