@@ -46,5 +46,8 @@ export function parseGeneralParams(data) {
 export function parsePath(path) {
   let parsed = path.replaceAll("/", " ").trim();
   parsed = parsed.split(" ");
-  return parsed;
+  if (parsed[0] && parsed[0] !== "[painterSlug]") {
+    return parsed;
+  }
+  return null;
 }

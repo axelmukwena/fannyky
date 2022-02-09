@@ -1,21 +1,20 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import SEO from "../../components/SEO";
 import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../utilities/requests";
+import { parsePath } from "../../utilities/helpers";
+// import { getResource } from "../../utilities/requests";
 
-const Index = function Index({ paintings }) {
-  console.log("Paintings:", paintings);
-  // const painter = useSelector((state) => state.currentPainter.painter);
-  const { painter } = paintings[0];
+const Index = function Index() {
+  const painter = useSelector((state) => state.currentPainter.painter);
 
   const router = useRouter();
-  const { painterSlug } = router.query;
+  const pathItems = parsePath(router.asPath);
 
   const dispatch = useDispatch();
-  if (painter) {
+  if (painter && pathItems) {
     dispatch(updateActiveMenu("Works"));
     return (
       <>
@@ -24,11 +23,11 @@ const Index = function Index({ paintings }) {
           title="Works"
           siteTitle={painter.name}
         />
-        {painter.rank === 1 && painter.slug === painterSlug && (
+        {painter.rank === 1 && painter.slug === pathItems[0] && (
           <Buda router={router} />
         )}
-        {painter.rank === 2 && painter.slug === painterSlug && (
-          <Fanny router={router} />
+        {painter.rank === 2 && painter.slug === pathItems[0] && (
+          <Fanny router={router} painterSlug={pathItems[0]} />
         )}
       </>
     );
@@ -36,7 +35,7 @@ const Index = function Index({ paintings }) {
   return null;
 };
 
-export const getStaticPaths = async () => {
+/* export const getStaticPaths = async () => {
   let paths = [];
   function setPainters(painters) {
     if (painters) {
@@ -63,10 +62,10 @@ export const getStaticProps = async (context) => {
 
   const painterSlug = context.params?.painterSlug || "";
   getResource(`/${painterSlug}/paintings`, setPaintings).then(function foo() {
-    console.log("getStaticProps:", paintings);
+    console.log("getStaticProps", paintings)
     return { paintings };
   });
   return { paintings };
-};
+}; */
 
 export default Index;

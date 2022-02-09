@@ -11,9 +11,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Fanny = function Fanny({ router }) {
-  const { painterSlug } = router.query;
-
+const Fanny = function Fanny({ router, painterSlug }) {
   const [groupOne, setGroupOne] = useState([]);
   const [groupTwo, setGroupTwo] = useState([]);
   const [groupThree, setGroupThree] = useState([]);
