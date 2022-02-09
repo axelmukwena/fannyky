@@ -1,6 +1,5 @@
 import { Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MainMenu from "./MainMenu";
 
@@ -37,7 +36,7 @@ const DesktopMenu = function DesktopMenu() {
     return (
       <Paper id="sidemenu" elevation={0} className="sidemenu">
         <div className="logo">
-          <Link to={logoUrl} onClick={handleClick} className="">
+          <a href={logoUrl} onClick={handleClick} className="">
             <Typography
               style={{
                 fontWeight: 900,
@@ -48,7 +47,7 @@ const DesktopMenu = function DesktopMenu() {
             >
               {logoName}
             </Typography>
-          </Link>
+          </a>
         </div>
         <MainMenu handleClose={handleClose} />
       </Paper>

@@ -4,7 +4,6 @@ import {
   TextField,
   Button,
   Grid,
-  Link,
   InputAdornment,
   FormControl,
   InputLabel,
@@ -197,9 +196,9 @@ const Login = function Login() {
           </Grid>
 
           <Grid item xs={12}>
-            <Link href="/" className={classes.forgotPassword}>
+            <a href="/" className={classes.forgotPassword}>
               Forgot password?
-            </Link>
+            </a>
           </Grid>
         </Grid>
       </Grid>

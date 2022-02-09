@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import {
   Button,
@@ -15,8 +14,6 @@ import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import { DeleteOutline } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-// import EditDialog from "./EditDialog";
 import { postResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import Loading from "../../Loading/Loading";

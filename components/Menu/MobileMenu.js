@@ -9,7 +9,6 @@ import {
 import React from "react";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import SideMenu from "./MainMenu";
 
 const MobileMenu = function MobileMenu() {
@@ -48,7 +47,7 @@ const MobileMenu = function MobileMenu() {
         >
           <Toolbar className="toolbar">
             <div className="logo" style={{ flexGrow: 1, marginBottom: 0 }}>
-              <Link to={logoUrl} onClick={handleClick} className="">
+              <a href={logoUrl} onClick={handleClick} className="">
                 <Typography
                   style={{
                     fontWeight: 900,
@@ -58,7 +57,7 @@ const MobileMenu = function MobileMenu() {
                 >
                   {logoName}
                 </Typography>
-              </Link>
+              </a>
             </div>
             <IconButton
               edge="end"

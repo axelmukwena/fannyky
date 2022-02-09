@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import { Provider, useDispatch } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
 import { useRouter } from "next/router";
 import theme from "../theme";
 import * as serviceWorker from "../utilities/serviceWorker";
@@ -40,13 +39,11 @@ const App = function App({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Provider store={store}>
-            <BrowserRouter>
-              <Painter>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                <Component {...pageProps} />
-              </Painter>
-              <div id="toasts-root" />
-            </BrowserRouter>
+            <Painter>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <Component {...pageProps} />
+            </Painter>
+            <div id="toasts-root" />
           </Provider>
         </ThemeProvider>
       </StyledEngineProvider>

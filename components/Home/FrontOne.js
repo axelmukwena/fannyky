@@ -1,6 +1,5 @@
 import { Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getResource } from "../../utilities/requests";
 import Canvas from "./Canvas";
 
@@ -16,10 +15,7 @@ const FrontOne = function FrontOne() {
       {painters.length > 0 ? (
         <Grid container spacing={0}>
           <Grid item xs={6}>
-            <Link
-              to={`/${painters[0].slug}`}
-              style={{ textDecoration: "none" }}
-            >
+            <a href={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
               <Typography
                 sx={{
                   fontWeight: "bold",
@@ -31,13 +27,10 @@ const FrontOne = function FrontOne() {
               >
                 {painters[0].name}
               </Typography>
-            </Link>
+            </a>
           </Grid>
           <Grid item xs={6}>
-            <Link
-              to={`/${painters[1].slug}`}
-              style={{ textDecoration: "none" }}
-            >
+            <a href={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
               <Typography
                 style={{
                   fontWeight: "bold",
@@ -49,7 +42,7 @@ const FrontOne = function FrontOne() {
               >
                 {painters[1].name}
               </Typography>
-            </Link>
+            </a>
           </Grid>
         </Grid>
       ) : (

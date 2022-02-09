@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, CardMedia, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 
 import { getResource } from "../../utilities/requests";
 
@@ -74,7 +73,7 @@ const ManualPaintersButtons = function ManualPaintersButtons() {
   if (painters.length > 1) {
     return (
       <div className="buttons-container">
-        <Link to={`/${painters[0].slug}`}>
+        <a href={`/${painters[0].slug}`}>
           <Button
             className="button-one"
             variant="outlined"
@@ -101,8 +100,8 @@ const ManualPaintersButtons = function ManualPaintersButtons() {
           >
             Realism
           </Typography>
-        </Link>
-        <Link to={`/${painters[1].slug}`}>
+        </a>
+        <a href={`/${painters[1].slug}`}>
           <Button
             className="button-two"
             variant="outlined"
@@ -129,7 +128,7 @@ const ManualPaintersButtons = function ManualPaintersButtons() {
           >
             Abstractionism
           </Typography>
-        </Link>
+        </a>
         <PositionButtons />
       </div>
     );
@@ -218,7 +217,7 @@ const PaintersButtons = function PaintersButtons() {
         container
       >
         <Grid item sx={{ margin: 0, padding: 0 }}>
-          <Link to={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
+          <a href={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
             <Button
               variant="outlined"
               size="large"
@@ -254,10 +253,10 @@ const PaintersButtons = function PaintersButtons() {
             >
               Realism
             </Typography>
-          </Link>
+          </a>
         </Grid>
         <Grid item sx={{ margin: 0, padding: 0 }}>
-          <Link to={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
+          <a href={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
             <Button
               variant="outlined"
               size="large"
@@ -292,7 +291,7 @@ const PaintersButtons = function PaintersButtons() {
             >
               Abstractionism
             </Typography>
-          </Link>
+          </a>
         </Grid>
       </Grid>
     );

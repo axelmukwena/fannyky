@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Button, CardMedia, Grid, Typography } from "@mui/material";
 import { getResource } from "../../utilities/requests";
 
@@ -76,7 +75,7 @@ const PaintersButtons = function PaintersButtons({ width, height }) {
             paddingTop: "0px !important",
           }}
         >
-          <Link to={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
+          <a href={`/${painters[0].slug}`} style={{ textDecoration: "none" }}>
             <Button
               variant="outlined"
               size="large"
@@ -110,7 +109,7 @@ const PaintersButtons = function PaintersButtons({ width, height }) {
             >
               Realism
             </Typography>
-          </Link>
+          </a>
         </Grid>
         <Grid
           item
@@ -118,7 +117,7 @@ const PaintersButtons = function PaintersButtons({ width, height }) {
             paddingTop: "0px !important",
           }}
         >
-          <Link to={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
+          <a href={`/${painters[1].slug}`} style={{ textDecoration: "none" }}>
             <Button
               variant="outlined"
               size="large"
@@ -152,7 +151,7 @@ const PaintersButtons = function PaintersButtons({ width, height }) {
             >
               Abstractionism
             </Typography>
-          </Link>
+          </a>
         </Grid>
       </Grid>
     );

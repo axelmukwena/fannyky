@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { getResource } from "../../utilities/requests";
 import BackGround from "./BackGround";
@@ -23,7 +22,7 @@ const PaintersButtons = function PaintersButtons() {
   if (painters.length > 1) {
     return (
       <div className="buttons-container">
-        <Link to={`/${painters[0].slug}`}>
+        <a href={`/${painters[0].slug}`}>
           <Button
             className="button-one"
             variant="outlined"
@@ -38,8 +37,8 @@ const PaintersButtons = function PaintersButtons() {
               {painters[0].name}
             </Typography>
           </Button>
-        </Link>
-        <Link to={`/${painters[1].slug}`}>
+        </a>
+        <a href={`/${painters[1].slug}`}>
           <Button
             className="button-two"
             variant="outlined"
@@ -54,7 +53,7 @@ const PaintersButtons = function PaintersButtons() {
               {painters[1].name}
             </Typography>
           </Button>
-        </Link>
+        </a>
         <PositionButtons />
       </div>
     );
