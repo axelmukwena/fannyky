@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
-import { getResource } from "../../utilities/requests";
 import Loading from "../Loading/Loading";
 import styles from "../../styles/home.module.css";
 import NextLink from "../NextLink";
 
-const Home = function Home() {
+const Home = function Home({ paintersData }) {
+  if (!paintersData) return null;
+
   const budaBackground = "/static/assets/buda-background.png";
   const fannyBackground = "/static/assets/fanny-background.png";
 
@@ -31,7 +32,7 @@ const Home = function Home() {
   }
 
   useEffect(() => {
-    getResource("/", parsePainters);
+    parsePainters(paintersData);
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener
