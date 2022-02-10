@@ -5,19 +5,21 @@ import Loading from "../../../components/Loading/Loading";
 import Awards from "../../../components/Painter/Awards/Awards";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 
-const Index = function Index({ awards }) {
+const Index = function Index({ painterSlug }) {
   const router = useRouter();
 
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const [current, setCurrent] = useState(true);
+  const [awards, setAwards] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (current) {
       dispatch(updateActiveMenu("Awards"));
+      getResource(`/${painterSlug}/awards`, setAwards);
     }
     return () => {
       setCurrent(false);
@@ -41,10 +43,8 @@ const Index = function Index({ awards }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/awards`));
-  const awards = await response.json();
   return {
-    props: { awards },
+    props: { painterSlug },
   };
 }
 

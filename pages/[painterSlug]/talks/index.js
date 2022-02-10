@@ -4,17 +4,19 @@ import Loading from "../../../components/Loading/Loading";
 import Talks from "../../../components/Painter/Talks/Talks";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 
-const Index = function Index({ talks }) {
+const Index = function Index({ painterSlug }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const [current, setCurrent] = useState(true);
+  const [talks, setTalks] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (current) {
       dispatch(updateActiveMenu("Talks"));
+      getResource(`/${painterSlug}/talks`, setTalks);
     }
 
     return () => {
@@ -39,10 +41,8 @@ const Index = function Index({ talks }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/talks`));
-  const talks = await response.json();
   return {
-    props: { talks },
+    props: { painterSlug },
   };
 }
 

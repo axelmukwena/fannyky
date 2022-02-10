@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import SEO from "../components/SEO";
 import Home from "../components/Home/Home";
-import { apiUrl } from "../utilities/helpers";
 import { getResource } from "../utilities/requests";
 
 const Index = function Index() {
@@ -29,12 +28,12 @@ const Index = function Index() {
   );
 };
 
-export async function getServerSideProps() {
+/* export async function getServerSideProps() {
   const response = await fetch(apiUrl("/"));
   const painters = await response.json();
   return {
     props: { painters },
   };
-}
+} */
 
 export default Index;

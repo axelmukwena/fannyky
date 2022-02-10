@@ -78,7 +78,6 @@ const Painter = function Painter({ children }) {
   useEffect(() => {
     authorizeUser(dispatch);
     if (pathItems) {
-      console.log("App:", pathItems);
       getResource(`/${pathItems[0]}`, parsePainter);
     }
   }, [pathItems]);

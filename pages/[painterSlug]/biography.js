@@ -1,18 +1,22 @@
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SEO from "../../components/SEO";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import Biography from "../../components/Painter/Biography/Biography";
-import { apiUrl } from "../../utilities/helpers";
 import NotFound from "../404";
+import { getResource } from "../../utilities/requests";
 
-const Index = function Index({ painter }) {
+const Index = function Index({ painterSlug }) {
   const dispatch = useDispatch();
+
+  const [painter, setPainter] = useState(null);
+
   useEffect(() => {
     dispatch(updateActiveMenu("Biography"));
-  }, []);
+    getResource(`/${painterSlug}`, setPainter);
+  }, [painterSlug]);
 
-  if (painter.record === false) {
+  if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
   }
 
@@ -33,10 +37,8 @@ const Index = function Index({ painter }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}`));
-  const painter = await response.json();
   return {
-    props: { painter },
+    props: { painterSlug },
   };
 }
 

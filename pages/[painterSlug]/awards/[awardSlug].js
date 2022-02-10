@@ -4,16 +4,18 @@ import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Awards/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 import NotFound from "../../404";
 
-const Award = function Award({ award }) {
+const Award = function Award({ painterSlug, awardSlug }) {
   const [current, setCurrent] = useState(true);
+  const [award, setAward] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (current) {
       dispatch(updateActiveMenu("Awards"));
+      getResource(`/${painterSlug}/awards/${awardSlug}`, setAward);
     }
 
     return () => {
@@ -21,7 +23,7 @@ const Award = function Award({ award }) {
     };
   }, []);
 
-  if (award.record === false) {
+  if (award && award.record === false) {
     return <NotFound message="Could not find award." />;
   }
 
@@ -42,10 +44,8 @@ const Award = function Award({ award }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug, awardSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/awards/${awardSlug}`));
-  const award = await response.json();
   return {
-    props: { award },
+    props: { painterSlug, awardSlug },
   };
 }
 

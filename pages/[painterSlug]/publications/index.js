@@ -4,17 +4,19 @@ import Loading from "../../../components/Loading/Loading";
 import Publications from "../../../components/Painter/Publications/Publications";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 
-const Index = function Index({ publications }) {
+const Index = function Index({ painterSlug }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const [current, setCurrent] = useState(true);
+  const [publications, setPublications] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (current) {
       dispatch(updateActiveMenu("Publications"));
+      getResource(`/${painterSlug}/publications`, setPublications);
     }
     return () => {
       setCurrent(false);
@@ -41,10 +43,8 @@ const Index = function Index({ publications }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/publications`));
-  const publications = await response.json();
   return {
-    props: { publications },
+    props: { painterSlug },
   };
 }
 

@@ -4,11 +4,12 @@ import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Paintings/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 import NotFound from "../../404";
 
-const Work = function Work({ painting }) {
+const Work = function Work({ painterSlug, workSlug }) {
   const [width, setWidth] = useState(0);
+  const [painting, setPainting] = useState(null);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -17,6 +18,7 @@ const Work = function Work({ painting }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateActiveMenu("Works"));
+    getResource(`/${painterSlug}/paintings/${workSlug}`, setPainting);
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -24,9 +26,9 @@ const Work = function Work({ painting }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [painterSlug]);
 
-  if (painting.record === false) {
+  if (painting && painting.record === false) {
     return <NotFound message="Could not find artwork." />;
   }
 
@@ -47,10 +49,8 @@ const Work = function Work({ painting }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug, workSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
-  const painting = await response.json();
   return {
-    props: { painting },
+    props: { painterSlug, workSlug },
   };
 }
 

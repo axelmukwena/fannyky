@@ -1,20 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { Email, Link, Phone } from "@mui/icons-material";
 import Loading from "../../components/Loading/Loading";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../utilities/helpers";
 import SEO from "../../components/SEO";
 import NotFound from "../404";
+import { getResource } from "../../utilities/requests";
 
-const Contact = function Contact({ painter }) {
+const Contact = function Contact({ painterSlug }) {
   const dispatch = useDispatch();
+
+  const [painter, setPainter] = useState(null);
+
   useEffect(() => {
     dispatch(updateActiveMenu("Contact"));
-  }, []);
+    getResource(`/${painterSlug}`, setPainter);
+  }, [painterSlug]);
 
-  if (painter.record === false) {
+  if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
   }
 
@@ -113,10 +117,8 @@ const GetLink = function GetLink({ painter }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}`));
-  const painter = await response.json();
   return {
-    props: { painter },
+    props: { painterSlug },
   };
 }
 

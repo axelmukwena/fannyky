@@ -4,16 +4,18 @@ import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Talks/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 import NotFound from "../../404";
 
-const Talk = function Talk({ talk }) {
+const Talk = function Talk({ painterSlug, talkSlug }) {
   const [current, setCurrent] = useState(true);
+  const [talk, setTalk] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (current) {
       dispatch(updateActiveMenu("Talks"));
+      getResource(`/${painterSlug}/talks/${talkSlug}`, setTalk);
     }
 
     return () => {
@@ -21,7 +23,7 @@ const Talk = function Talk({ talk }) {
     };
   }, []);
 
-  if (talk.record === false) {
+  if (talk && talk.record === false) {
     return <NotFound message="Could not find talk." />;
   }
 
@@ -42,10 +44,8 @@ const Talk = function Talk({ talk }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug, talkSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/talks/${talkSlug}`));
-  const talk = await response.json();
   return {
-    props: { talk },
+    props: { painterSlug, talkSlug },
   };
 }
 

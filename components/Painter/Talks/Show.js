@@ -109,8 +109,8 @@ const GetImages = function GetImages({ talk }) {
       <div className="row">
         {images.map((image, index) => (
           <Card
-            key={image.url}
-            id={image.url}
+            key={image.medium}
+            id={image.medium}
             elevation={0}
             style={{
               padding: 0,

@@ -4,16 +4,21 @@ import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Publications/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../../utilities/helpers";
+import { getResource } from "../../../utilities/requests";
 import NotFound from "../../404";
 
-const Publication = function Publication({ publication }) {
+const Publication = function Publication({ painterSlug, publicationSlug }) {
   const [current, setCurrent] = useState(true);
+  const [publication, setPublication] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (current) {
       dispatch(updateActiveMenu("Publications"));
+      getResource(
+        `/${painterSlug}/publications/${publicationSlug}`,
+        setPublication
+      );
     }
 
     return () => {
@@ -21,7 +26,7 @@ const Publication = function Publication({ publication }) {
     };
   }, []);
 
-  if (publication.record === false) {
+  if (publication && publication.record === false) {
     return <NotFound message="Could not find publication." />;
   }
 
@@ -42,12 +47,8 @@ const Publication = function Publication({ publication }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug, publicationSlug } = params;
-  const response = await fetch(
-    apiUrl(`/${painterSlug}/publications/${publicationSlug}`)
-  );
-  const publication = await response.json();
   return {
-    props: { publication },
+    props: { painterSlug, publicationSlug },
   };
 }
 

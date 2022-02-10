@@ -19,7 +19,7 @@ export async function getResource(path, handleResponse) {
   await axios
     .get(url, headers)
     .then(function foo(response) {
-      if (response.data.record === false) {
+      if (response.data && response.data.record === false) {
         handleResponse(null);
       }
       handleResponse(response.data);
@@ -49,7 +49,7 @@ export async function postResource(path, params, handleResponse) {
     axios
       .post(url, params, headers)
       .then(function foo(response) {
-        if (response.data.record === false) {
+        if (response.data && response.data.record === false) {
           handleMissingRecords(response.data);
         } else {
           handleResponse(response.data);
@@ -79,7 +79,7 @@ export async function putResource(path, params, handleResponse) {
     axios
       .put(url, params, headers)
       .then(function foo(response) {
-        if (response.data.record === false) {
+        if (response.data && response.data.record === false) {
           handleMissingRecords(response.data);
         } else {
           handleResponse(response.data);
@@ -109,7 +109,7 @@ export async function deleteResource(path, handleResponse) {
     axios
       .delete(url, headers)
       .then(function foo(response) {
-        if (response.data.record === false) {
+        if (response.data && response.data.record === false) {
           handleMissingRecords(response.data);
         } else {
           handleResponse(response.data);
