@@ -230,7 +230,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           padding: 0,
           position: "relative",
           borderRadius: 0,
-          backgroundColor: "#f1f1f1",
+          backgroundColor: width > 900 ? "#e9e9e9 !important" : "none",
           height,
           width: painting.images.length > 0 ? paintingWidth : "fit-content",
         }}

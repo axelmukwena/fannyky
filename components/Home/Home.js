@@ -7,8 +7,6 @@ import styles from "../../styles/home.module.css";
 import NextLink from "../NextLink";
 
 const Home = function Home({ paintersData }) {
-  if (!paintersData) return null;
-
   const budaBackground = "/static/assets/buda-background.png";
   const fannyBackground = "/static/assets/fanny-background.png";
 
@@ -41,9 +39,8 @@ const Home = function Home({ paintersData }) {
     };
   }, []);
 
-  if (!painters) {
-    return <Loading />;
-  }
+  if (!painters) return <Loading />;
+
   return (
     <Grid
       direction="row"

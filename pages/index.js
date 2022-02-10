@@ -3,8 +3,6 @@ import Home from "../components/Home/Home";
 import { apiUrl } from "../utilities/helpers";
 
 const Index = function Index({ painters }) {
-  console.log("Home Painters:", painters);
-
   return (
     <>
       <SEO

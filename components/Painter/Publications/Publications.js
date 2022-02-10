@@ -64,7 +64,7 @@ const GetPublications = function GetPublications({ publications, width }) {
         alignItems="center"
         sx={{
           // borderRadius: "4px",
-          border: "1px solid #e1e1e1",
+          border: "1px solid #dbdbdb",
           borderLeftWidth: "0",
           borderRightWidth: "0",
           borderBottomWidth: "0",

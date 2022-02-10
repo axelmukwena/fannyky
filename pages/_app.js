@@ -87,7 +87,6 @@ const Painter = function Painter({ children }) {
   }
   const paths = ["/", "/404", "/login"];
 
-  console.log(pathItems, router.pathname);
   if (!paths.includes(router.pathname)) {
     return <Layout>{children}</Layout>;
   }
