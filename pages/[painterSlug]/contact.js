@@ -5,9 +5,9 @@ import { Email, Link, Phone } from "@mui/icons-material";
 import Loading from "../../components/Loading/Loading";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import { apiUrl } from "../../utilities/helpers";
+import SEO from "../../components/SEO";
 
 const Contact = function Contact({ painter }) {
-  console.log("painter:", painter);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateActiveMenu("Contact"));
@@ -18,28 +18,35 @@ const Contact = function Contact({ painter }) {
   }
 
   return (
-    <div style={{ margin: "20px 15px", width: "100%" }}>
-      <Grid container spacing={2} style={{ width: "70%" }}>
-        <Grid item xs={12}>
-          <Typography
-            style={{
-              fontWeight: 600,
-              fontSize: "1rem",
-              fontFamily: "Roboto",
-            }}
-            className="page-title"
-          >
-            Contact
-          </Typography>
+    <>
+      <SEO
+        description={painter.about}
+        title="Contact"
+        siteTitle={painter.name}
+      />
+      <div style={{ margin: "20px 15px", width: "100%" }}>
+        <Grid container spacing={2} style={{ width: "70%" }}>
+          <Grid item xs={12}>
+            <Typography
+              style={{
+                fontWeight: 600,
+                fontSize: "1rem",
+                fontFamily: "Roboto",
+              }}
+              className="page-title"
+            >
+              Contact
+            </Typography>
+          </Grid>
+
+          <GetFirstHorizontal painter={painter} />
+
+          <GetEmail painter={painter} />
+          <GetPhone painter={painter} />
+          <GetLink painter={painter} />
         </Grid>
-
-        <GetFirstHorizontal painter={painter} />
-
-        <GetEmail painter={painter} />
-        <GetPhone painter={painter} />
-        <GetLink painter={painter} />
-      </Grid>
-    </div>
+      </div>
+    </>
   );
 };
 
@@ -99,26 +106,12 @@ const GetLink = function GetLink({ painter }) {
   return null;
 };
 
-export async function getStaticPaths() {
-  const response = await fetch(apiUrl("/"));
-  const painters = await response.json();
-
-  const paths = painters.map((painter) => ({
-    params: { contact: `${painter.slug}/contact`, painterSlug: painter.slug },
-  }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(content) {
-  const { painterSlug } = content.params;
-  // fetch list of posts
+export async function getServerSideProps({ params }) {
+  const { painterSlug } = params;
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
   return {
-    props: {
-      painter,
-    },
+    props: { painter },
   };
 }
 

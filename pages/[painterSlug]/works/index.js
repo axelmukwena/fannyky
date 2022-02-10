@@ -1,16 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import SEO from "../../../components/SEO";
 import Fanny from "../../../components/Painter/Paintings/Fanny";
 import Buda from "../../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
+import { apiUrl } from "../../../utilities/helpers";
 
-const Index = function Index() {
-  const painter = useSelector((state) => state.currentPainter.painter);
-
-  const router = useRouter();
-  const { painterSlug } = router.query;
-
+const Index = function Index({ painter }) {
   const dispatch = useDispatch();
   if (painter) {
     dispatch(updateActiveMenu("Works"));
@@ -21,16 +16,21 @@ const Index = function Index() {
           title="Works"
           siteTitle={painter.name}
         />
-        {painter.rank === 1 && painter.slug === painterSlug && (
-          <Buda router={router} />
-        )}
-        {painter.rank === 2 && painter.slug === painterSlug && (
-          <Fanny router={router} />
-        )}
+        {painter.rank === 1 && <Buda painter={painter} />}
+        {painter.rank === 2 && <Fanny painter={painter} />}
       </>
     );
   }
   return null;
 };
+
+export async function getServerSideProps({ params }) {
+  const { painterSlug, workSlug } = params;
+  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
+  const painting = await response.json();
+  return {
+    props: { painting },
+  };
+}
 
 export default Index;

@@ -20,9 +20,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import EditDialog from "./EditDialog";
 
-const Biography = function Biography() {
-  const painter = useSelector((state) => state.currentPainter.painter);
-
+const Biography = function Biography({ painter }) {
   const convertContentToHTML = (content) => {
     if (content) {
       const object = JSON.parse(content);

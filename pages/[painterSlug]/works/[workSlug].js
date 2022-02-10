@@ -1,17 +1,12 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Paintings/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../../utilities/requests";
+import { apiUrl } from "../../../utilities/helpers";
 
-const Work = function Work() {
-  const router = useRouter();
-  const { painterSlug, workSlug } = router.query;
-
-  const [painting, setPainting] = useState(null);
+const Work = function Work({ painting }) {
   const [width, setWidth] = useState(0);
 
   function handleResize() {
@@ -21,9 +16,6 @@ const Work = function Work() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateActiveMenu("Works"));
-    if (painterSlug && workSlug) {
-      getResource(`/${painterSlug}/paintings/${workSlug}`, setPainting);
-    }
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -31,7 +23,7 @@ const Work = function Work() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [painterSlug, workSlug]);
+  }, []);
 
   if (painting) {
     return (
@@ -47,5 +39,14 @@ const Work = function Work() {
   }
   return <Loading />;
 };
+
+export async function getServerSideProps({ params }) {
+  const { painterSlug, workSlug } = params;
+  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
+  const painting = await response.json();
+  return {
+    props: { painting },
+  };
+}
 
 export default Work;

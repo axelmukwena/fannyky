@@ -4,7 +4,6 @@ import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import { apiUrl } from "../../utilities/helpers";
-// import { getResource } from "../../utilities/requests";
 
 const Index = function Index({ painter }) {
   const dispatch = useDispatch();
@@ -25,26 +24,12 @@ const Index = function Index({ painter }) {
   return null;
 };
 
-export async function getStaticPaths() {
-  const response = await fetch(apiUrl("/"));
-  const painters = await response.json();
-
-  const paths = painters.map((painter) => ({
-    params: { painterSlug: painter.slug },
-  }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(content) {
-  const { painterSlug } = content.params;
-  // fetch list of posts
-  const response = await fetch(apiUrl(`/${painterSlug}`));
-  const painter = await response.json();
+export async function getServerSideProps({ params }) {
+  const { painterSlug, workSlug } = params;
+  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
+  const painting = await response.json();
   return {
-    props: {
-      painter,
-    },
+    props: { painting },
   };
 }
 
