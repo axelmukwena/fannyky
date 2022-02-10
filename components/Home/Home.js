@@ -30,14 +30,17 @@ const Home = function Home({ paintersData }) {
   }
 
   useEffect(() => {
-    parsePainters(paintersData);
+    if (paintersData) {
+      parsePainters(paintersData);
+    }
+
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [paintersData]);
 
   if (!painters) return <Loading />;
 

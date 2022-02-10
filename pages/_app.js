@@ -65,6 +65,7 @@ const Painter = function Painter({ children }) {
 
   const parsePainter = function parsePainter(painter) {
     if (painter) {
+      console.log("App:", painter);
       const menu = parsePainterMenu(painter, `/${painter.slug}`);
       updateMenuSlice(dispatch, menu);
       dispatch(updatePainter(painter));
