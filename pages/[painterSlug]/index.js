@@ -1,15 +1,23 @@
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import SEO from "../../components/SEO";
 import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
-import { apiUrl } from "../../utilities/helpers";
+import { getResource } from "../../utilities/requests";
 // import { getResource } from "../../utilities/requests";
 
-const Index = function Index({ painter }) {
+const Index = function Index({ painterSlug }) {
   const dispatch = useDispatch();
-  if (painter) {
+
+  const [painter, setPainter] = useState(null);
+
+  useEffect(() => {
     dispatch(updateActiveMenu("Works"));
+    getResource(`/${painterSlug}`, setPainter);
+  }, [painterSlug]);
+
+  if (painter) {
     return (
       <>
         <SEO
@@ -27,10 +35,8 @@ const Index = function Index({ painter }) {
 
 export async function getServerSideProps({ params }) {
   const { painterSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}`));
-  const painter = await response.json();
   return {
-    props: { painter },
+    props: { painterSlug },
   };
 }
 
