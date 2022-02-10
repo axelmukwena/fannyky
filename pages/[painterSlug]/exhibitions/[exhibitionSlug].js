@@ -1,33 +1,29 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Exhibitions/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../../utilities/requests";
+import { apiUrl } from "../../../utilities/helpers";
+import NotFound from "../../404";
 
-const Exhibition = function Exhibition() {
-  const router = useRouter();
-  const { painterSlug, exhibitionSlug } = router.query;
-
-  const [exhibition, setExhibition] = useState(null);
+const Exhibition = function Exhibition({ exhibition }) {
   const [current, setCurrent] = useState(true);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(updateActiveMenu("Exhibitions"));
-    if (painterSlug && exhibitionSlug && current) {
-      getResource(
-        `/${painterSlug}/exhibitions/${exhibitionSlug}`,
-        setExhibition
-      );
+    if (current) {
+      dispatch(updateActiveMenu("Exhibitions"));
     }
 
     return () => {
       setCurrent(false);
     };
-  }, [painterSlug, exhibitionSlug]);
+  }, []);
+
+  if (exhibition.record === false) {
+    return <NotFound message="Could not find exhibition." />;
+  }
 
   if (exhibition) {
     return (
@@ -43,5 +39,17 @@ const Exhibition = function Exhibition() {
   }
   return <Loading />;
 };
+
+export async function getServerSideProps({ params }) {
+  const { painterSlug, exhibitionSlug } = params;
+  const response = await fetch(
+    apiUrl(`/${painterSlug}/exhibitions/${exhibitionSlug}`)
+  );
+  const exhibition = await response.json();
+
+  return {
+    props: { exhibition },
+  };
+}
 
 export default Exhibition;

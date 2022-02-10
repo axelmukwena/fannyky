@@ -20,8 +20,7 @@ export async function getResource(path, handleResponse) {
     .get(url, headers)
     .then(function foo(response) {
       if (response.data.record === false) {
-        handleMissingRecords(response.data);
-        return null;
+        handleResponse(null);
       }
       handleResponse(response.data);
       return response.data;

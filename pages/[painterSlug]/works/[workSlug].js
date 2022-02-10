@@ -5,6 +5,7 @@ import Show from "../../../components/Painter/Paintings/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
 import { apiUrl } from "../../../utilities/helpers";
+import NotFound from "../../404";
 
 const Work = function Work({ painting }) {
   const [width, setWidth] = useState(0);
@@ -24,6 +25,10 @@ const Work = function Work({ painting }) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  if (painting.record === false) {
+    return <NotFound message="Could not find artwork." />;
+  }
 
   if (painting) {
     return (

@@ -4,12 +4,17 @@ import SEO from "../../components/SEO";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import Biography from "../../components/Painter/Biography/Biography";
 import { apiUrl } from "../../utilities/helpers";
+import NotFound from "../404";
 
 const Index = function Index({ painter }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateActiveMenu("Biography"));
   }, []);
+
+  if (painter.record === false) {
+    return <NotFound message="Could not find artist." />;
+  }
 
   if (painter) {
     return (

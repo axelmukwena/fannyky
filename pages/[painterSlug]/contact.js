@@ -6,12 +6,17 @@ import Loading from "../../components/Loading/Loading";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import { apiUrl } from "../../utilities/helpers";
 import SEO from "../../components/SEO";
+import NotFound from "../404";
 
 const Contact = function Contact({ painter }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateActiveMenu("Contact"));
   }, []);
+
+  if (painter.record === false) {
+    return <NotFound message="Could not find artist." />;
+  }
 
   if (!painter) {
     return <Loading />;

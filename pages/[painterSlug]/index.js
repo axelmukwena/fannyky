@@ -4,6 +4,7 @@ import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import { apiUrl } from "../../utilities/helpers";
+// import { getResource } from "../../utilities/requests";
 
 const Index = function Index({ painter }) {
   const dispatch = useDispatch();
@@ -25,11 +26,11 @@ const Index = function Index({ painter }) {
 };
 
 export async function getServerSideProps({ params }) {
-  const { painterSlug, workSlug } = params;
-  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
-  const painting = await response.json();
+  const { painterSlug } = params;
+  const response = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await response.json();
   return {
-    props: { painting },
+    props: { painter },
   };
 }
 

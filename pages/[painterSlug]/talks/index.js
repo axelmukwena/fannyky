@@ -1,31 +1,26 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading/Loading";
 import Talks from "../../../components/Painter/Talks/Talks";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../../utilities/requests";
+import { apiUrl } from "../../../utilities/helpers";
 
-const Index = function Index() {
-  const router = useRouter();
-  const { painterSlug } = router.query;
-
+const Index = function Index({ talks }) {
   const painter = useSelector((state) => state.currentPainter.painter);
 
   const [current, setCurrent] = useState(true);
-  const [talks, setTalks] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(updateActiveMenu("Talks"));
-    if (painterSlug && current) {
-      getResource(`/${painterSlug}/talks`, setTalks);
+    if (current) {
+      dispatch(updateActiveMenu("Talks"));
     }
+
     return () => {
       setCurrent(false);
     };
-  }, [painterSlug]);
+  }, []);
 
   return (
     <>
@@ -41,5 +36,14 @@ const Index = function Index() {
     </>
   );
 };
+
+export async function getServerSideProps({ params }) {
+  const { painterSlug } = params;
+  const response = await fetch(apiUrl(`/${painterSlug}/talks`));
+  const talks = await response.json();
+  return {
+    props: { talks },
+  };
+}
 
 export default Index;

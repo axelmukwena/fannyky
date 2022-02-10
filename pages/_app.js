@@ -19,11 +19,14 @@ import {
 } from "../store/menuSlice/currentMenuSlice";
 import Layout from "../components/Layout";
 import authorizeUser from "../store/currentUser/authorize";
+import { parsePath } from "../utilities/helpers";
+import NotFound from "./404";
+
 import "../styles/globals.css";
 import "../styles/menu.css";
 import "../styles/painter.css";
 import "../styles/toast.css";
-import { parsePath } from "../utilities/helpers";
+import "../styles/errors.css";
 
 const App = function App({ Component, pageProps }) {
   const [ready, setReady] = useState(false);
@@ -55,6 +58,7 @@ const App = function App({ Component, pageProps }) {
 
 const Painter = function Painter({ children }) {
   const dispatch = useDispatch();
+  const [notFound, setNotFound] = useState(false);
 
   const router = useRouter();
   const pathItems = parsePath(router.asPath);
@@ -67,6 +71,7 @@ const Painter = function Painter({ children }) {
       dispatch(updateSiteName([painter.name, `/${painter.slug}`]));
     } else {
       dispatch(updateActiveMenu(null));
+      setNotFound(true);
     }
   };
 
@@ -77,7 +82,11 @@ const Painter = function Painter({ children }) {
     }
   }, [pathItems]);
 
-  if (router.pathname !== "/") {
+  if (notFound) {
+    return <NotFound message="Could not find artist." />;
+  }
+
+  if (router.pathname !== "/" || router.pathname !== "/404") {
     return <Layout>{children}</Layout>;
   }
 
