@@ -86,7 +86,7 @@ const Painter = function Painter({ children }) {
     return <NotFound message="Could not find artist." />;
   }
 
-  if (router.pathname !== "/" || router.pathname !== "/404") {
+  if (router.pathname !== "/" && router.pathname !== "/404") {
     return <Layout>{children}</Layout>;
   }
 
