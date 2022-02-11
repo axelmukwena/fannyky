@@ -10,17 +10,18 @@ import { apiUrl } from "../../utilities/helpers";
 
 const Index = function Index() {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { painterSlug } = router.query;
 
   const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     dispatch(updateActiveMenu("Biography"));
 
-    const router = useRouter();
-    const { painterSlug } = router.query;
-
-    getResource(`/${painterSlug}`, setPainter);
-  }, []);
+    if (painterSlug) {
+      getResource(`/${painterSlug}`, setPainter);
+    }
+  }, [painterSlug]);
 
   if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
