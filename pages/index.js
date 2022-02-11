@@ -46,4 +46,22 @@ const Index = function Index() {
   };
 } */
 
+/* export async function getStaticPaths() {
+  const paths = { params: { home: "/" } };
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps(content) {
+  const { home } = content.params;
+  // fetch list of posts
+  const response = await fetch(apiUrl(home));
+  const painters = await response.json();
+  return {
+    props: {
+      painters,
+    },
+  };
+} */
+
 export default Index;

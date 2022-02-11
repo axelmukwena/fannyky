@@ -46,7 +46,7 @@ export async function fetchWithTimeout(url) {
 // Get data from api
 export async function getResource(path, handleResponse) {
   // Data
-  /* const url = apiUrl(path);
+  const url = apiUrl(path);
 
   let response = await fetchWithTimeout(url);
   console.log("response:", response);
@@ -58,9 +58,9 @@ export async function getResource(path, handleResponse) {
     if (response !== "timeout") {
       break;
     }
-  } */
+  }
 
-  handleResponse(null);
+  handleResponse(response);
 }
 
 // Post data to api

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
@@ -76,9 +77,9 @@ const Painter = function Painter({ children }) {
   };
 
   useEffect(() => {
-    authorizeUser(dispatch);
+    // authorizeUser(dispatch);
     if (pathItems) {
-      getResource(`/${pathItems[0]}`, parsePainter);
+      // getResource(`/${pathItems[0]}`, parsePainter);
     }
   }, [pathItems]);
 
