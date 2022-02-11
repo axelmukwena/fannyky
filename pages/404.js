@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 
-const NotFound = function NotFound({ message }) {
+const NotFound = function NotFound({ title, message }) {
   return (
     <Grid
       direction="row"
@@ -10,7 +10,7 @@ const NotFound = function NotFound({ message }) {
       container
     >
       <Grid item>
-        <h1 className="page-error-title">404</h1>
+        <h1 className="page-error-title">{title || "404"}</h1>
         <div className="page-error-content-container">
           <h2 className="page-error-text">
             {message || "This page could not be found."}

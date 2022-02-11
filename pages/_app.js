@@ -64,7 +64,7 @@ const Painter = function Painter({ children }) {
   const pathItems = parsePath(router.asPath);
 
   const parsePainter = function parsePainter(painter) {
-    if (painter) {
+    if (painter && !painter.record) {
       const menu = parsePainterMenu(painter, `/${painter.slug}`);
       updateMenuSlice(dispatch, menu);
       dispatch(updatePainter(painter));

@@ -5,7 +5,7 @@ import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import { getResource } from "../../utilities/requests";
-// import { getResource } from "../../utilities/requests";
+import NotFound from "../404";
 
 const Index = function Index({ painterSlug }) {
   const dispatch = useDispatch();
@@ -16,6 +16,10 @@ const Index = function Index({ painterSlug }) {
     dispatch(updateActiveMenu("Works"));
     getResource(`/${painterSlug}`, setPainter);
   }, [painterSlug]);
+
+  if (painter && painter.record === false) {
+    return <NotFound message="Could not find artist." />;
+  }
 
   if (painter) {
     return (

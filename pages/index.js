@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SEO from "../components/SEO";
 import Home from "../components/Home/Home";
 import { getResource } from "../utilities/requests";
+import NotFound from "./404";
 
 const Index = function Index() {
   const [painters, setPainters] = useState(null);
@@ -15,6 +16,15 @@ const Index = function Index() {
       setCurrent(false);
     };
   }, [current]);
+
+  if (painters && painters.record === false) {
+    return (
+      <NotFound
+        title="500"
+        message="Server down! Please alert the administrator."
+      />
+    );
+  }
 
   return (
     <>

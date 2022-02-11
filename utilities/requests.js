@@ -7,28 +7,59 @@ function handleMissingRecords(message) {
   console.log(message);
 }
 
-// Get data from api
-export async function getResource(path, handleResponse) {
+// Get data from api using timeout
+export async function fetchWithTimeout(url) {
+  const controller = new AbortController();
+  const timeout = 8000;
+
+  const id = setTimeout(() => {
+    controller.abort();
+  }, timeout);
+
   // Data
-  const url = apiUrl(path);
   const headers = {
+    signal: controller.signal,
     headers: {
       "Content-Type": "application/json",
     },
   };
-  await axios
+
+  const response = await axios
     .get(url, headers)
-    .then(function foo(response) {
-      if (response.data && response.data.record === false) {
-        handleResponse(null);
-      }
-      handleResponse(response.data);
-      return response.data;
+    .then(function foo(res) {
+      return res.data;
     })
     .catch(function foo(error) {
       console.log("Public Data Error");
       console.log(error);
+      if (error.message === "canceled") {
+        return "timeout";
+      }
+      return { record: false, error: "Public Data Error" };
     });
+
+  clearTimeout(id);
+  return response;
+}
+
+// Get data from api
+export async function getResource(path, handleResponse) {
+  // Data
+  const url = apiUrl(path);
+
+  let response = await fetchWithTimeout(url);
+  console.log("response:", response);
+
+  while (response === "timeout") {
+    // eslint-disable-next-line no-await-in-loop
+    response = await fetchWithTimeout(url);
+    console.log("response:", response);
+    if (response !== "timeout") {
+      break;
+    }
+  }
+
+  handleResponse(response);
 }
 
 // Post data to api
