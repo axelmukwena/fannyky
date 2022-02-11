@@ -52,7 +52,6 @@ export async function getResource(path, handleResponse) {
   console.log("response:", response);
 
   while (response === "timeout") {
-    handleResponse(null);
     // eslint-disable-next-line no-await-in-loop
     response = await fetchWithTimeout(url);
     console.log("response:", response);
