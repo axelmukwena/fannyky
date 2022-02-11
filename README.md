@@ -160,3 +160,11 @@ npm run dev
 const Editor = dynamic( () => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false } )
 ```
 - https://stackoverflow.com/a/55223488/8050183
+
+
+### Static Rendering with Incremental Static Regeneration
+
+- https://stackoverflow.com/a/67787457/8050183
+- https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
+- https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false
+- https://www.reddit.com/r/nextjs/comments/j3za9y/what_exactly_does_build_time_mean/

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Typography, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { Email, Link, Phone } from "@mui/icons-material";
@@ -7,30 +7,22 @@ import Loading from "../../components/Loading/Loading";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import SEO from "../../components/SEO";
 import NotFound from "../404";
-import { getResource } from "../../utilities/requests";
 import { apiUrl } from "../../utilities/helpers";
 
-const Contact = function Contact() {
+const Contact = function Contact({ painter }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { painterSlug } = router.query;
-
-  const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     dispatch(updateActiveMenu("Contact"));
+  }, []);
 
-    if (painterSlug) {
-      getResource(`/${painterSlug}`, setPainter);
-    }
-  }, [painterSlug]);
+  if (router.isFallback) {
+    return <Loading />;
+  }
 
   if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
-  }
-
-  if (!painter) {
-    return <Loading />;
   }
 
   return (
@@ -137,7 +129,7 @@ export async function getStaticPaths() {
     params: { contact: `${painter.slug}/contact`, painterSlug: painter.slug },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: "blocking" };
 }
 
 export async function getStaticProps(content) {
@@ -145,10 +137,18 @@ export async function getStaticProps(content) {
   // fetch list of posts
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
+
+  if (!painter) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       painter,
     },
+    revalidate: 10,
   };
 }
 

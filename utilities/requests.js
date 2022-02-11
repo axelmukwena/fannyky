@@ -10,7 +10,7 @@ function handleMissingRecords(message) {
 // Get data from api using timeout
 export async function fetchWithTimeout(url) {
   const controller = new AbortController();
-  const timeout = 7000;
+  const timeout = 5000;
 
   const id = setTimeout(() => {
     controller.abort();
@@ -52,6 +52,7 @@ export async function getResource(path, handleResponse) {
   console.log("response:", response);
 
   while (response === "timeout") {
+    handleResponse(null);
     // eslint-disable-next-line no-await-in-loop
     response = await fetchWithTimeout(url);
     console.log("response:", response);

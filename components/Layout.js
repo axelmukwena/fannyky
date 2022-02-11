@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
 
 import MobileMenu from "./Menu/MobileMenu";
 import DesktopMenu from "./Menu/DesktopMenu";
 
 const Layout = function Layout({ children }) {
-  const dispatch = useDispatch();
-
   const [width, setWidth] = useState(0);
 
   function handleResize() {
@@ -21,7 +18,7 @@ const Layout = function Layout({ children }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

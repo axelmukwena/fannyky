@@ -1,45 +1,41 @@
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import SEO from "../../components/SEO";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import Biography from "../../components/Painter/Biography/Biography";
 import NotFound from "../404";
-import { getResource } from "../../utilities/requests";
 import { apiUrl } from "../../utilities/helpers";
+import Loading from "../../components/Loading/Loading";
 
-const Index = function Index() {
+const Index = function Index({ painter }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { painterSlug } = router.query;
-
-  const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     dispatch(updateActiveMenu("Biography"));
+  }, []);
 
-    if (painterSlug) {
-      getResource(`/${painterSlug}`, setPainter);
-    }
-  }, [painterSlug]);
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
+  if (!painter) return null;
 
   if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
   }
 
-  if (painter) {
-    return (
-      <>
-        <SEO
-          description={painter.about}
-          title="Biography"
-          siteTitle={painter.name}
-        />
-        <Biography painter={painter} />
-      </>
-    );
-  }
-  return null;
+  return (
+    <>
+      <SEO
+        description={painter.about}
+        title="Biography"
+        siteTitle={painter.name}
+      />
+      <Biography painter={painter} />
+    </>
+  );
 };
 
 /* export async function getServerSideProps({ params }) {
@@ -57,7 +53,7 @@ export async function getStaticPaths() {
     params: { contact: `${painter.slug}/biography`, painterSlug: painter.slug },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: "blocking" };
 }
 
 export async function getStaticProps(content) {
@@ -65,10 +61,18 @@ export async function getStaticProps(content) {
   // fetch list of posts
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
+
+  if (!painter) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       painter,
     },
+    revalidate: 10,
   };
 }
 
