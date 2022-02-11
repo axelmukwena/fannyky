@@ -5,17 +5,26 @@ import Image from "next/image";
 import Loading from "../Loading/Loading";
 import styles from "../../styles/home.module.css";
 import NextLink from "../NextLink";
+import ImageLoader from "../ImageLoader";
 
 const Home = function Home({ paintersData }) {
-  const budaBackground = "/static/assets/buda-background.png";
-  const fannyBackground = "/static/assets/fanny-background.png";
+  const originalBuda = "/static/assets/backgrounds/original-buda.png";
+  const mediumBuda = "/static/assets/backgrounds/400-buda.png";
+  const smallBuda = "/static/assets/backgrounds/300-buda.png";
+
+  const originalFanny = "/static/assets/backgrounds/original-fanny.png";
+  const mediumFanny = "/static/assets/backgrounds/400-fanny.png";
+  const smallFanny = "/static/assets/backgrounds/300-fanny.png";
 
   const [painters, setPainters] = useState(null);
   const [width, setWidth] = useState(0);
 
   // Reverse the painters entered in the database
   function parsePainters(data) {
-    const images = [budaBackground, fannyBackground];
+    const images = [
+      { original: originalBuda, medium: mediumBuda, small: smallBuda },
+      { original: originalFanny, medium: mediumFanny, small: smallFanny },
+    ];
     const captions = ["Realism", "Abstractionism"];
     for (let i = 0; i < data.length; i += 1) {
       data[i].image = images[i];
@@ -92,7 +101,8 @@ const Painter = function Painter({ painter, width }) {
       >
         {width < 600 && (
           <Image
-            src={painter.image}
+            loader={ImageLoader}
+            src={painter.image.small}
             alt={painter.name}
             width={230}
             height={230}
@@ -102,7 +112,7 @@ const Painter = function Painter({ painter, width }) {
 
         {width >= 600 && width < 900 && (
           <Image
-            src={painter.image}
+            src={painter.image.medium}
             alt={painter.name}
             width={250}
             height={250}
@@ -112,7 +122,7 @@ const Painter = function Painter({ painter, width }) {
 
         {width >= 900 && (
           <Image
-            src={painter.image}
+            src={painter.image.medium}
             alt={painter.name}
             width={400}
             height={400}
