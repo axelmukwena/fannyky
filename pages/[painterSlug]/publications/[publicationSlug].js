@@ -10,6 +10,7 @@ import Layout from "../../../components/Layout";
 import { apiUrl } from "../../../utilities/helpers";
 
 const Publication = function Publication({ publication, painter }) {
+  console.log(publication);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -64,7 +65,7 @@ export async function getStaticPaths() {
   const paths = allPublications.map((publication) => ({
     params: {
       painterSlug: publication.painter.slug,
-      publicationlug: publication.slug,
+      publicationSlug: publication.slug,
     },
   }));
 
@@ -72,13 +73,13 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(content) {
-  const { painterSlug, publicationlug } = content.params;
+  const { painterSlug, publicationSlug } = content.params;
 
   const painterRes = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await painterRes.json();
 
   const publicationRes = await fetch(
-    apiUrl(`/${painterSlug}/publications/${publicationlug}`)
+    apiUrl(`/${painterSlug}/publications/${publicationSlug}`)
   );
   const publication = await publicationRes.json();
 
