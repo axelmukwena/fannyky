@@ -12,13 +12,12 @@ const Index = function Index({ painters }) {
     return <Loading />;
   }
 
-  if (!painters) return null;
-
-  if (painters && painters.record === false) {
+  if ((painters && painters.record === false) || !painters) {
     return (
       <NotFound
         title="500"
         message="Server down! Please alert the administrator."
+        down
       />
     );
   }
@@ -38,12 +37,6 @@ const Index = function Index({ painters }) {
 export async function getStaticProps() {
   const response = await fetch(apiUrl("/"));
   const painters = await response.json();
-
-  if (!painters) {
-    return {
-      notFound: true,
-    };
-  }
 
   return {
     props: {

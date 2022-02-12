@@ -21,10 +21,18 @@ const Publication = function Publication({ publication, painter }) {
     return <Loading />;
   }
 
-  if (!publication) return null;
+  if ((painter && painter.record === false) || !painter) {
+    return <NotFound message="Could not find artist." />;
+  }
 
-  if (publication && publication.record === false) {
-    return <NotFound message="Could not find publication." />;
+  if ((publication && publication.record === false) || !publication) {
+    return (
+      <NotFound
+        painter={painter}
+        homeLink
+        message="Could not find publication."
+      />
+    );
   }
 
   return (
@@ -65,21 +73,19 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug, publicationlug } = content.params;
-  const response = await fetch(
+
+  const painterRes = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await painterRes.json();
+
+  const publicationRes = await fetch(
     apiUrl(`/${painterSlug}/publications/${publicationlug}`)
   );
-  const publication = await response.json();
-
-  if (!publication) {
-    return {
-      notFound: true,
-    };
-  }
+  const publication = await publicationRes.json();
 
   return {
     props: {
       publication,
-      painter: publication ? publication.painter : null,
+      painter,
     },
     revalidate: 5,
   };

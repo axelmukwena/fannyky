@@ -21,10 +21,14 @@ const Talk = function Talk({ talk, painter }) {
     return <Loading />;
   }
 
-  if (!talk) return null;
+  if ((painter && painter.record === false) || !painter) {
+    return <NotFound message="Could not find artist." />;
+  }
 
-  if (talk && talk.record === false) {
-    return <NotFound message="Could not find talk." />;
+  if ((talk && talk.record === false) || !talk) {
+    return (
+      <NotFound painter={painter} homeLink message="Could not find talk." />
+    );
   }
 
   return (
@@ -62,19 +66,17 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug, talkSlug } = content.params;
-  const response = await fetch(apiUrl(`/${painterSlug}/talks/${talkSlug}`));
-  const talk = await response.json();
 
-  if (!talk) {
-    return {
-      notFound: true,
-    };
-  }
+  const painterRes = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await painterRes.json();
+
+  const talkRes = await fetch(apiUrl(`/${painterSlug}/talks/${talkSlug}`));
+  const talk = await talkRes.json();
 
   return {
     props: {
       talk,
-      painter: talk ? talk.painter : null,
+      painter,
     },
     revalidate: 5,
   };

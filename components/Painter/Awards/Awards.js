@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
+import NextLink from "../../NextLink";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
@@ -44,37 +45,43 @@ const GetAwards = function GetAwards({ awards, handleClick }) {
   if (awards.length > 0) {
     return awards.map((award) => (
       <Grid key={award.slug} item xs={12} sm={3}>
-        <Card
-          elevation={0}
-          onClick={() => handleClick(award)}
-          className="award"
+        <NextLink
+          href="/[painterSlug]/awards/[awardSlug]"
+          as={`/${award.painter.slug}/awards/${award.slug}`}
+          style={{ textDecoration: "none" }}
         >
-          <Typography
-            sx={{
-              color: "#f1f1f1",
-              fontWeight: 900,
-              padding: "10px",
-              backgroundColor: "#787878",
-            }}
+          <Card
+            elevation={0}
+            onClick={() => handleClick(award)}
+            className="award"
           >
-            {award.prize}
-          </Typography>
+            <Typography
+              sx={{
+                color: "#f1f1f1",
+                fontWeight: 900,
+                padding: "10px",
+                backgroundColor: "#787878",
+              }}
+            >
+              {award.prize}
+            </Typography>
 
-          <Typography
-            sx={{ color: "#525252", padding: "10px", textAlign: "left" }}
-          >
-            {award.description}
-          </Typography>
-          <Typography
-            sx={{
-              fontStyle: "italic",
-              color: "#525252",
-              padding: "0 10px 10px 10px",
-            }}
-          >
-            — {award.year}
-          </Typography>
-        </Card>
+            <Typography
+              sx={{ color: "#525252", padding: "10px", textAlign: "left" }}
+            >
+              {award.description}
+            </Typography>
+            <Typography
+              sx={{
+                fontStyle: "italic",
+                color: "#525252",
+                padding: "0 10px 10px 10px",
+              }}
+            >
+              — {award.year}
+            </Typography>
+          </Card>
+        </NextLink>
         <DeleteAward award={award} />
       </Grid>
     ));

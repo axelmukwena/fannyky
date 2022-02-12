@@ -12,6 +12,7 @@ import {
   updateActiveMenu,
   updateSiteName,
 } from "../store/menuSlice/currentMenuSlice";
+import authorizeUser from "../store/currentUser/authorize";
 import { updatePainter } from "../store/painterSlice/currentPainterSlice";
 
 const Layout = function Layout({ painter, children }) {
@@ -38,6 +39,7 @@ const Layout = function Layout({ painter, children }) {
     if (painter) {
       setPainter(painter);
     }
+    authorizeUser(dispatch);
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener

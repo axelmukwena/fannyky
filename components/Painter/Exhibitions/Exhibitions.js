@@ -25,7 +25,7 @@ const Exhibitions = function Exhibitions({ solo, group, others }) {
 const Placeholder = function Placeholder({ solo, group, others }) {
   if (solo.length === 0 && group.length === 0 && others.length === 0) {
     return (
-      <div>
+      <>
         <Typography
           style={{
             fontWeight: 600,
@@ -38,7 +38,7 @@ const Placeholder = function Placeholder({ solo, group, others }) {
           Exhibitions
         </Typography>
         <CustomHorizontal />
-      </div>
+      </>
     );
   }
   return null;

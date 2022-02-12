@@ -22,9 +22,7 @@ const Contact = function Contact({ painter }) {
     return <Loading />;
   }
 
-  if (!painter) return null;
-
-  if (painter && painter.record === false) {
+  if ((painter && painter.record === false) || !painter) {
     return <NotFound message="Could not find artist." />;
   }
 
@@ -141,12 +139,6 @@ export async function getStaticProps(content) {
   const { painterSlug } = content.params;
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
-
-  if (!painter) {
-    return {
-      notFound: true,
-    };
-  }
 
   return {
     props: {

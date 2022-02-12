@@ -34,10 +34,14 @@ const Work = function Work({ painting, painter }) {
     return <Loading />;
   }
 
-  if (!painting) return null;
+  if ((painter && painter.record === false) || !painter) {
+    return <NotFound message="Could not find artist." />;
+  }
 
-  if (painting && painting.record === false) {
-    return <NotFound message="Could not find painting." />;
+  if ((painting && painting.record === false) || !painting) {
+    return (
+      <NotFound painter={painter} homeLink message="Could not find work." />
+    );
   }
 
   return (
@@ -75,19 +79,19 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug, workSlug } = content.params;
-  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
-  const painting = await response.json();
 
-  if (!painting) {
-    return {
-      notFound: true,
-    };
-  }
+  const painterRes = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await painterRes.json();
+
+  const paintingRes = await fetch(
+    apiUrl(`/${painterSlug}/paintings/${workSlug}`)
+  );
+  const painting = await paintingRes.json();
 
   return {
     props: {
       painting,
-      painter: painting ? painting.painter : null,
+      painter,
     },
     revalidate: 5,
   };

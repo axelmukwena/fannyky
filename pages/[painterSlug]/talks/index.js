@@ -21,9 +21,7 @@ const Index = function Index({ talks, painter }) {
     return <Loading />;
   }
 
-  if (!painter) return null;
-
-  if (painter && painter.record === false) {
+  if ((painter && painter.record === false) || !painter) {
     return <NotFound message="Could not find artist." />;
   }
 
@@ -56,19 +54,17 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug } = content.params;
-  const response = await fetch(apiUrl(`/${painterSlug}/talks`));
-  const talks = await response.json();
 
-  if (!talks) {
-    return {
-      notFound: true,
-    };
-  }
+  const painterRes = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await painterRes.json();
+
+  const talksRes = await fetch(apiUrl(`/${painterSlug}/talks`));
+  const talks = await talksRes.json();
 
   return {
     props: {
       talks,
-      painter: talks.length > 0 ? talks[0].painter : null,
+      painter,
     },
     revalidate: 5,
   };

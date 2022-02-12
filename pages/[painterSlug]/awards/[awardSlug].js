@@ -21,10 +21,14 @@ const Award = function Award({ award, painter }) {
     return <Loading />;
   }
 
-  if (!award) return null;
+  if ((painter && painter.record === false) || !painter) {
+    return <NotFound message="Could not find artist." />;
+  }
 
-  if (award && award.record === false) {
-    return <NotFound message="Could not find award." />;
+  if ((award && award.record === false) || !award) {
+    return (
+      <NotFound painter={painter} homeLink message="Could not find award." />
+    );
   }
 
   return (
@@ -65,19 +69,17 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug, awardSlug } = content.params;
-  const response = await fetch(apiUrl(`/${painterSlug}/awards/${awardSlug}`));
-  const award = await response.json();
 
-  if (!award) {
-    return {
-      notFound: true,
-    };
-  }
+  const painterRes = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await painterRes.json();
+
+  const awardRes = await fetch(apiUrl(`/${painterSlug}/awards/${awardSlug}`));
+  const award = await awardRes.json();
 
   return {
     props: {
       award,
-      painter: award ? award.painter : null,
+      painter,
     },
     revalidate: 5,
   };
