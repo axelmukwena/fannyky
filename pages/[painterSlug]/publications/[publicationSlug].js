@@ -1,54 +1,87 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Publications/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../../utilities/requests";
 import NotFound from "../../404";
+import Layout from "../../../components/Layout";
+import { apiUrl } from "../../../utilities/helpers";
 
-const Publication = function Publication({ painterSlug, publicationSlug }) {
-  const [current, setCurrent] = useState(true);
-  const [publication, setPublication] = useState(null);
-
+const Publication = function Publication({ publication, painter }) {
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (current) {
-      dispatch(updateActiveMenu("Publications"));
-      getResource(
-        `/${painterSlug}/publications/${publicationSlug}`,
-        setPublication
-      );
-    }
+  const router = useRouter();
 
-    return () => {
-      setCurrent(false);
-    };
+  useEffect(() => {
+    dispatch(updateActiveMenu("Publications"));
   }, []);
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
+  if (!publication) return null;
 
   if (publication && publication.record === false) {
     return <NotFound message="Could not find publication." />;
   }
 
-  if (publication) {
-    return (
-      <>
-        <SEO
-          description={publication.description}
-          title={publication.title}
-          siteTitle={`Publications by ${publication.painter.name}`}
-        />
+  return (
+    <>
+      <SEO
+        description={publication.description}
+        title={publication.title}
+        siteTitle={`Publications by ${publication.painter.name}`}
+      />
+      <Layout painter={painter}>
         <Show publication={publication} />
-      </>
-    );
-  }
-  return <Loading />;
+      </Layout>
+    </>
+  );
 };
 
-export async function getServerSideProps({ params }) {
-  const { painterSlug, publicationSlug } = params;
+export async function getStaticPaths() {
+  const allPublications = [];
+
+  const response = await fetch(apiUrl("/"));
+  const painters = await response.json();
+
+  painters.forEach(async function foo(painter) {
+    const innerResponse = await fetch(apiUrl(`/${painter.slug}/publications`));
+    const publications = await innerResponse.json();
+    allPublications.concat(publications);
+  });
+
+  const paths = allPublications.map((publication) => ({
+    params: {
+      painterSlug: publication.painter.slug,
+      publicationlug: publication.slug,
+    },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps(content) {
+  const { painterSlug, publicationlug } = content.params;
+  const response = await fetch(
+    apiUrl(`/${painterSlug}/publications/${publicationlug}`)
+  );
+  const publication = await response.json();
+
+  if (!publication) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
-    props: { painterSlug, publicationSlug },
+    props: {
+      publication,
+      painter: publication ? publication.painter : null,
+    },
+    revalidate: 5,
   };
 }
 

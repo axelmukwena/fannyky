@@ -10,7 +10,7 @@ function handleMissingRecords(message) {
 // Get data from api using timeout
 export async function fetchWithTimeout(url) {
   const controller = new AbortController();
-  const timeout = 5000;
+  const timeout = 7000;
 
   const id = setTimeout(() => {
     controller.abort();

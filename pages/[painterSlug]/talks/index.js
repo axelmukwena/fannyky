@@ -1,28 +1,31 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import Layout from "../../../components/Layout";
 import Loading from "../../../components/Loading/Loading";
 import Talks from "../../../components/Painter/Talks/Talks";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../../utilities/requests";
+import { apiUrl } from "../../../utilities/helpers";
+import NotFound from "../../404";
 
-const Index = function Index({ painterSlug }) {
-  const painter = useSelector((state) => state.currentPainter.painter);
-
-  const [current, setCurrent] = useState(true);
-  const [talks, setTalks] = useState(null);
-
+const Index = function Index({ talks, painter }) {
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (current) {
-      dispatch(updateActiveMenu("Talks"));
-      getResource(`/${painterSlug}/talks`, setTalks);
-    }
+  const router = useRouter();
 
-    return () => {
-      setCurrent(false);
-    };
+  useEffect(() => {
+    dispatch(updateActiveMenu("Talks"));
   }, []);
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
+  if (!painter) return null;
+
+  if (painter && painter.record === false) {
+    return <NotFound message="Could not find artist." />;
+  }
 
   return (
     <>
@@ -33,16 +36,41 @@ const Index = function Index({ painterSlug }) {
           siteTitle={painter.name}
         />
       )}
-
-      {talks ? <Talks talks={talks} /> : <Loading />}
+      <Layout painter={painter}>
+        {talks ? <Talks talks={talks} /> : <Loading />}
+      </Layout>
     </>
   );
 };
 
-export async function getServerSideProps({ params }) {
-  const { painterSlug } = params;
+export async function getStaticPaths() {
+  const response = await fetch(apiUrl("/"));
+  const painters = await response.json();
+
+  const paths = painters.map((painter) => ({
+    params: { painterSlug: painter.slug },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps(content) {
+  const { painterSlug } = content.params;
+  const response = await fetch(apiUrl(`/${painterSlug}/talks`));
+  const talks = await response.json();
+
+  if (!talks) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
-    props: { painterSlug },
+    props: {
+      talks,
+      painter: talks.length > 0 ? talks[0].painter : null,
+    },
+    revalidate: 5,
   };
 }
 

@@ -104,7 +104,7 @@ const ImageDialog = function ImageDialog({
         BackdropProps={{
           style: {
             opacity: 0.94,
-            backgroundColor: "white",
+            backgroundColor: "#e9e9e9",
           },
         }}
         PaperProps={{

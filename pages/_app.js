@@ -1,28 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
-import { Provider, useDispatch } from "react-redux";
-import { useRouter } from "next/router";
+import { Provider } from "react-redux";
 import theme from "../theme";
 import * as serviceWorker from "../utilities/serviceWorker";
 import reportWebVitals from "../utilities/reportWebVitals";
 import store from "../store/store";
-import { getResource } from "../utilities/requests";
-import {
-  parsePainterMenu,
-  updateMenuSlice,
-} from "../store/menuSlice/updateMenu";
-import { updatePainter } from "../store/painterSlice/currentPainterSlice";
-import {
-  updateActiveMenu,
-  updateSiteName,
-} from "../store/menuSlice/currentMenuSlice";
-import Layout from "../components/Layout";
-import authorizeUser from "../store/currentUser/authorize";
-import { parsePath } from "../utilities/helpers";
-import NotFound from "./404";
-
 import "../styles/globals.css";
 import "../styles/menu.css";
 import "../styles/painter.css";
@@ -44,10 +27,8 @@ const App = function App({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Provider store={store}>
-            <Painter>
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Component {...pageProps} />
-            </Painter>
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+            <Component {...pageProps} />
             <div id="toasts-root" />
           </Provider>
         </ThemeProvider>
@@ -57,7 +38,7 @@ const App = function App({ Component, pageProps }) {
   return null;
 };
 
-const Painter = function Painter({ children }) {
+/* const Painter = function Painter({ children }) {
   const dispatch = useDispatch();
   const [notFound, setNotFound] = useState(false);
 
@@ -89,10 +70,10 @@ const Painter = function Painter({ children }) {
   const paths = ["/", "/404", "/login"];
 
   if (!paths.includes(router.pathname)) {
-    return <Layout>{children}</Layout>;
+    return children;
   }
 
   return children;
-};
+}; */
 
 export default App;

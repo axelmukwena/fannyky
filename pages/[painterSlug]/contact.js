@@ -8,6 +8,7 @@ import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
 import SEO from "../../components/SEO";
 import NotFound from "../404";
 import { apiUrl } from "../../utilities/helpers";
+import Layout from "../../components/Layout";
 
 const Contact = function Contact({ painter }) {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ const Contact = function Contact({ painter }) {
     return <Loading />;
   }
 
+  if (!painter) return null;
+
   if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
   }
@@ -32,28 +35,30 @@ const Contact = function Contact({ painter }) {
         title="Contact"
         siteTitle={painter.name}
       />
-      <div style={{ margin: "20px 15px", width: "100%" }}>
-        <Grid container spacing={2} style={{ width: "70%" }}>
-          <Grid item xs={12}>
-            <Typography
-              style={{
-                fontWeight: 600,
-                fontSize: "1rem",
-                fontFamily: "Roboto",
-              }}
-              className="page-title"
-            >
-              Contact
-            </Typography>
+      <Layout painter={painter}>
+        <div style={{ margin: "20px 15px", width: "100%" }}>
+          <Grid container spacing={2} style={{ width: "70%" }}>
+            <Grid item xs={12}>
+              <Typography
+                style={{
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  fontFamily: "Roboto",
+                }}
+                className="page-title"
+              >
+                Contact
+              </Typography>
+            </Grid>
+
+            <GetFirstHorizontal painter={painter} />
+
+            <GetEmail painter={painter} />
+            <GetPhone painter={painter} />
+            <GetLink painter={painter} />
           </Grid>
-
-          <GetFirstHorizontal painter={painter} />
-
-          <GetEmail painter={painter} />
-          <GetPhone painter={painter} />
-          <GetLink painter={painter} />
-        </Grid>
-      </div>
+        </div>
+      </Layout>
     </>
   );
 };
@@ -126,7 +131,7 @@ export async function getStaticPaths() {
   const painters = await response.json();
 
   const paths = painters.map((painter) => ({
-    params: { contact: `${painter.slug}/contact`, painterSlug: painter.slug },
+    params: { painterSlug: painter.slug },
   }));
 
   return { paths, fallback: "blocking" };
@@ -134,7 +139,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug } = content.params;
-  // fetch list of posts
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
 
@@ -148,7 +152,7 @@ export async function getStaticProps(content) {
     props: {
       painter,
     },
-    revalidate: 10,
+    revalidate: 5,
   };
 }
 

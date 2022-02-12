@@ -7,6 +7,12 @@ npm run dev
 
 ## Resources
 
+### Kill rails server
+
+```
+killall -9 ruby
+```
+
 ### Set up and going
 
 - https://medium.com/@martink_rsa/creating-a-react-app-with-create-react-app-and-material-ui-380985fc2b19

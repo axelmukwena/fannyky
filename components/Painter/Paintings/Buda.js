@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { deleteResource, getResource } from "../../../utilities/requests";
+import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
 import NewDialog from "./NewDialog";
@@ -20,22 +20,43 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Buda = function Buda({ painter }) {
-  const router = useRouter();
+const Buda = function Buda({ paintings, painter }) {
+  const [categories, setCategories] = useState(null);
+  const [width, setWidth] = useState(0);
 
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
 
   function handleResize() {
-    const categories = painter.paintings_categories;
-    if (categories.length > 0 && window.innerWidth > 900) {
-      const first = categories[0];
+    setWidth(window.innerWidth);
+    const cats = painter.paintings_categories;
+    if (cats.length > 0 && window.innerWidth > 900) {
+      const first = cats[0];
       setExpanded(first.replace(/\s/g, ""));
       setShow(first);
     }
   }
 
+  // eslint-disable-next-line no-extend-native
+  Array.prototype.groupBy = function group(functionProp) {
+    // eslint-disable-next-line react/no-this-in-sfc
+    return this.reduce(function reduce(key, value) {
+      (key[functionProp(value)] = key[functionProp(value)] || []).push(value);
+      return key;
+    }, {});
+  };
+
+  function parsePaintings(paindingsData) {
+    const parsed = paindingsData.groupBy(function groupBy(painting) {
+      return painting.category;
+    });
+    setCategories(parsed);
+  }
+
   useEffect(() => {
+    if (paintings) {
+      parsePaintings(paintings);
+    }
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener
@@ -51,6 +72,10 @@ const Buda = function Buda({ painter }) {
   };
 
   if (painter.paintings_categories.length === 0) return null;
+
+  if (!categories) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -84,7 +109,10 @@ const Buda = function Buda({ painter }) {
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
               {show === category && (
-                <CategoryPaintings category={category} router={router} />
+                <CategoryPaintings
+                  paintings={categories[category]}
+                  width={width}
+                />
               )}
             </AccordionDetails>
           </Accordion>
@@ -94,44 +122,12 @@ const Buda = function Buda({ painter }) {
   );
 };
 
-const CategoryPaintings = function CategoryPaintings({ category, router }) {
-  const { painterSlug } = router.query;
+const CategoryPaintings = function CategoryPaintings({ paintings, width }) {
+  const router = useRouter();
 
-  const [paintings, setPaintings] = useState([]);
   const [openImages, setOpenImages] = useState(false);
   const [selected, setSelected] = useState();
   const [current, setCurrent] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [loaded, setLoaded] = useState(false);
-
-  function handleResize() {
-    setWidth(window.innerWidth);
-  }
-
-  function handlePaintings(newPaintings) {
-    if (newPaintings.length >= 0) {
-      setPaintings(newPaintings);
-      setLoaded(true);
-    }
-  }
-
-  // You need to add `/paintings` to path
-  // because `/paintings` is root for a painter
-  // If you see in publications, no need
-  // to add `/publications` to `path`
-  useEffect(() => {
-    getResource(
-      `/${painterSlug}/paintings_category/${category}`,
-      handlePaintings
-    );
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    // remove resize listener
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [painterSlug, category]);
 
   const handleOpenImages = (painting) => {
     if (width > 900) {
@@ -146,10 +142,6 @@ const CategoryPaintings = function CategoryPaintings({ category, router }) {
     setOpenImages(false);
     setCurrent(0);
   };
-
-  if (!loaded) {
-    return <Loading />;
-  }
 
   return (
     <>
@@ -184,7 +176,7 @@ const Paintings = function Paintings({ width, paintings, handleOpenImages }) {
     spacing = 0;
   }
 
-  if (paintings.length > 0) {
+  if (paintings && paintings.length > 0) {
     return (
       <Grid
         direction="row"
@@ -202,10 +194,7 @@ const Paintings = function Paintings({ width, paintings, handleOpenImages }) {
     );
   }
 
-  if (paintings.length === 0) {
-    return <Typography>No paintings in this category</Typography>;
-  }
-  return null;
+  return <Typography>No paintings in this category</Typography>;
 };
 
 const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {

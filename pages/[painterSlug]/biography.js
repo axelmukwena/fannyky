@@ -7,6 +7,7 @@ import Biography from "../../components/Painter/Biography/Biography";
 import NotFound from "../404";
 import { apiUrl } from "../../utilities/helpers";
 import Loading from "../../components/Loading/Loading";
+import Layout from "../../components/Layout";
 
 const Index = function Index({ painter }) {
   const dispatch = useDispatch();
@@ -33,24 +34,21 @@ const Index = function Index({ painter }) {
         title="Biography"
         siteTitle={painter.name}
       />
-      <Biography painter={painter} />
+      <Layout painter={painter}>
+        <Biography painter={painter} />
+      </Layout>
     </>
   );
 };
-
-/* export async function getServerSideProps({ params }) {
-  const { painterSlug } = params;
-  return {
-    props: { painterSlug },
-  };
-} */
 
 export async function getStaticPaths() {
   const response = await fetch(apiUrl("/"));
   const painters = await response.json();
 
   const paths = painters.map((painter) => ({
-    params: { contact: `${painter.slug}/biography`, painterSlug: painter.slug },
+    params: {
+      painterSlug: painter.slug,
+    },
   }));
 
   return { paths, fallback: "blocking" };
@@ -58,7 +56,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(content) {
   const { painterSlug } = content.params;
-  // fetch list of posts
   const response = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await response.json();
 
@@ -72,7 +69,7 @@ export async function getStaticProps(content) {
     props: {
       painter,
     },
-    revalidate: 10,
+    revalidate: 5,
   };
 }
 

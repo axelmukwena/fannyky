@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { deleteResource, getResource } from "../../../utilities/requests";
+import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
 import NewDialog from "./NewDialog";
@@ -12,7 +12,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 
-const Fanny = function Fanny({ painter }) {
+const Fanny = function Fanny({ paintings }) {
   const router = useRouter();
 
   const [groupOne, setGroupOne] = useState([]);
@@ -26,7 +26,7 @@ const Fanny = function Fanny({ painter }) {
   const [width, setWidth] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
-  function setPaintings(paintings) {
+  function setPaintings(paintingsData) {
     setGroupOne([]);
     setGroupTwo([]);
     setGroupThree([]);
@@ -34,7 +34,7 @@ const Fanny = function Fanny({ painter }) {
     setGroupFive([]);
 
     // If fanny wong
-    if (paintings.length > 0) {
+    if (paintingsData.length > 0) {
       const currentYear = new Date().getFullYear();
       const startDate = new Date("2000-01-01");
       const diff = currentYear - 2000;
@@ -46,20 +46,20 @@ const Fanny = function Fanny({ painter }) {
         years.push(yearRoof);
       }
 
-      for (let i = 0; i < paintings.length; i += 1) {
-        if (paintings[i].rankdate) {
-          const paintingYear = paintings[i].rankdate.split("-")[0];
+      for (let i = 0; i < paintingsData.length; i += 1) {
+        if (paintingsData[i].rankdate) {
+          const paintingYear = paintingsData[i].rankdate.split("-")[0];
 
           if (paintingYear <= years[1]) {
-            setGroupFive((old) => [...old, paintings[i]]);
+            setGroupFive((old) => [...old, paintingsData[i]]);
           } else if (paintingYear <= years[2]) {
-            setGroupFour((old) => [...old, paintings[i]]);
+            setGroupFour((old) => [...old, paintingsData[i]]);
           } else if (paintingYear <= years[3]) {
-            setGroupThree((old) => [...old, paintings[i]]);
+            setGroupThree((old) => [...old, paintingsData[i]]);
           } else if (paintingYear <= years[4]) {
-            setGroupTwo((old) => [...old, paintings[i]]);
+            setGroupTwo((old) => [...old, paintingsData[i]]);
           } else if (paintingYear > years[4]) {
-            setGroupOne((old) => [...old, paintings[i]]);
+            setGroupOne((old) => [...old, paintingsData[i]]);
           }
         }
       }
@@ -72,7 +72,9 @@ const Fanny = function Fanny({ painter }) {
   }
 
   useEffect(() => {
-    getResource(`/${painter.slug}/paintings`, setPaintings);
+    if (paintings) {
+      setPaintings(paintings);
+    }
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -80,7 +82,7 @@ const Fanny = function Fanny({ painter }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [painter]);
+  }, [paintings]);
 
   const handleOpenImages = (painting) => {
     if (width > 900) {

@@ -1,46 +1,72 @@
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import SEO from "../../components/SEO";
 import Fanny from "../../components/Painter/Paintings/Fanny";
 import Buda from "../../components/Painter/Paintings/Buda";
 import { updateActiveMenu } from "../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../utilities/requests";
 import NotFound from "../404";
+import Layout from "../../components/Layout";
+import { apiUrl } from "../../utilities/helpers";
+import Loading from "../../components/Loading/Loading";
 
-const Index = function Index({ painterSlug }) {
+const Index = function Index({ paintings, painter }) {
   const dispatch = useDispatch();
-
-  const [painter, setPainter] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(updateActiveMenu("Works"));
-    getResource(`/${painterSlug}`, setPainter);
-  }, [painterSlug]);
+  }, []);
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
+  if (!painter) return null;
 
   if (painter && painter.record === false) {
     return <NotFound message="Could not find artist." />;
   }
 
-  if (painter) {
-    return (
-      <>
-        <SEO
-          description={painter.about}
-          title="Works"
-          siteTitle={painter.name}
-        />
-        {painter.rank === 1 && <Buda painter={painter} />}
-        {painter.rank === 2 && <Fanny painter={painter} />}
-      </>
-    );
-  }
-  return null;
+  return (
+    <>
+      <SEO description={painter.about} title="Works" siteTitle={painter.name} />
+      <Layout painter={painter}>
+        {painter.rank === 1 && <Buda painter={painter} paintings={paintings} />}
+        {painter.rank === 2 && <Fanny paintings={paintings} />}
+      </Layout>
+    </>
+  );
 };
 
-export async function getServerSideProps({ params }) {
-  const { painterSlug } = params;
+export async function getStaticPaths() {
+  const response = await fetch(apiUrl("/"));
+  const painters = await response.json();
+
+  const paths = painters.map((painter) => ({
+    params: { painterSlug: painter.slug },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps(content) {
+  const { painterSlug } = content.params;
+  const response = await fetch(apiUrl(`/${painterSlug}/paintings`));
+  const paintings = await response.json();
+
+  if (!paintings) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
-    props: { painterSlug },
+    props: {
+      paintings,
+      painter: paintings.length > 0 ? paintings[0].painter : null,
+    },
+    revalidate: 5,
   };
 }
 

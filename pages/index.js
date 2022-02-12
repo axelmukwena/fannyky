@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import SEO from "../components/SEO";
 import Home from "../components/Home/Home";
-import { getResource } from "../utilities/requests";
 import NotFound from "./404";
+import { apiUrl } from "../utilities/helpers";
+import Loading from "../components/Loading/Loading";
 
-const Index = function Index() {
-  const [painters, setPainters] = useState(null);
-  const [current, setCurrent] = useState(true);
+const Index = function Index({ painters }) {
+  const router = useRouter();
 
-  useEffect(() => {
-    if (current) {
-      getResource("/", setPainters);
-    }
-    return () => {
-      setCurrent(false);
-    };
-  }, [current]);
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
+  if (!painters) return null;
 
   if (painters && painters.record === false) {
     return (
@@ -38,30 +35,22 @@ const Index = function Index() {
   );
 };
 
-/* export async function getServerSideProps() {
+export async function getStaticProps() {
   const response = await fetch(apiUrl("/"));
   const painters = await response.json();
-  return {
-    props: { painters },
-  };
-} */
 
-/* export async function getStaticPaths() {
-  const paths = { params: { home: "/" } };
+  if (!painters) {
+    return {
+      notFound: true,
+    };
+  }
 
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(content) {
-  const { home } = content.params;
-  // fetch list of posts
-  const response = await fetch(apiUrl(home));
-  const painters = await response.json();
   return {
     props: {
       painters,
     },
+    revalidate: 5,
   };
-} */
+}
 
 export default Index;

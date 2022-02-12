@@ -1,15 +1,18 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Loading from "../../../components/Loading/Loading";
 import Show from "../../../components/Painter/Paintings/Show";
 import SEO from "../../../components/SEO";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
-import { getResource } from "../../../utilities/requests";
+import { apiUrl } from "../../../utilities/helpers";
 import NotFound from "../../404";
+import Layout from "../../../components/Layout";
 
-const Work = function Work({ painterSlug, workSlug }) {
+const Work = function Work({ painting, painter }) {
+  const router = useRouter();
+
   const [width, setWidth] = useState(0);
-  const [painting, setPainting] = useState(null);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -18,7 +21,6 @@ const Work = function Work({ painterSlug, workSlug }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateActiveMenu("Works"));
-    getResource(`/${painterSlug}/paintings/${workSlug}`, setPainting);
 
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -26,31 +28,68 @@ const Work = function Work({ painterSlug, workSlug }) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [painterSlug]);
+  }, []);
+
+  if (router.isFallback) {
+    return <Loading />;
+  }
+
+  if (!painting) return null;
 
   if (painting && painting.record === false) {
-    return <NotFound message="Could not find artwork." />;
+    return <NotFound message="Could not find painting." />;
   }
 
-  if (painting) {
-    return (
-      <>
-        <SEO
-          description={painting.description}
-          title={painting.title}
-          siteTitle={`Works by ${painting.painter.name}`}
-        />
+  return (
+    <>
+      <SEO
+        description={painting.description}
+        title={painting.title}
+        siteTitle={`Works by ${painting.painter.name}`}
+      />
+      <Layout painter={painter}>
         <Show painting={painting} width={width} />
-      </>
-    );
-  }
-  return <Loading />;
+      </Layout>
+    </>
+  );
 };
 
-export async function getServerSideProps({ params }) {
-  const { painterSlug, workSlug } = params;
+export async function getStaticPaths() {
+  const allPaintings = [];
+
+  const response = await fetch(apiUrl("/"));
+  const painters = await response.json();
+
+  painters.forEach(async function foo(painter) {
+    const innerResponse = await fetch(apiUrl(`/${painter.slug}/paintings`));
+    const paintings = await innerResponse.json();
+    allPaintings.concat(paintings);
+  });
+
+  const paths = allPaintings.map((painting) => ({
+    params: { painterSlug: painting.painter.slug, workSlug: painting.slug },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps(content) {
+  const { painterSlug, workSlug } = content.params;
+  const response = await fetch(apiUrl(`/${painterSlug}/paintings/${workSlug}`));
+  const painting = await response.json();
+
+  if (!painting) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
-    props: { painterSlug, workSlug },
+    props: {
+      painting,
+      painter: painting ? painting.painter : null,
+    },
+    revalidate: 5,
   };
 }
 
