@@ -10,7 +10,6 @@ import Layout from "../../../components/Layout";
 import { apiUrl } from "../../../utilities/helpers";
 
 const Publication = function Publication({ publication, painter }) {
-  console.log(publication);
   const dispatch = useDispatch();
   const router = useRouter();
 

@@ -39,6 +39,7 @@ export async function fetchWithTimeout(url) {
     });
 
   clearTimeout(id);
+  console.log("Fetch Response:", response);
   return response;
 }
 
@@ -48,6 +49,7 @@ export async function getResource(path, handleResponse) {
   const url = apiUrl(path);
 
   let response = await fetchWithTimeout(url);
+  console.log("response:", response);
 
   while (response === "timeout") {
     // eslint-disable-next-line no-await-in-loop
@@ -58,6 +60,7 @@ export async function getResource(path, handleResponse) {
   }
 
   handleResponse(response);
+  return response;
 }
 
 // Post data to api
