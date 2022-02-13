@@ -58,6 +58,7 @@ const Home = function Home({ paintersData }) {
       direction="row"
       justifyContent="space-evenly"
       alignItems="center"
+      className="gradient-background"
       style={{ margin: 0, padding: 0, height: "100vh" }}
       container
     >

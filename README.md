@@ -174,3 +174,8 @@ const Editor = dynamic( () => import('react-draft-wysiwyg').then(mod => mod.Edit
 - https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
 - https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false
 - https://www.reddit.com/r/nextjs/comments/j3za9y/what_exactly_does_build_time_mean/
+
+
+### Animated Gradient
+- https://codepen.io/axelmukwena/pen/LYOjRQg
+- https://www.gradient-animator.com/
