@@ -229,9 +229,10 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <Image
                 loader={ImageLoader}
-                placeholder="/static/assets/loading.gif"
                 src={painting.images[0].large}
                 alt={painting.title}
+                placeholder="blur"
+                blurDataURL="/static/assets/loading.gif"
                 width={width - 60}
                 height={width - 60}
                 objectFit="cover"
@@ -244,9 +245,10 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 loader={ImageLoader}
                 quality={40}
                 priority
-                placeholder="/static/assets/loading.gif"
                 src={painting.images[0].small}
                 alt={painting.title}
+                placeholder="blur"
+                blurDataURL="/static/assets/loading.gif"
                 width={120}
                 height={120}
                 objectFit="cover"

@@ -86,9 +86,10 @@ const Show = function Show({ painting, width }) {
                         loader={ImageLoader}
                         quality={40}
                         priority
-                        placeholder="/static/assets/loading.gif"
                         src={painting.images[0].original}
                         alt={painting.title}
+                        placeholder="blur"
+                        blurDataURL="/static/assets/loading.gif"
                         width={260}
                         height={260}
                         objectFit="cover"
