@@ -10,7 +10,6 @@ import NotFound from "../../404";
 import Layout from "../../../components/Layout";
 
 const Work = function Work({ painting, painter }) {
-  console.log("painting", painting);
   const router = useRouter();
 
   const [width, setWidth] = useState(0);
