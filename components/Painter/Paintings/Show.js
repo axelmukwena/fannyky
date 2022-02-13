@@ -71,6 +71,7 @@ const Show = function Show({ painting, width }) {
                         loader={ImageLoader}
                         quality={40}
                         priority
+                        placeholder="/static/assets/loading.gif"
                         src={painting.images[0].medium}
                         alt={painting.title}
                         width={width}
@@ -85,7 +86,8 @@ const Show = function Show({ painting, width }) {
                         loader={ImageLoader}
                         quality={40}
                         priority
-                        src={painting.images[0].medium}
+                        placeholder="/static/assets/loading.gif"
+                        src={painting.images[0].original}
                         alt={painting.title}
                         width={260}
                         height={260}

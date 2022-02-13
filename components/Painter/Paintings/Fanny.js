@@ -217,7 +217,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
           padding: 0,
           position: "relative",
           borderRadius: 0,
-          backgroundColor: width > 900 ? "#e9e9e9 !important" : "none",
+          // backgroundColor: width > 900 ? "#e9e9e9 !important" : "none",
           height,
           width: painting.images.length > 0 ? paintingWidth : "fit-content",
         }}
@@ -228,6 +228,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
+                placeholder="/static/assets/loading.gif"
                 src={painting.images[0].large}
                 alt={painting.title}
                 width={width - 60}
@@ -241,6 +242,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
+                placeholder="/static/assets/loading.gif"
                 src={painting.images[0].small}
                 alt={painting.title}
                 width={120}
