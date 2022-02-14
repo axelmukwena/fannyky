@@ -37,6 +37,8 @@ const Talk = function Talk({ talk, painter }) {
         description={talk.description}
         title={talk.title}
         siteTitle={`Talks by ${talk.painter.name}`}
+        image={String(painter.rank)}
+        url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
         <Show talk={talk} />

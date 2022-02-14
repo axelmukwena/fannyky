@@ -10,6 +10,8 @@ const NotFound = function NotFound({ title, message, homeLink, painter }) {
         description={message || "This page could not be found."}
         title="Buda & Fanny"
         siteTitle={title || "404"}
+        image="https://budafans.com/favicon.ico"
+        url="https://budafans.com/404"
       />
 
       {painter && (

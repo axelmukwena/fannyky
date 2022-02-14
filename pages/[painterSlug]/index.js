@@ -28,7 +28,13 @@ const Index = function Index({ paintings, painter }) {
 
   return (
     <>
-      <SEO description={painter.about} title="Works" siteTitle={painter.name} />
+      <SEO
+        description={painter.about}
+        title="Works"
+        siteTitle={painter.name}
+        image={String(painter.rank)}
+        url={`https://budafans.com${router.asPath}`}
+      />
       <Layout painter={painter}>
         {painter.rank === 1 && <Buda painter={painter} paintings={paintings} />}
         {painter.rank === 2 && <Fanny paintings={paintings} />}

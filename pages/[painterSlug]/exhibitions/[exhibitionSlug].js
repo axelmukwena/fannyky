@@ -41,6 +41,8 @@ const Exhibition = function Exhibition({ exhibition, painter }) {
         description={exhibition.description}
         title={exhibition.title}
         siteTitle={`Exhibitions by ${exhibition.painter.name}`}
+        image={String(painter.rank)}
+        url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
         <Show exhibition={exhibition} />

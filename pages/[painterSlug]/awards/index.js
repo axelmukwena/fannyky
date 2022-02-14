@@ -32,6 +32,8 @@ const Index = function Index({ awards, painter }) {
           description={painter.about}
           title="Awards"
           siteTitle={painter.name}
+          image={String(painter.rank)}
+          url={`https://budafans.com${router.asPath}`}
         />
       )}
       <Layout painter={painter}>

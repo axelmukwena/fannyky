@@ -41,6 +41,8 @@ const Publication = function Publication({ publication, painter }) {
         description={publication.description}
         title={publication.title}
         siteTitle={`Publications by ${publication.painter.name}`}
+        image={publication.images[0]?.small}
+        url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
         <Show publication={publication} />

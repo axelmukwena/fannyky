@@ -50,6 +50,8 @@ const Work = function Work({ painting, painter }) {
         description={painting.description}
         title={painting.title}
         siteTitle={`Works by ${painting.painter.name}`}
+        image={painting.images[0]?.small}
+        url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
         <Show painting={painting} width={width} />

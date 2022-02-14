@@ -37,6 +37,8 @@ const Award = function Award({ award, painter }) {
         description={award.description}
         title={award.title}
         siteTitle={`Awards by ${award.painter.name}`}
+        image={String(painter.rank)}
+        url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
         <Show award={award} />

@@ -32,6 +32,8 @@ const Contact = function Contact({ painter }) {
         description={painter.about}
         title="Contact"
         siteTitle={painter.name}
+        image={String(painter.rank)}
+        url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
         <div style={{ margin: "20px 15px", width: "100%" }}>
