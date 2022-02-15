@@ -13,18 +13,28 @@ const SEO = function SEO({ description, title, siteTitle, image, url }) {
 
   return (
     <Head>
+      {/* HTML Meta Tags */}
       <title>{`${title} | ${siteTitle}`}</title>
       <meta name="description" content={description} />
-      <meta property="og:type" content="website" />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:site_name" content={siteTitle} />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:creator" content="" />
-      <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content={description} />
+
+      {/* Google / Search Engine Tags */}
+      <meta itemProp="name" content={`${title} | ${siteTitle}`} />
+      <meta itemProp="description" content={description} />
+      <meta itemProp="image" content={tempImage} />
+
+      {/* Facebook Meta Tags */}
       <meta property="og:url" content={url} />
-      {tempImage && <meta property="og:image" content={tempImage} />}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={`${title} | ${siteTitle}`} />
+      <meta property="og:site_name" content={siteTitle} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={tempImage} />
+
+      {/* Twitter Meta Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={`${title} | ${siteTitle}`} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={tempImage} />
     </Head>
   );
 };
