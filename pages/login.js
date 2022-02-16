@@ -52,6 +52,7 @@ const Login = function Login() {
   const router = useRouter();
 
   // create state variables for each input
+  const [submitting, setSubmitting] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState({
     password: "",
@@ -67,14 +68,18 @@ const Login = function Login() {
     if (data.success === true) {
       setUserCookie(AUTHORIZE, data.token, 7);
       dispatch(authorize(data));
+      setSubmitting(false);
       router.replace("/");
       return;
     }
+
     dispatch(authorize(null));
+    setSubmitting(false);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitting(true);
 
     const params = {
       user: {
@@ -188,6 +193,7 @@ const Login = function Login() {
               className={classes.button}
               type="button"
               variant="contained"
+              disabled={submitting}
               color="primary"
               onClick={handleSubmit}
             >
