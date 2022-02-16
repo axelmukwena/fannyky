@@ -194,12 +194,6 @@ const Login = function Login() {
               Login
             </Button>
           </Grid>
-
-          <Grid item xs={12}>
-            <a href="/" className={classes.forgotPassword}>
-              Forgot password?
-            </a>
-          </Grid>
         </Grid>
       </Grid>
     </Grid>
