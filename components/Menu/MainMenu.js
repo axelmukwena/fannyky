@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Link, Typography } from "@mui/material";
+import { Link as MuiLink, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import logoutUser from "../../store/currentUser/logout";
 
 const MainMenu = function MainMenu({ handleClose }) {
@@ -83,7 +84,7 @@ const IsLoggedIn = function IsLoggedIn() {
   if (currentUser) {
     return (
       <div className="menu-item">
-        <Link
+        <MuiLink
           href="/logout"
           onClick={handleLogout}
           style={{ textDecoration: "none" }}
@@ -93,7 +94,7 @@ const IsLoggedIn = function IsLoggedIn() {
               Logout
             </span>
           </Typography>
-        </Link>
+        </MuiLink>
       </div>
     );
   }
