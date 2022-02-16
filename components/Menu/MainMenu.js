@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/router";
 import logoutUser from "../../store/currentUser/logout";
