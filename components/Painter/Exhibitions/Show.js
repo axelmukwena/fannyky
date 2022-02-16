@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import { DeleteOutline, Link } from "@mui/icons-material";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
@@ -11,6 +10,7 @@ import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import { capitalize } from "../../../utilities/helpers";
 import Toast from "../../../utilities/toast";
+import useUser from "../../../api/useUser";
 
 const Show = function Show({ exhibition }) {
   const convertContentToHTML = (content) => {
@@ -186,8 +186,8 @@ const EndDate = function EndDate({ exhibition }) {
 };
 
 const DeleteImage = function DeleteImage({ exhibition, index }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = exhibition;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -201,7 +201,7 @@ const DeleteImage = function DeleteImage({ exhibition, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -223,8 +223,9 @@ const DeleteImage = function DeleteImage({ exhibition, index }) {
 };
 
 const IsLoggedIn = function IsLoggedIn({ exhibition }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = exhibition;
+
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -245,7 +246,7 @@ const IsLoggedIn = function IsLoggedIn({ exhibition }) {
     deleteResource(`${path}`, handleDeleleResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <div>
         <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>

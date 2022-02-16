@@ -37,7 +37,9 @@ const Index = function Index({ paintings, painter }) {
       />
       <Layout painter={painter}>
         {painter.rank === 1 && <Buda painter={painter} paintings={paintings} />}
-        {painter.rank === 2 && <Fanny paintings={paintings} />}
+        {painter.rank === 2 && (
+          <Fanny painter={painter} paintings={paintings} />
+        )}
       </Layout>
     </>
   );

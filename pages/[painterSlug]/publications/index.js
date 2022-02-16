@@ -38,7 +38,7 @@ const Index = function Index({ publications, painter }) {
       )}
       <Layout painter={painter}>
         {publications ? (
-          <Publications publications={publications} />
+          <Publications publications={publications} painter={painter} />
         ) : (
           <Loading />
         )}

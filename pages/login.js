@@ -12,12 +12,10 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import loginUser from "../store/currentUser/login";
 import { AUTHORIZE } from "../utilities/constants";
 import { setUserCookie } from "../utilities/cookies";
-import { authorize } from "../store/currentUser/currentUserSlice";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -47,8 +45,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = function Login() {
   const classes = useStyles();
-
-  const dispatch = useDispatch();
   const router = useRouter();
 
   // create state variables for each input
@@ -67,13 +63,11 @@ const Login = function Login() {
   function handleResponse(data) {
     if (data.success === true) {
       setUserCookie(AUTHORIZE, data.token, 7);
-      dispatch(authorize(data));
       setSubmitting(false);
       router.replace("/");
       return;
     }
 
-    dispatch(authorize(null));
     setSubmitting(false);
   }
 

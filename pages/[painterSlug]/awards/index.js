@@ -37,7 +37,11 @@ const Index = function Index({ awards, painter }) {
         />
       )}
       <Layout painter={painter}>
-        {awards ? <Awards awards={awards} router={router} /> : <Loading />}
+        {awards ? (
+          <Awards awards={awards} painter={painter} router={router} />
+        ) : (
+          <Loading />
+        )}
       </Layout>
     </>
   );

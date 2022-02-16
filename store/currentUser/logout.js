@@ -1,11 +1,16 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import { AUTHORIZE } from "../../utilities/constants";
 import { getUserCookie } from "../../utilities/cookies";
-import { apiUrl } from "../../utilities/helpers";
-import { authorize } from "./currentUserSlice";
 
-function handleResponse(dispatch, data) {
+async function logoutUser() {
+  const token = getUserCookie(AUTHORIZE);
+
+  if (token) {
+    Cookies.remove(AUTHORIZE);
+  }
+}
+
+/* function handleResponse(dispatch, data) {
   if (data.success === true) {
     Cookies.remove(AUTHORIZE);
     dispatch(authorize(null));
@@ -40,6 +45,6 @@ async function logoutUser(dispatch) {
         return false;
       });
   }
-}
+} */
 
 export default logoutUser;

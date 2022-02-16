@@ -3,13 +3,13 @@ import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import useUser from "../../../api/useUser";
 import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import NextLink from "../../NextLink";
 import NewDialog from "./NewDialog";
 
-const Publications = function Publications({ publications }) {
+const Publications = function Publications({ publications, painter }) {
   const [width, setWidth] = useState(0);
 
   function handleResize() {
@@ -38,7 +38,7 @@ const Publications = function Publications({ publications }) {
         Publications
       </Typography>
 
-      <IsLoggedIn />
+      <IsLoggedIn painter={painter} />
       <div className="row" style={{ marginTop: 15 }}>
         <GetPublications publications={publications} width={width} />
       </div>
@@ -236,8 +236,8 @@ const CardImage = function CardImage({ publication, width }) {
 };
 
 const DeletePublication = function DeletePublication({ publication }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = publication;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -249,7 +249,7 @@ const DeletePublication = function DeletePublication({ publication }) {
     deleteResource(`${path}`, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <Grid item>
         <Button
@@ -265,9 +265,9 @@ const DeletePublication = function DeletePublication({ publication }) {
   return null;
 };
 
-const IsLoggedIn = function IsLoggedIn() {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+const IsLoggedIn = function IsLoggedIn({ painter }) {
+  const { user } = useUser();
+
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -278,7 +278,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <div className="row" style={{ marginTop: 25 }}>
         <Button

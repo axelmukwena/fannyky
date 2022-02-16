@@ -1,13 +1,13 @@
 import { Button, Card, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import useUser from "../../../api/useUser";
 import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import NextLink from "../../NextLink";
 import CustomHorizontal from "../CustomHorizontal";
 import NewDialog from "./NewDialog";
 
-const Awards = function Awards({ awards, router }) {
+const Awards = function Awards({ awards, router, painter }) {
   const handleClick = (award) => {
     router.push(`/${award.painter.slug}/awards/${award.slug}`);
   };
@@ -26,7 +26,7 @@ const Awards = function Awards({ awards, router }) {
         Awards
       </Typography>
       <CustomHorizontal />
-      <IsLoggedIn />
+      <IsLoggedIn painter={painter} />
       <Grid
         container
         direction="row"
@@ -90,8 +90,8 @@ const GetAwards = function GetAwards({ awards, handleClick }) {
 };
 
 const DeleteAward = function DeleteAward({ award }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = award;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -99,11 +99,10 @@ const DeleteAward = function DeleteAward({ award }) {
 
   const handleDeleteAward = () => {
     const path = `/${painter.id}/awards/${award.id}`;
-
     deleteResource(`${path}`, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <Button
         variant="contained"
@@ -117,9 +116,8 @@ const DeleteAward = function DeleteAward({ award }) {
   return null;
 };
 
-const IsLoggedIn = function IsLoggedIn() {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+const IsLoggedIn = function IsLoggedIn({ painter }) {
+  const { user } = useUser();
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -130,7 +128,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <div className="row" style={{ marginTop: 25 }}>
         <Button

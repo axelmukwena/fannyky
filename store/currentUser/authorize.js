@@ -2,15 +2,12 @@ import axios from "axios";
 import { AUTHORIZE } from "../../utilities/constants";
 import { getUserCookie, setUserCookie } from "../../utilities/cookies";
 import { apiUrl } from "../../utilities/helpers";
-import { authorize } from "./currentUserSlice";
 
 function handleResponse(dispatch, data) {
   if (data.success === true) {
     setUserCookie(AUTHORIZE, data.token, 7);
-    dispatch(authorize(data));
     return true;
   }
-  dispatch(authorize(null));
   return false;
 }
 

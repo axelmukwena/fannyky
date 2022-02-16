@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
 import ImagesDialog from "../ImagesDialog";
 import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
+import useUser from "../../../api/useUser";
 
 const Show = function Show({ award }) {
   if (award) {
@@ -108,8 +108,8 @@ const GetImages = function GetImages({ award }) {
 };
 
 const DeleteImage = function DeleteImage({ award, index }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = award;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -123,7 +123,7 @@ const DeleteImage = function DeleteImage({ award, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -145,8 +145,9 @@ const DeleteImage = function DeleteImage({ award, index }) {
 };
 
 const IsLoggedIn = function IsLoggedIn({ award }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = award;
+
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -167,7 +168,7 @@ const IsLoggedIn = function IsLoggedIn({ award }) {
     deleteResource(`${path}`, handleDeleleResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <div>
         <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>

@@ -1,57 +1,60 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Link as MuiLink, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import logoutUser from "../../store/currentUser/logout";
+import useUser from "../../api/useUser";
+import { parsePainterMenu } from "../../utilities/helpers";
 
-const MainMenu = function MainMenu({ handleClose }) {
-  const currentMenu = useSelector((state) => state.currentMenu.menu);
+const MainMenu = function MainMenu({ painter, handleClose }) {
+  const menuItems = parsePainterMenu(painter);
   const activeMenu = useSelector((state) => state.currentMenu.activeMenu);
-  const router = useRouter();
 
   const currentYear = new Date().getFullYear();
 
-  const handleClick = (e, url) => {
-    e.preventDefault();
+  const handleClick = (url) => {
+    // e.preventDefault();
     const items = document.getElementsByClassName("menu-item");
     for (let i = 0; i < items.length; i += 1) {
       items[i].className = "menu-item";
     }
+
     const current = document.getElementById(url);
     current.className = "menu-item active";
 
     handleClose();
-    router.replace(url);
+    // router.replace(url);
   };
 
-  if (currentMenu) {
+  if (menuItems) {
     return (
       <>
-        <Link href="/">
+        <Link href="/" as="/">
           <a style={{ textDecoration: "none" }}>
             <Typography sx={{ padding: "5px 0" }}>
               <span className="menu-item">Home</span>
             </Typography>
           </a>
         </Link>
-        {currentMenu.map((item) => (
+        {menuItems.map((menu) => (
           <Link
-            key={item.id}
-            onClick={(event) => handleClick(event, item.slug)}
-            href={item.slug}
+            key={menu.id}
+            onClick={(event) => handleClick(event, menu.id)}
+            href={`/[painterSlug]${menu.extension}`}
+            as={`${menu.painterSlug}${menu.extension}`}
             style={{ textDecoration: "none" }}
           >
             <a style={{ textDecoration: "none" }}>
               <Typography sx={{ padding: "5px 0" }}>
                 <span
-                  id={item.slug}
+                  id={menu.id}
                   className={
-                    activeMenu === item.name ? "menu-item-active" : "menu-item"
+                    activeMenu === menu.name ? "menu-item-active" : "menu-item"
                   }
                 >
-                  {item.name}
+                  {menu.name}
                 </span>
               </Typography>
             </a>
@@ -69,19 +72,17 @@ const MainMenu = function MainMenu({ handleClose }) {
 };
 
 const IsLoggedIn = function IsLoggedIn() {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const dispatch = useDispatch();
+  const { user } = useUser();
+
   const router = useRouter();
 
   const handleLogout = (e) => {
     e.preventDefault();
-    const success = logoutUser(dispatch);
-    if (success) {
-      router.replace(router.pathname);
-    }
+    logoutUser();
+    router.replace(router.pathname);
   };
 
-  if (currentUser) {
+  if (user) {
     return (
       <div className="menu-item">
         <MuiLink
@@ -98,7 +99,7 @@ const IsLoggedIn = function IsLoggedIn() {
       </div>
     );
   }
-  return "";
+  return null;
 };
 
 export default MainMenu;

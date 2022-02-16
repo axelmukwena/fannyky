@@ -1,13 +1,10 @@
-import { Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import NextLink from "../NextLink";
 import MainMenu from "./MainMenu";
 
-const DesktopMenu = function DesktopMenu() {
+const DesktopMenu = function DesktopMenu({ painter }) {
   const [width, setWidth] = useState(0);
-  const [logoName, logoUrl] = useSelector(
-    (state) => state.currentMenu.siteName
-  );
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -32,24 +29,32 @@ const DesktopMenu = function DesktopMenu() {
     }
   };
 
+  if (!painter) return null;
+
   if (width > 900) {
     return (
       <Paper id="sidemenu" elevation={0} className="sidemenu">
         <div className="logo">
-          <a href={logoUrl} onClick={handleClick} className="">
-            <Typography
-              style={{
-                fontWeight: 900,
-                fontSize: "1.4rem",
-                fontFamily: "Roboto",
-                flex: 1,
-              }}
+          <Box onClick={handleClick} sx={{ cursor: "pointer" }}>
+            <NextLink
+              href="/[painterSlug]"
+              as={`/${painter.slug}`}
+              style={{ textDecoration: "none" }}
             >
-              {logoName}
-            </Typography>
-          </a>
+              <Typography
+                style={{
+                  fontWeight: 900,
+                  fontSize: "1.4rem",
+                  fontFamily: "Roboto",
+                  flex: 1,
+                }}
+              >
+                {painter.name}
+              </Typography>
+            </NextLink>
+          </Box>
         </div>
-        <MainMenu handleClose={handleClose} />
+        <MainMenu painter={painter} handleClose={handleClose} />
       </Paper>
     );
   }

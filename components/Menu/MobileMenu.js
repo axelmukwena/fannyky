@@ -8,14 +8,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import SideMenu from "./MainMenu";
+import MainMenu from "./MainMenu";
+import NextLink from "../NextLink";
 
-const MobileMenu = function MobileMenu() {
-  const [logoName, logoUrl] = useSelector(
-    (state) => state.currentMenu.siteName
-  );
-
+const MobileMenu = function MobileMenu({ painter }) {
   const handleOpen = () => {
     document.getElementById("popup-nav").style.display = "block";
     document.getElementById("popup-nav").style.minWidth = "200px";
@@ -37,6 +33,8 @@ const MobileMenu = function MobileMenu() {
     }
   };
 
+  if (!painter) return null;
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -47,17 +45,23 @@ const MobileMenu = function MobileMenu() {
         >
           <Toolbar className="toolbar">
             <div className="logo" style={{ flexGrow: 1, marginBottom: 0 }}>
-              <a href={logoUrl} onClick={handleClick} className="">
-                <Typography
-                  style={{
-                    fontWeight: 900,
-                    fontSize: "1.4rem",
-                    fontFamily: "Roboto",
-                  }}
+              <Box onClick={handleClick} sx={{ cursor: "pointer" }}>
+                <NextLink
+                  href="/[painterSlug]"
+                  as={`/${painter.slug}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  {logoName}
-                </Typography>
-              </a>
+                  <Typography
+                    style={{
+                      fontWeight: 900,
+                      fontSize: "1.4rem",
+                      fontFamily: "Roboto",
+                    }}
+                  >
+                    {painter.name}
+                  </Typography>
+                </NextLink>
+              </Box>
             </div>
             <IconButton
               edge="end"
@@ -82,7 +86,7 @@ const MobileMenu = function MobileMenu() {
         aria-label="Mobile Menu"
       />
       <Paper id="popup-nav" elevation={0} className="popup-nav">
-        <SideMenu handleClose={handleClose} />
+        <MainMenu painter={painter} handleClose={handleClose} />
       </Paper>
     </>
   );

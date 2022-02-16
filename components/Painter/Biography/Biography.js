@@ -9,7 +9,6 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
 import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
@@ -19,6 +18,7 @@ import Toast from "../../../utilities/toast";
 import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import EditDialog from "./EditDialog";
+import useUser from "../../../api/useUser";
 
 const Biography = function Biography({ painter }) {
   const convertContentToHTML = (content) => {
@@ -56,7 +56,7 @@ const Biography = function Biography({ painter }) {
 
     return (
       <Grid container spacing={2} sx={{ marginTop: "0px" }}>
-        <IsLoggedIn />
+        <IsLoggedIn painter={painter} />
 
         <Grid
           container
@@ -155,7 +155,7 @@ const GetImage = function GetImage({ painter }) {
 };
 
 const DeleteImage = function DeleteImage({ painter, index }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
+  const { user } = useUser();
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -169,7 +169,7 @@ const DeleteImage = function DeleteImage({ painter, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -190,9 +190,8 @@ const DeleteImage = function DeleteImage({ painter, index }) {
   return null;
 };
 
-const IsLoggedIn = function IsLoggedIn() {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+const IsLoggedIn = function IsLoggedIn({ painter }) {
+  const { user } = useUser();
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -203,7 +202,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <>
         <Grid item xs={12}>

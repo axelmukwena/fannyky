@@ -9,7 +9,6 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { deleteResource } from "../../../utilities/requests";
@@ -19,6 +18,7 @@ import NewDialog from "./NewDialog";
 import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
+import useUser from "../../../api/useUser";
 
 const Buda = function Buda({ paintings, painter }) {
   const [categories, setCategories] = useState(null);
@@ -79,7 +79,7 @@ const Buda = function Buda({ paintings, painter }) {
 
   return (
     <>
-      <IsLoggedIn />
+      <IsLoggedIn painter={painter} />
       {painter.paintings_categories.map((category) => {
         return (
           <Accordion
@@ -334,8 +334,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
 };
 
 const DeletePainting = function DeletePainting({ painting }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = painting;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -347,7 +347,7 @@ const DeletePainting = function DeletePainting({ painting }) {
     deleteResource(`${path}`, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeletePainting()}
@@ -368,9 +368,8 @@ const DeletePainting = function DeletePainting({ painting }) {
   return null;
 };
 
-const IsLoggedIn = function IsLoggedIn() {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+const IsLoggedIn = function IsLoggedIn({ painter }) {
+  const { user } = useUser();
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -381,7 +380,7 @@ const IsLoggedIn = function IsLoggedIn() {
     setOpenNew(false);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
         <Grid item xs={12} sm={6}>

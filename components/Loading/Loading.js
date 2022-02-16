@@ -1,20 +1,22 @@
-import { Box, CircularProgress, Grid } from "@mui/material";
+// material-ui
+import LinearProgress from "@mui/material/LinearProgress";
+import { styled } from "@mui/material/styles";
 
+// styles
+const LoaderWrapper = styled("div")({
+  position: "fixed",
+  top: 0,
+  left: 0,
+  zIndex: 1301,
+  width: "100%",
+});
+
+// ==============================|| LOADER ||============================== //
 const Loading = function Loading() {
   return (
-    <Grid
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      style={{ margin: 0, padding: 0, height: "100vh" }}
-      container
-    >
-      <Grid item>
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
-      </Grid>
-    </Grid>
+    <LoaderWrapper>
+      <LinearProgress color="primary" />
+    </LoaderWrapper>
   );
 };
 

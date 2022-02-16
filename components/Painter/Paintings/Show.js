@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Typography, Button, Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import { DeleteOutline } from "@mui/icons-material";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
@@ -12,6 +11,7 @@ import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
 import ImageLoader from "../../ImageLoader";
+import useUser from "../../../api/useUser";
 
 const Show = function Show({ painting, width }) {
   const [open, setOpen] = useState(false);
@@ -198,8 +198,8 @@ const GetDescription = function GetDescription({ painting }) {
 };
 
 const DeleteImage = function DeleteImage({ painting, index }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = painting;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -213,7 +213,7 @@ const DeleteImage = function DeleteImage({ painting, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -235,8 +235,9 @@ const DeleteImage = function DeleteImage({ painting, index }) {
 };
 
 const IsLoggedIn = function IsLoggedIn({ painting }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = painting;
+
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -257,7 +258,7 @@ const IsLoggedIn = function IsLoggedIn({ painting }) {
     deleteResource(`${path}`, handleDeleleResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
         <Grid item xs={12} sm={6}>

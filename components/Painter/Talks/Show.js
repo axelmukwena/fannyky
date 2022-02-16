@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { CardMedia, Typography, Button, Card, Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import { DeleteOutline, Link } from "@mui/icons-material";
 import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
@@ -10,6 +9,7 @@ import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
+import useUser from "../../../api/useUser";
 
 const Show = function Show({ talk }) {
   const convertContentToHTML = (content) => {
@@ -167,8 +167,8 @@ const FormatLink = function FormatLink({ talk }) {
 };
 
 const DeleteImage = function DeleteImage({ talk, index }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = talk;
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
@@ -182,7 +182,7 @@ const DeleteImage = function DeleteImage({ talk, index }) {
     postResource(path, params, handleImagesResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <DeleteOutline
         onClick={() => handleDeleteImage()}
@@ -204,8 +204,9 @@ const DeleteImage = function DeleteImage({ talk, index }) {
 };
 
 const IsLoggedIn = function IsLoggedIn({ talk }) {
-  const currentUser = useSelector((state) => state.currentUser.user);
-  const painter = useSelector((state) => state.currentPainter.painter);
+  const { user } = useUser();
+  const { painter } = talk;
+
   const [openNew, setOpenNew] = useState(false);
 
   const handleOpenNew = () => {
@@ -226,7 +227,7 @@ const IsLoggedIn = function IsLoggedIn({ talk }) {
     deleteResource(`${path}`, handleDeleleResponse);
   };
 
-  if (currentUser && painter) {
+  if (user && painter) {
     return (
       <div>
         <div className="row" style={{ marginTop: 25, marginLeft: 25 }}>

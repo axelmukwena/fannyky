@@ -64,7 +64,12 @@ const Index = function Index({ exhibitions, painter }) {
       )}
       <Layout painter={painter}>
         {loaded ? (
-          <Exhibitions solo={solo} group={group} others={others} />
+          <Exhibitions
+            solo={solo}
+            group={group}
+            others={others}
+            painter={painter}
+          />
         ) : (
           <Loading />
         )}
