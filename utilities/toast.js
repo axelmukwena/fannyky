@@ -24,8 +24,8 @@ const Toast = function Toast(options) {
 };
 
 const ToastContent = function ToastContent({ handleClose, type, message }) {
-  const handleMouseDown = (event) => {
-    event.preventDefault();
+  const handleMouseDown = (e) => {
+    e.preventDefault();
   };
 
   return (

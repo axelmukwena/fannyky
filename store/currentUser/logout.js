@@ -31,7 +31,8 @@ async function logoutUser(dispatch) {
     axios
       .delete(url, headers)
       .then(function foo(response) {
-        return handleResponse(dispatch, response.data);
+        handleResponse(dispatch, response.data);
+        return true;
       })
       .catch(function foo(error) {
         console.log("Logout Error");

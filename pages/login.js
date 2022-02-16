@@ -91,8 +91,8 @@ const Login = function Login() {
     loginUser(params, handleResponse);
   };
 
-  const handleChange = (prop) => (event) => {
-    setPassword({ ...password, [prop]: event.target.value });
+  const handleChange = (prop) => (e) => {
+    setPassword({ ...password, [prop]: e.target.value });
   };
 
   const handleClickShowPassword = () => {
@@ -102,8 +102,8 @@ const Login = function Login() {
     });
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
   };
 
   return (

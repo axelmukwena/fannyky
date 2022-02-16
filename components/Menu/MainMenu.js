@@ -73,8 +73,8 @@ const IsLoggedIn = function IsLoggedIn() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleLogout = (event) => {
-    event.preventDefault();
+  const handleLogout = (e) => {
+    e.preventDefault();
     const success = logoutUser(dispatch);
     if (success) {
       router.replace(router.pathname);
@@ -89,13 +89,11 @@ const IsLoggedIn = function IsLoggedIn() {
           onClick={handleLogout}
           style={{ textDecoration: "none" }}
         >
-          <a style={{ textDecoration: "none" }}>
-            <Typography sx={{ padding: "5px 0" }}>
-              <span id="logout" className="menu-item">
-                Logout
-              </span>
-            </Typography>
-          </a>
+          <Typography sx={{ padding: "5px 0" }}>
+            <span id="logout" className="menu-item">
+              Logout
+            </span>
+          </Typography>
         </Link>
       </div>
     );
