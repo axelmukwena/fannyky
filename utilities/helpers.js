@@ -54,50 +54,26 @@ export function parsePath(path) {
 
 // Compose menu data for a painter's page
 export function parsePainterMenu(painter) {
-  const menu = [];
+  let menu = [];
 
   if (!painter) return [];
 
-  Object.entries(painter).forEach((item) => {
-    const [key, value] = item;
-    const splitKey = key.split("_");
-    if (splitKey.length === 2 && splitKey[1] === "count") {
-      if (splitKey[0] !== "images") {
-        if (value > 0) {
-          let menuObject = {};
-          if (splitKey[0] === "paintings") {
-            menuObject = {
-              id: splitKey[0],
-              name: "Works",
-              painterSlug: `/${painter.slug}`,
-              extension: "",
-            };
-          } else {
-            menuObject = {
-              id: splitKey[0],
-              name: capitalize(splitKey[0]),
-              painterSlug: `/${painter.slug}`,
-              extension: `/${splitKey[0]}`,
-            };
-          }
-          menu.push(menuObject);
-        }
-      }
+  menu = painter.menuitems.map((item) => {
+    if (item === "Works") {
+      return {
+        id: item.toLowerCase(),
+        name: "Works",
+        painterSlug: `/${painter.slug}`,
+        extension: "",
+      };
     }
+    return {
+      id: item.toLowerCase(),
+      name: capitalize(item),
+      painterSlug: `/${painter.slug}`,
+      extension: `/${item.toLowerCase()}`,
+    };
   });
 
-  menu.push({
-    id: "biography",
-    name: "Biography",
-    painterSlug: `/${painter.slug}`,
-    extension: "/biography",
-  });
-
-  menu.push({
-    id: "contact",
-    name: "Contact",
-    painterSlug: `/${painter.slug}`,
-    extension: "/contact",
-  });
   return menu;
 }

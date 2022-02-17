@@ -21,6 +21,7 @@ import { parseImages, parseGeneralParams } from "../../../utilities/helpers";
 import { postResource, putResource } from "../../../utilities/requests";
 import UploadImages from "../UploadImages";
 import Toast from "../../../utilities/toast";
+import CustomHorizontal from "../CustomHorizontal";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -38,6 +39,8 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const [images, setImages] = useState([]);
   const [paintingsCategories, setPaintingsCategories] = useState([]);
   const [category, setCategory] = useState("");
+  const [menuitems, setMenuitems] = useState([]);
+  const [menuitem, setMenuitem] = useState("");
   const required = false;
 
   useEffect(() => {
@@ -66,11 +69,13 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     setEmail(painterObject.email);
     setPhone(painterObject.phone);
     setLink(painterObject.link);
+    setMenuitems(painterObject.menuitems);
     setPaintingsCategories(painterObject.paintings_categories);
   }, [painter]);
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
+    handleClose();
   };
 
   const handlePainterResponse = (data) => {
@@ -82,7 +87,10 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
       const path = `/${painter.id}/images`;
 
       postResource(path, params, handleImagesResponse);
+      return;
     }
+
+    handleClose();
   };
 
   const handleSubmit = (e) => {
@@ -99,6 +107,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
       email,
       phone,
       link,
+      menuitems,
       paintings_categories: paintingsCategories,
     };
 
@@ -116,6 +125,17 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
 
     setPaintingsCategories((oldArray) => [...oldArray, currentCategory]);
     setCategory("");
+  };
+
+  const handleAddMenuitem = () => {
+    const currentMenuitem = menuitem.trim();
+    if (!currentMenuitem) return;
+
+    const included = menuitems.includes(currentMenuitem);
+    if (included) return;
+
+    setMenuitems((oldArray) => [...oldArray, currentMenuitem]);
+    setMenuitem("");
   };
 
   return (
@@ -234,10 +254,13 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
 
             {painter.rank === 1 && (
               <>
+                <Grid item xs={12}>
+                  <CustomHorizontal />
+                </Grid>
                 <Grid item xs={8}>
                   <TextField
                     fullWidth
-                    label="Artworks Category"
+                    label="Artwork Category"
                     variant="outlined"
                     name="category"
                     value={category}
@@ -256,12 +279,48 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
                   </Button>
                 </Grid>
 
-                <Categories
-                  paintingsCategories={paintingsCategories}
-                  setPaintingsCategories={setPaintingsCategories}
+                <PainterItems
+                  painterItems={paintingsCategories}
+                  setPainterItems={setPaintingsCategories}
                 />
               </>
             )}
+
+            <>
+              <Grid item xs={12}>
+                <CustomHorizontal />
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  fullWidth
+                  label="Menu Item"
+                  variant="outlined"
+                  name="menuitem"
+                  value={menuitem}
+                  onChange={(e) => setMenuitem(e.target.value)}
+                />
+              </Grid>
+
+              <Grid item xs={4}>
+                <Button
+                  style={{ height: 55, width: "100%" }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleAddMenuitem()}
+                >
+                  Add Menu
+                </Button>
+              </Grid>
+
+              <PainterItems
+                painterItems={menuitems}
+                setPainterItems={setMenuitems}
+              />
+
+              <Grid item xs={12}>
+                <CustomHorizontal />
+              </Grid>
+            </>
 
             <Grid item xs={12}>
               <Typography style={{ margin: 9, color: "#626262" }}>
@@ -319,17 +378,12 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   );
 };
 
-const Categories = function Categories({
-  paintingsCategories,
-  setPaintingsCategories,
-}) {
-  const handleDelete = (currentCategory) => () => {
-    setPaintingsCategories((categories) =>
-      categories.filter((category) => category !== currentCategory)
-    );
+const PainterItems = function PainterItems({ painterItems, setPainterItems }) {
+  const handleDelete = (currentItem) => () => {
+    setPainterItems((items) => items.filter((item) => item !== currentItem));
   };
 
-  if (paintingsCategories.length > 0) {
+  if (painterItems.length > 0) {
     return (
       <Grid item xs={12}>
         <Paper
@@ -344,17 +398,13 @@ const Categories = function Categories({
           }}
           component="ul"
         >
-          {paintingsCategories.map((category) => {
+          {painterItems.map((item) => {
             return (
               <ListItem
-                key={category}
+                key={item}
                 sx={{ width: "fit-content", paddingLeft: "0" }}
               >
-                <Chip
-                  icon={null}
-                  label={category}
-                  onDelete={handleDelete(category)}
-                />
+                <Chip icon={null} label={item} onDelete={handleDelete(item)} />
               </ListItem>
             );
           })}

@@ -81,6 +81,7 @@ const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
+    handleClose();
   };
 
   const handleTalkResponse = (data) => {
@@ -92,7 +93,9 @@ const NewDialog = function NewDialog({ talk, painter, open, handleClose }) {
       const path = `/${painter.id}/talks/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
+      return;
     }
+    handleClose();
   };
 
   const handleSubmit = (e) => {

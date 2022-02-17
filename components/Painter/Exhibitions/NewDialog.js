@@ -95,6 +95,7 @@ const NewDialog = function NewDialog({
 
   const handleImagesResponse = (data) => {
     Toast({ message: data.message, type: "success" });
+    handleClose();
   };
 
   const handleExhibitionResponse = (data) => {
@@ -106,7 +107,9 @@ const NewDialog = function NewDialog({
       const path = `/${painter.id}/exhibitions/${id}/images`;
 
       postResource(path, params, handleImagesResponse);
+      return;
     }
+    handleClose();
   };
 
   const handleSubmit = (e) => {

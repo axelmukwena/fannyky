@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Box,
   Button,
   Card,
   CardMedia,
@@ -19,6 +20,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import EditDialog from "./EditDialog";
 import useUser from "../../../api/useUser";
+import CustomHorizontal from "../CustomHorizontal";
 
 const Biography = function Biography({ painter }) {
   const convertContentToHTML = (content) => {
@@ -101,6 +103,46 @@ const Biography = function Biography({ painter }) {
             )}
 
             <Typography className="justify" dangerouslySetInnerHTML={about} />
+
+            {painter.paintings_categories.length > 0 && (
+              <Box sx={{ padding: "20px 0 10px 0" }}>
+                <Grid item xs={12}>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: "1rem",
+                      fontFamily: "Roboto",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    Artwork Categories
+                  </Typography>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      flexWrap: "wrap",
+                      listStyle: "none",
+                      padding: "4px 0",
+                      m: 0,
+                    }}
+                    component="ul"
+                  >
+                    {painter.paintings_categories.map((category) => {
+                      return (
+                        <ListItem
+                          key={category}
+                          sx={{ width: "fit-content", paddingLeft: "0" }}
+                        >
+                          <Chip icon={null} label={category} />
+                        </ListItem>
+                      );
+                    })}
+                  </Paper>
+                </Grid>
+              </Box>
+            )}
 
             <NextLink
               href="/[painterSlug]/contact"
@@ -220,35 +262,48 @@ const IsLoggedIn = function IsLoggedIn({ painter }) {
             handleClose={handleCloseNew}
           />
         </Grid>
-        {painter.paintings_categories.length > 0 && (
-          <Grid item xs={12}>
-            <Typography sx={{ width: "fit-content", p: 0.5 }}>
-              Artworks Categories
-            </Typography>
-            <Paper
-              elevation={0}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexWrap: "wrap",
-                listStyle: "none",
-                p: 0.5,
-                m: 0,
-              }}
-              component="ul"
-            >
-              {painter.paintings_categories.map((category) => {
-                return (
-                  <ListItem
-                    key={category}
-                    sx={{ width: "fit-content", paddingLeft: "0" }}
-                  >
-                    <Chip icon={null} label={category} />
-                  </ListItem>
-                );
-              })}
-            </Paper>
-          </Grid>
+
+        {painter.menuitems.length > 0 && (
+          <>
+            <Grid item xs={12}>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  fontFamily: "Roboto",
+                  marginBottom: "12px",
+                }}
+              >
+                Menu Items
+              </Typography>
+              <Paper
+                elevation={0}
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexWrap: "wrap",
+                  listStyle: "none",
+                  padding: "4px 0",
+                  m: 0,
+                }}
+                component="ul"
+              >
+                {painter.menuitems.map((category) => {
+                  return (
+                    <ListItem
+                      key={category}
+                      sx={{ width: "fit-content", paddingLeft: "0" }}
+                    >
+                      <Chip icon={null} label={category} />
+                    </ListItem>
+                  );
+                })}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <CustomHorizontal />
+            </Grid>
+          </>
         )}
       </>
     );
