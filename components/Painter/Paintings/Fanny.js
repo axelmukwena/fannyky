@@ -11,6 +11,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 import useUser from "../../../api/useUser";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Fanny = function Fanny({ paintings, painter }) {
   const router = useRouter();
@@ -228,7 +229,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
-                src={painting.images[0].large}
+                src={imageUrl(painting.images[0].large)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"
@@ -243,7 +244,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
               <Image
                 loader={ImageLoader}
                 quality={40}
-                src={painting.images[0].small}
+                src={imageUrl(painting.images[0].small)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"

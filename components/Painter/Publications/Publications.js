@@ -4,6 +4,7 @@ import { convertToHTML } from "draft-convert";
 import { convertFromRaw } from "draft-js";
 import { useEffect, useState } from "react";
 import useUser from "../../../api/useUser";
+import { imageUrl } from "../../../utilities/helpers";
 import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import NextLink from "../../NextLink";
@@ -215,7 +216,7 @@ const CardImage = function CardImage({ publication, width }) {
             {width > 900 && (
               <CardMedia
                 component="img"
-                src={publication.images[0].small}
+                src={imageUrl(publication.images[0].small)}
                 alt={publication.title}
               />
             )}
@@ -223,7 +224,7 @@ const CardImage = function CardImage({ publication, width }) {
             {width <= 900 && (
               <CardMedia
                 component="img"
-                src={publication.images[0].medium}
+                src={imageUrl(publication.images[0].medium)}
                 alt={publication.title}
               />
             )}

@@ -18,6 +18,7 @@ import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import CustomHorizontal from "./CustomHorizontal";
 import NextLink from "../NextLink";
+import { imageUrl } from "../../utilities/helpers";
 
 const ImageDialog = function ImageDialog({
   resource,
@@ -169,7 +170,7 @@ const ImageDialog = function ImageDialog({
                 {width <= 900 && (
                   <CardMedia
                     component="img"
-                    src={resource.images[current].large}
+                    src={imageUrl(resource.images[current].large)}
                     alt={resource.title}
                     onTouchStart={() => toggleMobile()}
                     sx={{
@@ -181,7 +182,7 @@ const ImageDialog = function ImageDialog({
                 {width > 900 && (
                   <CardMedia
                     component="img"
-                    src={resource.images[current].original}
+                    src={imageUrl(resource.images[current].original)}
                     alt={resource.title}
                     onTouchStart={() => toggleMobile()}
                     sx={{

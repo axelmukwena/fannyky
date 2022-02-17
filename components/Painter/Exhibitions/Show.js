@@ -8,7 +8,7 @@ import ImagesDialog from "../ImagesDialog";
 import { deleteResource, postResource } from "../../../utilities/requests";
 import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
-import { capitalize } from "../../../utilities/helpers";
+import { capitalize, imageUrl } from "../../../utilities/helpers";
 import Toast from "../../../utilities/toast";
 import useUser from "../../../api/useUser";
 
@@ -123,7 +123,7 @@ const GetImages = function GetImages({ exhibition }) {
             }}
           >
             <CardMedia
-              src={image.medium}
+              src={imageUrl(image.medium)}
               alt={exhibition.title}
               component="img"
               onClick={() => handleOpen(index)}

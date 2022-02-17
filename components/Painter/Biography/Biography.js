@@ -21,6 +21,7 @@ import NextLink from "../../NextLink";
 import EditDialog from "./EditDialog";
 import useUser from "../../../api/useUser";
 import CustomHorizontal from "../CustomHorizontal";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Biography = function Biography({ painter }) {
   const convertContentToHTML = (content) => {
@@ -171,7 +172,7 @@ const GetImage = function GetImage({ painter }) {
     return (
       <Grid item xs={8} sm={4} sx={{ margin: "0 20px 20px 0" }}>
         <Card
-          id={image.url}
+          id={image.original}
           elevation={0}
           style={{
             padding: 0,
@@ -181,7 +182,7 @@ const GetImage = function GetImage({ painter }) {
         >
           <CardMedia
             component="img"
-            src={image.medium}
+            src={imageUrl(image.medium)}
             alt={painter.name}
             className="painting-image"
             style={{

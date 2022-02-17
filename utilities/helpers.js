@@ -1,4 +1,4 @@
-import { BASE_URL } from "./constants";
+import { BASE_URL, CLOUDFRONT } from "./constants";
 
 // Capitalize first letter
 export function capitalize(string) {
@@ -6,8 +6,13 @@ export function capitalize(string) {
 }
 
 // Compose complete api url
-export function apiUrl(sub) {
-  return BASE_URL + sub;
+export function apiUrl(path) {
+  return BASE_URL + path;
+}
+
+// Compose complete api url
+export function imageUrl(path) {
+  return `${CLOUDFRONT}/${path}`;
 }
 
 export function parseImages(id, images) {

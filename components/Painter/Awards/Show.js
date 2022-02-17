@@ -7,6 +7,7 @@ import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
 import useUser from "../../../api/useUser";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Show = function Show({ award }) {
   if (award) {
@@ -84,7 +85,7 @@ const GetImages = function GetImages({ award }) {
             }}
           >
             <CardMedia
-              src={image.medium}
+              src={imageUrl(image.medium)}
               alt={award.prize}
               component="img"
               onClick={() => handleOpen(index)}

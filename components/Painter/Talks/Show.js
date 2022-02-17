@@ -10,6 +10,7 @@ import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
 import useUser from "../../../api/useUser";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Show = function Show({ talk }) {
   const convertContentToHTML = (content) => {
@@ -120,7 +121,7 @@ const GetImages = function GetImages({ talk }) {
             }}
           >
             <CardMedia
-              src={image.medium}
+              src={imageUrl(image.medium)}
               alt={talk.title}
               component="img"
               onClick={() => handleOpen(index)}

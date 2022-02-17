@@ -19,6 +19,7 @@ import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
 import ImageLoader from "../../ImageLoader";
 import useUser from "../../../api/useUser";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Buda = function Buda({ paintings, painter }) {
   const [categories, setCategories] = useState(null);
@@ -229,7 +230,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <Image
                 loader={ImageLoader}
-                src={painting.images[0].large}
+                src={imageUrl(painting.images[0].large)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"
@@ -245,7 +246,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 loader={ImageLoader}
                 quality={40}
                 priority
-                src={painting.images[0].small}
+                src={imageUrl(painting.images[0].small)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"

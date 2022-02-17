@@ -10,6 +10,7 @@ import NewDialog from "./NewDialog";
 import CustomHorizontal from "../CustomHorizontal";
 import Toast from "../../../utilities/toast";
 import useUser from "../../../api/useUser";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Show = function Show({ publication }) {
   if (publication) {
@@ -94,7 +95,7 @@ const GetImages = function GetImages({ publication }) {
           }}
         >
           <CardMedia
-            src={image.medium}
+            src={imageUrl(image.medium)}
             alt={publication.title}
             component="img"
             onClick={() => handleOpen(index)}
