@@ -9,6 +9,8 @@ const SEO = function SEO({ description, title, siteTitle, image, url }) {
     tempImage = "https://budafans.com/static/assets/backgrounds/300-fanny.png";
   } else if (!image) {
     tempImage = "https://budafans.com/favicon.ico";
+  } else {
+    tempImage = image;
   }
 
   return (

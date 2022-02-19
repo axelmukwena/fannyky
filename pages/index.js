@@ -28,7 +28,7 @@ const Index = function Index({ painters }) {
         description="Contemporary and abstract paintings by Fanny and Ky"
         title="Home"
         siteTitle="Buda Fans"
-        image="https://budafans.com/favicon.ico"
+        image="https://budafans.com/static/assets/backgrounds/300-buda.png"
         url="https://budafans.com/"
       />
       <Home paintersData={painters} />
