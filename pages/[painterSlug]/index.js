@@ -10,6 +10,11 @@ import { apiUrl } from "../../utilities/helpers";
 import Loading from "../../components/Loading/Loading";
 
 const Index = function Index({ paintings, painter, currentCategory }) {
+  console.log("HErere");
+  console.log("paintings:", paintings);
+  console.log("painter:", painter);
+  console.log("currentCategory:", currentCategory);
+
   const dispatch = useDispatch();
   const router = useRouter();
 
