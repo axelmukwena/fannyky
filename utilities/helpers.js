@@ -85,5 +85,9 @@ export function parsePainterMenu(painter) {
 
 // Parse category string into JSON
 export function parseCategories(string) {
-  return JSON.parse(string);
+  try {
+    return JSON.parse(string);
+  } catch (e) {
+    return [];
+  }
 }
