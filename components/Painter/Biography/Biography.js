@@ -57,6 +57,8 @@ const Biography = function Biography({ painter }) {
     }
     about = createMarkup(about);
 
+    console.log("Here:", painter.paintings_categories);
+
     return (
       <Grid container spacing={2} sx={{ marginTop: "0px" }}>
         <IsLoggedIn painter={painter} />
