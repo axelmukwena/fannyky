@@ -2,15 +2,14 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import SEO from "../../../components/SEO";
-import Fanny from "../../../components/Painter/Paintings/Fanny";
-import Buda from "../../../components/Painter/Paintings/Buda";
+import Paintings from "../../../components/Painter/Paintings";
 import { updateActiveMenu } from "../../../store/menuSlice/currentMenuSlice";
 import NotFound from "../../404";
 import Layout from "../../../components/Layout";
-// import { apiUrl } from "../../../utilities/helpers";
+import { apiUrl } from "../../../utilities/helpers";
 import Loading from "../../../components/Loading/Loading";
 
-const Index = function Index({ paintings, painter }) {
+const Index = function Index({ paintings, painter, currentCategory }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -36,42 +35,63 @@ const Index = function Index({ paintings, painter }) {
         url={`https://budafans.com${router.asPath}`}
       />
       <Layout painter={painter}>
-        {painter.rank === 1 && <Buda painter={painter} paintings={paintings} />}
-        {painter.rank === 2 && (
-          <Fanny painter={painter} paintings={paintings} />
-        )}
+        <Paintings
+          painter={painter}
+          paintings={paintings}
+          currentCategory={currentCategory}
+        />
       </Layout>
     </>
   );
 };
 
-// export async function getStaticPaths() {
-//   const response = await fetch(apiUrl("/"));
-//   const painters = await response.json();
+export async function getStaticPaths() {
+  const response = await fetch(apiUrl("/"));
+  const painters = await response.json();
 
-//   const paths = painters.map((painter) => ({
-//     params: { painterSlug: painter.slug },
-//   }));
+  const paths = painters.map((painter) => ({
+    params: { painterSlug: painter.slug },
+  }));
 
-//   return { paths, fallback: "blocking" };
-// }
+  return { paths, fallback: "blocking" };
+}
 
-// export async function getStaticProps(content) {
-//   const { painterSlug } = content.params;
+export async function getStaticProps(content) {
+  const { painterSlug } = content.params;
 
-//   const painterRes = await fetch(apiUrl(`/${painterSlug}`));
-//   const painter = await painterRes.json();
+  const painterRes = await fetch(apiUrl(`/${painterSlug}`));
+  const painter = await painterRes.json();
 
-//   const paintingsRes = await fetch(apiUrl(`/${painterSlug}/paintings`));
-//   const paintings = await paintingsRes.json();
+  const currentCategory = painter.paintings_categories
+    ? painter.paintings_categories[0]
+    : null;
 
-//   return {
-//     props: {
-//       paintings,
-//       painter,
-//     },
-//     revalidate: 5,
-//   };
-// }
+  if (currentCategory) {
+    const paintingsRes = await fetch(
+      apiUrl(`/${painterSlug}/paintings_category/${currentCategory.slug}`)
+    );
+    const paintings = await paintingsRes.json();
+
+    return {
+      props: {
+        paintings,
+        painter,
+        currentCategory,
+      },
+      revalidate: 5,
+    };
+  }
+
+  const paintingsRes = await fetch(apiUrl(`/${painterSlug}/paintings`));
+  const paintings = await paintingsRes.json();
+
+  return {
+    props: {
+      paintings,
+      painter,
+    },
+    revalidate: 5,
+  };
+}
 
 export default Index;

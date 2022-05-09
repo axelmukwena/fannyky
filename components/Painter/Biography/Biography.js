@@ -105,45 +105,47 @@ const Biography = function Biography({ painter }) {
 
             <Typography className="justify" dangerouslySetInnerHTML={about} />
 
-            {painter.paintings_categories.length > 0 && (
-              <Box sx={{ padding: "20px 0 10px 0" }}>
-                <Grid item xs={12}>
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                      fontSize: "1rem",
-                      fontFamily: "Roboto",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    Artwork Categories
-                  </Typography>
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      flexWrap: "wrap",
-                      listStyle: "none",
-                      padding: "4px 0",
-                      m: 0,
-                    }}
-                    component="ul"
-                  >
-                    {painter.paintings_categories.map((category) => {
-                      return (
-                        <ListItem
-                          key={category}
-                          sx={{ width: "fit-content", paddingLeft: "0" }}
-                        >
-                          <Chip icon={null} label={category} />
-                        </ListItem>
-                      );
-                    })}
-                  </Paper>
-                </Grid>
-              </Box>
-            )}
+            {painter.paintings_categories &&
+              painter.paintings_categories.length > 0 && (
+                <Box sx={{ padding: "20px 0 10px 0" }}>
+                  <Grid item xs={12}>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: "1rem",
+                        fontFamily: "Roboto",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      Artwork Categories
+                    </Typography>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        flexWrap: "wrap",
+                        listStyle: "none",
+                        padding: "4px 0",
+                        m: 0,
+                      }}
+                      component="ul"
+                    >
+                      {painter.paintings_categories &&
+                        painter.paintings_categories.map((category) => {
+                          return (
+                            <ListItem
+                              key={category.slug}
+                              sx={{ width: "fit-content", paddingLeft: "0" }}
+                            >
+                              <Chip icon={null} label={category.name} />
+                            </ListItem>
+                          );
+                        })}
+                    </Paper>
+                  </Grid>
+                </Box>
+              )}
 
             <NextLink
               href="/[painterSlug]/contact"

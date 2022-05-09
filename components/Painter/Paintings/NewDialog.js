@@ -38,6 +38,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
   const [dimension, setDimension] = useState("");
   const [abstract, setAbstract] = useState("");
   const [category, setCategory] = useState("");
+  const [categorySlug, setCategorySlug] = useState("");
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
@@ -80,6 +81,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       setDimension(painting.dimension);
       setAbstract(painting.abstract);
       setCategory(painting.category);
+      setCategorySlug(painting.category_slug);
     }
 
     if (painting && painting.images.length > 0) {
@@ -95,6 +97,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     setDimension("");
     setAbstract("");
     setCategory("");
+    setCategorySlug("");
     setDescription(EditorState.createEmpty());
     setImages([]);
   };
@@ -134,6 +137,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       dimension,
       abstract,
       category,
+      category_slug: categorySlug,
       description: stringDescription,
       painter,
     };
@@ -145,6 +149,17 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     } else {
       const path = `/${painter.id}/paintings`;
       postResource(path, params, handlePaintingResponse);
+    }
+  };
+
+  const handleCategory = (selected) => {
+    const filtered = painter.paintings_categories?.filter((cat) => {
+      return cat.slug === selected;
+    });
+
+    if (filtered && filtered.length) {
+      setCategory(filtered[0].name);
+      setCategorySlug(filtered[0].slug);
     }
   };
 
@@ -256,30 +271,27 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            {/* If painter is Buda, add painter types for grouping */}
-            {/* Fanny uses date grouping */}
-            {painter.rank === 1 ? (
-              <Grid item xs={4}>
-                <FormControl fullWidth required>
-                  <InputLabel id="category">Category</InputLabel>
-                  <Select
-                    labelId="category"
-                    id="category-select"
-                    value={category}
-                    label="Category"
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    {painter.paintings_categories.map((menuCategory) => {
+            <Grid item xs={4}>
+              <FormControl fullWidth required>
+                <InputLabel id="category">Category</InputLabel>
+                <Select
+                  labelId="category"
+                  id="category-select"
+                  value={category}
+                  label="Category"
+                  onChange={(e) => handleCategory(e.target.value)}
+                >
+                  {painter.paintings_categories &&
+                    painter.paintings_categories.map((cat) => {
                       return (
-                        <MenuItem key={menuCategory} value={menuCategory}>
-                          {menuCategory}
+                        <MenuItem key={cat.slug} value={cat.slug}>
+                          {cat.name}
                         </MenuItem>
                       );
                     })}
-                  </Select>
-                </FormControl>
-              </Grid>
-            ) : null}
+                </Select>
+              </FormControl>
+            </Grid>
 
             <Grid item xs={12}>
               <Typography style={{ margin: 9, color: "#626262" }}>

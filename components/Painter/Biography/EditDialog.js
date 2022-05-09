@@ -120,10 +120,16 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     const currentCategory = category.trim();
     if (!currentCategory) return;
 
-    const included = paintingsCategories.includes(currentCategory);
-    if (included) return;
+    const slug = currentCategory.replace(/\s+/g, "-").toLowerCase();
+    const categoryObject = { name: currentCategory, slug };
 
-    setPaintingsCategories((oldArray) => [...oldArray, currentCategory]);
+    const included = paintingsCategories.filter((cat) => {
+      return cat.slug === slug;
+    });
+
+    if (included.length) return;
+
+    setPaintingsCategories((oldArray) => [...oldArray, categoryObject]);
     setCategory("");
   };
 
@@ -277,9 +283,9 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               </Button>
             </Grid>
 
-            <PainterItems
-              painterItems={paintingsCategories}
-              setPainterItems={setPaintingsCategories}
+            <PainterCategories
+              categories={paintingsCategories}
+              setCategories={setPaintingsCategories}
             />
 
             <>
@@ -401,6 +407,50 @@ const PainterItems = function PainterItems({ painterItems, setPainterItems }) {
                 sx={{ width: "fit-content", paddingLeft: "0" }}
               >
                 <Chip icon={null} label={item} onDelete={handleDelete(item)} />
+              </ListItem>
+            );
+          })}
+        </Paper>
+      </Grid>
+    );
+  }
+  return null;
+};
+
+const PainterCategories = function PainterCategories({
+  categories,
+  setCategories,
+}) {
+  const handleDelete = (category) => () => {
+    setCategories((cats) => cats.filter((cat) => cat.slug !== category.slug));
+  };
+
+  if (categories.length > 0) {
+    return (
+      <Grid item xs={12}>
+        <Paper
+          elevation={0}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexWrap: "wrap",
+            listStyle: "none",
+            p: 0.5,
+            m: 0,
+          }}
+          component="ul"
+        >
+          {categories.map((category) => {
+            return (
+              <ListItem
+                key={category.slug}
+                sx={{ width: "fit-content", paddingLeft: "0" }}
+              >
+                <Chip
+                  icon={null}
+                  label={category.name}
+                  onDelete={handleDelete(category)}
+                />
               </ListItem>
             );
           })}
