@@ -212,8 +212,9 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
   }
 
   for (let i = 0; i < paintings.length; i += 1) {
-    console.log("Paintings Images");
-    console.log(paintings[i].images);
+    const painting = paintings[i];
+    console.log("Painting:", painting.title, "Category:", painting.category);
+    console.log(painting.images);
   }
 
   return paintings.map((painting) => (
