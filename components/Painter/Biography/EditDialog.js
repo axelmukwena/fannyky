@@ -252,39 +252,35 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
               />
             </Grid>
 
-            {painter.rank === 1 && (
-              <>
-                <Grid item xs={12}>
-                  <CustomHorizontal />
-                </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    fullWidth
-                    label="Artwork Category"
-                    variant="outlined"
-                    name="category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  />
-                </Grid>
+            <Grid item xs={12}>
+              <CustomHorizontal />
+            </Grid>
+            <Grid item xs={8}>
+              <TextField
+                fullWidth
+                label="Artwork Category"
+                variant="outlined"
+                name="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </Grid>
 
-                <Grid item xs={4}>
-                  <Button
-                    style={{ height: 55, width: "100%" }}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleAddCategory()}
-                  >
-                    Add Category
-                  </Button>
-                </Grid>
+            <Grid item xs={4}>
+              <Button
+                style={{ height: 55, width: "100%" }}
+                variant="contained"
+                color="primary"
+                onClick={() => handleAddCategory()}
+              >
+                Add Category
+              </Button>
+            </Grid>
 
-                <PainterItems
-                  painterItems={paintingsCategories}
-                  setPainterItems={setPaintingsCategories}
-                />
-              </>
-            )}
+            <PainterItems
+              painterItems={paintingsCategories}
+              setPainterItems={setPaintingsCategories}
+            />
 
             <>
               <Grid item xs={12}>
