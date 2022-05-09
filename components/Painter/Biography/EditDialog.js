@@ -82,6 +82,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const handlePainterResponse = (data) => {
     Toast({ message: data.message, type: "success" });
     // Update paintings with images
+    console.log("After SUbmit:", data);
     if (data.success && images.length > 0) {
       const { id } = data.painter;
       const params = parseImages(id, images);
