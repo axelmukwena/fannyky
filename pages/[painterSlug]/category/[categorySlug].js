@@ -52,14 +52,16 @@ export async function getStaticPaths() {
   const paths = [];
 
   for (let i = 0; i < painters.length; i += 1) {
-    const painter = painters[0];
+    const painter = painters[i];
     const categories = painter.paintings_categories;
 
-    console.log("getStaticPaths Categories:", categories);
+    console.log("Painter:", painter.slug, "Categories:", categories);
 
     if (categories) {
       for (let j = 0; j < categories.length; j += 1) {
         const category = categories[j];
+        console.log("Painter:", painter.slug, "Category:", category);
+        console.log("Painter:", painter.slug, "CategorySlug:", category.slug);
         const params = {
           params: { painterSlug: painter.slug, categorySlug: category.slug },
         };
