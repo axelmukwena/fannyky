@@ -70,7 +70,8 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     setPhone(painterObject.phone);
     setLink(painterObject.link);
     setMenuitems(painterObject.menuitems);
-    setPaintingsCategories(painterObject.paintings_categories);
+    const cats = painterObject.paintings_categories;
+    setPaintingsCategories(cats || []);
   }, [painter]);
 
   const handleImagesResponse = (data) => {
