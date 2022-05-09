@@ -21,7 +21,7 @@ import NextLink from "../../NextLink";
 import EditDialog from "./EditDialog";
 import useUser from "../../../api/useUser";
 import CustomHorizontal from "../CustomHorizontal";
-import { imageUrl } from "../../../utilities/helpers";
+import { imageUrl, parseCategories } from "../../../utilities/helpers";
 
 const Biography = function Biography({ painter }) {
   const convertContentToHTML = (content) => {
@@ -59,6 +59,8 @@ const Biography = function Biography({ painter }) {
     about = createMarkup(about);
 
     console.log("Here:", painter.paintings_categories);
+    const categories = parseCategories(painter.paintings_categories);
+    console.log("Here After:", categories);
 
     return (
       <Grid container spacing={2} sx={{ marginTop: "0px" }}>

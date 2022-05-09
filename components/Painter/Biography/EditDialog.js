@@ -110,7 +110,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
       phone,
       link,
       menuitems,
-      paintings_categories: { categories: paintingsCategories },
+      paintings_categories: `${paintingsCategories}`,
     };
 
     const params = parseGeneralParams(data);
