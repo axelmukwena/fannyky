@@ -211,6 +211,11 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
     trimEnd = "";
   }
 
+  for (let i = 0; i < paintings.length; i += 1) {
+    console.log("Paintings Images");
+    console.log(paintings[i].images);
+  }
+
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
       <Card
@@ -230,7 +235,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <Image
                 loader={ImageLoader}
-                src={imageUrl(painting.images[0].large)}
+                src={imageUrl(painting.images[0].small)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"
@@ -246,7 +251,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 loader={ImageLoader}
                 quality={40}
                 priority
-                src={imageUrl(painting.images[0].small)}
+                src={imageUrl(painting.images[0].large)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"
