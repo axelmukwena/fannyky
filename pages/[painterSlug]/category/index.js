@@ -62,7 +62,7 @@ export async function getStaticProps(content) {
   const painterRes = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await painterRes.json();
 
-  const categories = painter.paintings_categories;
+  const categories = painter.paintings_categories.json();
   const currentCategory = categories ? categories[0] : null;
 
   if (currentCategory) {

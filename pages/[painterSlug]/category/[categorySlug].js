@@ -53,7 +53,7 @@ export async function getStaticPaths() {
 
   for (let i = 0; i < painters.length; i += 1) {
     const painter = painters[0];
-    const categories = painter.paintings_categories;
+    const categories = painter.paintings_categories.json();
 
     if (categories) {
       for (let j = 0; j < categories.length; j += 1) {
@@ -75,7 +75,8 @@ export async function getStaticProps(content) {
   const painterRes = await fetch(apiUrl(`/${painterSlug}`));
   const painter = await painterRes.json();
 
-  const filtered = painter.paintings_categories?.filter((category) => {
+  const categories = painter.paintings_categories.json();
+  const filtered = categories?.filter((category) => {
     return category.slug === categorySlug;
   });
 
