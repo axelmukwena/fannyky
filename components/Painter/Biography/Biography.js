@@ -55,6 +55,7 @@ const Biography = function Biography({ painter }) {
     if (about) {
       about = about.replace("###", "<br>");
     }
+
     about = createMarkup(about);
 
     console.log("Here:", painter.paintings_categories);
