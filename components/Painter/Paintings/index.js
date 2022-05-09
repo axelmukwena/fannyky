@@ -96,6 +96,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
                     }}
                   >
                     {category.name}
+                    {painter.rank === 2 ? " Works" : ""}
                   </Typography>
                 </AccordionSummary>
               </NextLink>
