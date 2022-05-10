@@ -124,7 +124,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <Image
                 loader={ImageLoader}
-                src={imageUrl(painting.images[0].small)}
+                src={imageUrl(painting.images[0].original)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"
@@ -140,7 +140,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 loader={ImageLoader}
                 quality={40}
                 priority
-                src={imageUrl(painting.images[0].large)}
+                src={imageUrl(painting.images[0].original)}
                 alt={painting.title}
                 placeholder="blur"
                 blurDataURL="/static/assets/loading.gif"
