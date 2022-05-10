@@ -113,6 +113,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
+              Loading: {loading}
               {loading === true && (
                 <Box sx={{ display: "flex", color: "black" }}>
                   <CircularProgress
@@ -124,7 +125,6 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
                   />
                 </Box>
               )}
-
               {loading === false && show === category.slug && (
                 <CategoryPaintings paintings={paintings} width={width} />
               )}
