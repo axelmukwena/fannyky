@@ -33,10 +33,12 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
       setExpanded(currentCategory.slug);
       setShow(currentCategory.slug);
     }
+    console.log("After Resize");
     setLoading(false);
   }
 
   useEffect(() => {
+    console.log("Before Resize");
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener
@@ -61,7 +63,9 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
 
     if (panel !== isExpanded) {
       setLoading(true);
+      console.log("Before Route");
       router.replace(nextpath);
+      console.log("After Route");
     }
   };
 
@@ -113,8 +117,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              Loading: {String(loading)}
-              {loading === true && (
+              {false && (
                 <Box sx={{ display: "flex", color: "black" }}>
                   <CircularProgress
                     style={{
@@ -125,7 +128,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
                   />
                 </Box>
               )}
-              {loading === false && show === category.slug && (
+              {show === category.slug && (
                 <CategoryPaintings paintings={paintings} width={width} />
               )}
             </AccordionDetails>
