@@ -281,14 +281,13 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
                   label="Category"
                   onChange={(e) => handleCategory(e.target.value)}
                 >
-                  {painter.paintings_categories &&
-                    painter.paintings_categories.map((cat) => {
-                      return (
-                        <MenuItem key={cat.slug} value={cat.name}>
-                          {cat.name}
-                        </MenuItem>
-                      );
-                    })}
+                  {painter.paintings_categories.map((cat) => {
+                    return (
+                      <MenuItem key={cat.slug} value={cat.name}>
+                        {cat.name}
+                      </MenuItem>
+                    );
+                  })}
                 </Select>
               </FormControl>
             </Grid>

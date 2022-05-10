@@ -65,16 +65,11 @@ export async function getStaticProps(content) {
   const categories = painter.paintings_categories;
   const currentCategory = categories ? categories[0] : null;
 
-  console.log("");
-  console.log("currentCategory:", currentCategory);
-
   if (currentCategory) {
-    // if (false) {
     const paintingsRes = await fetch(
       apiUrl(`/${painterSlug}/paintings_category/${currentCategory.slug}`)
     );
     const paintings = await paintingsRes.json();
-    console.log("paintings:", paintings);
 
     return {
       props: {

@@ -72,11 +72,7 @@ const Buda = function Buda({ paintings, painter }) {
     setShow(isExpanded ? category : "");
   };
 
-  if (
-    painter.paintings_categories ||
-    painter.paintings_categories?.length === 0
-  )
-    return null;
+  if (painter.paintings_categories?.length === 0) return null;
 
   if (!categories) {
     return <Loading />;
@@ -85,45 +81,44 @@ const Buda = function Buda({ paintings, painter }) {
   return (
     <>
       <IsLoggedIn painter={painter} />
-      {painter.paintings_categories &&
-        painter.paintings_categories.map((category) => {
-          return (
-            <Accordion
-              key={category}
-              elevation={0}
-              expanded={expanded === category.replace(/\s/g, "")}
-              onChange={handleChange(category)}
-              sx={{ borderBottom: "1px solid #00000012" }}
+      {painter.paintings_categories.map((category) => {
+        return (
+          <Accordion
+            key={category}
+            elevation={0}
+            expanded={expanded === category.replace(/\s/g, "")}
+            onChange={handleChange(category)}
+            sx={{ borderBottom: "1px solid #00000012" }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls={`${category.replace(/\s/g, "")}-content`}
+              id={category.replace(/\s/g, "")}
+              sx={{ padding: "0px" }}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                aria-controls={`${category.replace(/\s/g, "")}-content`}
-                id={category.replace(/\s/g, "")}
-                sx={{ padding: "0px" }}
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  fontFamily: "Roboto",
+                  margin: "0 0 0 5px",
+                  color: "#525252",
+                }}
               >
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    fontFamily: "Roboto",
-                    margin: "0 0 0 5px",
-                    color: "#525252",
-                  }}
-                >
-                  {category}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: 0 }}>
-                {show === category && (
-                  <CategoryPaintings
-                    paintings={categories[category]}
-                    width={width}
-                  />
-                )}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+                {category}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ padding: 0 }}>
+              {show === category && (
+                <CategoryPaintings
+                  paintings={categories[category]}
+                  width={width}
+                />
+              )}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </>
   );
 };

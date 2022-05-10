@@ -49,10 +49,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
   }
 
   // When no categories, just show all paintings
-  if (
-    painter.paintings_categories ||
-    painter.paintings_categories?.length === 0
-  ) {
+  if (painter.paintings_categories?.length === 0) {
     return (
       <>
         <IsLoggedIn painter={painter} />
@@ -66,48 +63,47 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     <>
       <IsLoggedIn painter={painter} />
 
-      {painter.paintings_categories &&
-        painter.paintings_categories.map((category) => {
-          return (
-            <Accordion
-              key={category.slug}
-              elevation={0}
-              expanded={expanded === category.slug}
-              onChange={handleChange(category)}
-              sx={{ borderBottom: "1px solid #00000012" }}
+      {painter.paintings_categories.map((category) => {
+        return (
+          <Accordion
+            key={category.slug}
+            elevation={0}
+            expanded={expanded === category.slug}
+            onChange={handleChange(category)}
+            sx={{ borderBottom: "1px solid #00000012" }}
+          >
+            <NextLink
+              href="[painterSlug]/category/[categorySlug]"
+              as={`${painter.slug}/category/${category.slug}`}
             >
-              <NextLink
-                href="[painterSlug]/category/[categorySlug]"
-                as={`${painter.slug}/category/${category.slug}`}
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls={`${category.slug}-content`}
+                id={category.slug}
+                sx={{ padding: "0px" }}
               >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls={`${category.slug}-content`}
-                  id={category.slug}
-                  sx={{ padding: "0px" }}
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    fontFamily: "Roboto",
+                    margin: "0 0 0 5px",
+                    color: "#525252",
+                  }}
                 >
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                      fontSize: "1rem",
-                      fontFamily: "Roboto",
-                      margin: "0 0 0 5px",
-                      color: "#525252",
-                    }}
-                  >
-                    {category.name}
-                    {painter.rank === 2 ? " Works" : ""}
-                  </Typography>
-                </AccordionSummary>
-              </NextLink>
-              <AccordionDetails sx={{ padding: 0 }}>
-                {show === category && (
-                  <CategoryPaintings paintings={paintings} width={width} />
-                )}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+                  {category.name}
+                  {painter.rank === 2 ? " Works" : ""}
+                </Typography>
+              </AccordionSummary>
+            </NextLink>
+            <AccordionDetails sx={{ padding: 0 }}>
+              {show === category && (
+                <CategoryPaintings paintings={paintings} width={width} />
+              )}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </>
   );
 };
