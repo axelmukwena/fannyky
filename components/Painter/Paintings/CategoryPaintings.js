@@ -124,6 +124,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             {width <= 900 && (
               <CardMedia
                 // loader={ImageLoader}
+                component="img"
                 src={imageUrl(painting.images[0].small)}
                 alt={painting.title}
                 // placeholder="blur"
@@ -145,6 +146,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 // loader={ImageLoader}
                 // quality={40}
                 // priority
+                component="img"
                 src={imageUrl(painting.images[0].large)}
                 alt={painting.title}
                 // placeholder="blur"
