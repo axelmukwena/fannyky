@@ -199,6 +199,26 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         </Typography>
       )}
 
+      {painting.category && (
+        <Typography
+          sx={{
+            fontWeight: 400,
+            fontSize: "0.75rem",
+            margin: "0 8px",
+            width: "95%",
+            "@media (min-width: 901px)": {
+              width: "120px",
+            },
+            "@media (max-width: 600px)": {
+              margin: "0 4px",
+              fontSize: "0.875rem",
+            },
+          }}
+        >
+          {painting.category}
+        </Typography>
+      )}
+
       {painting.abstract && (
         <Typography
           sx={{
