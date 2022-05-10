@@ -50,7 +50,8 @@ const Index = function Index({ currentCategory, paintings, painter }) {
 
     const currentPath = router.pathname === nextpath;
     const index = router.pathname === `/${painter.slug}`;
-    if (currentPath || index) {
+    const currentCat = currentCategory.slug === category.slug;
+    if (currentPath || (index && currentCat)) {
       return;
     }
 
