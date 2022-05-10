@@ -1,13 +1,13 @@
 import { DeleteOutline } from "@mui/icons-material";
-import { Typography, Grid, Card, CardMedia } from "@mui/material";
+import { Typography, Grid, Card } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { deleteResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import ImagesDialog from "../ImagesDialog";
 import NextLink from "../../NextLink";
-// import ImageLoader from "../../ImageLoader";
-// import Image from "next/image";
+import ImageLoader from "../../ImageLoader";
 import useUser from "../../../api/useUser";
 import { imageUrl } from "../../../utilities/helpers";
 
@@ -122,44 +122,32 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
         {painting.images.length > 0 && (
           <>
             {width <= 900 && (
-              <CardMedia
-                // loader={ImageLoader}
-                component="img"
+              <Image
+                loader={ImageLoader}
                 src={imageUrl(painting.images[0].small)}
                 alt={painting.title}
-                // placeholder="blur"
-                // blurDataURL="/static/assets/loading.gif"
-                // width={width - 60}
-                // height={width - 60}
-                // objectFit="cover"
+                placeholder="blur"
+                blurDataURL="/static/assets/loading.gif"
+                width={width - 60}
+                height={width - 60}
+                objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
-                sx={{
-                  width: `${width - 60}px`,
-                  height: `${height - 60}px`,
-                  backgroundImage: 'url("/static/assets/loading.gif")',
-                }}
               />
             )}
 
             {width > 900 && (
-              <CardMedia
-                // loader={ImageLoader}
-                // quality={40}
-                // priority
-                component="img"
+              <Image
+                loader={ImageLoader}
+                quality={40}
+                priority
                 src={imageUrl(painting.images[0].large)}
                 alt={painting.title}
-                // placeholder="blur"
-                // blurDataURL="/static/assets/loading.gif"
-                // width={120}
-                // height={120}
-                // objectFit="cover"
+                placeholder="blur"
+                blurDataURL="/static/assets/loading.gif"
+                width={120}
+                height={120}
+                objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
-                sx={{
-                  width: "120px",
-                  height: "120px",
-                  backgroundImage: 'url("/static/assets/loading.gif")',
-                }}
               />
             )}
 
