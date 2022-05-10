@@ -36,7 +36,6 @@ const Index = function Index({ currentCategory, paintings, painter }) {
   }
 
   useEffect(() => {
-    console.log("Before Resize");
     handleResize();
     window.addEventListener("resize", handleResize);
     // remove resize listener
