@@ -25,9 +25,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     setWidth(window.innerWidth);
 
     const categoryPath = `/${painter.slug}/category/${currentCategory.slug}`;
-    const currentPath = router.pathname === categoryPath;
-    console.log("categoryPath:", categoryPath);
-    console.log("router.pathname:", router.pathname);
+    const currentPath = router.asPath === categoryPath;
     if (currentPath || window.innerWidth > 900) {
       setExpanded(currentCategory.slug);
       setShow(currentCategory.slug);
@@ -50,8 +48,8 @@ const Index = function Index({ currentCategory, paintings, painter }) {
 
     const nextpath = `/${painter.slug}/category/${category.slug}`;
 
-    const currentPath = router.pathname === nextpath;
-    const index = router.pathname === `/${painter.slug}`;
+    const currentPath = router.asPath === nextpath;
+    const index = router.asPath === `/${painter.slug}`;
     const currentCat = currentCategory.slug === category.slug;
     if (currentPath || (index && currentCat)) {
       return;
