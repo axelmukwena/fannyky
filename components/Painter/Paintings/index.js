@@ -26,6 +26,8 @@ const Index = function Index({ currentCategory, paintings, painter }) {
 
     const categoryPath = `/${painter.slug}/category/${currentCategory.slug}`;
     const currentPath = router.pathname === categoryPath;
+    console.log("categoryPath:", categoryPath);
+    console.log("router.pathname:", router.pathname);
     if (currentPath || window.innerWidth > 900) {
       setExpanded(currentCategory.slug);
       setShow(currentCategory.slug);
