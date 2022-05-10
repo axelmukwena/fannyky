@@ -87,14 +87,10 @@ const Paintings = function Paintings({ width, paintings, handleOpenImages }) {
 };
 
 const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
-  let paintingWidth = "120px";
-  let height = "120px";
   let trim = 17;
   let trimEnd = "...";
 
   if (width <= 900) {
-    paintingWidth = `${window.innerWidth - 60}px`;
-    height = "100%";
     trim = 1000;
     trimEnd = "";
   }
@@ -107,21 +103,20 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
 
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
-      <Card
-        elevation={0}
-        className="painting-card-index"
-        sx={{
-          padding: 0,
-          position: "relative",
-          borderRadius: 0,
-          // backgroundColor: width > 900 ? "#e9e9e9 !important" : "none",
-          height,
-          width: painting.images.length > 0 ? paintingWidth : "fit-content",
-        }}
-      >
-        {painting.images.length > 0 && (
-          <>
-            <Box className="mobile">
+      {painting.images.length > 0 && (
+        <>
+          <Box className="mobile">
+            <Card
+              elevation={0}
+              className="painting-card-index"
+              sx={{
+                padding: 0,
+                position: "relative",
+                borderRadius: 0,
+                height: `${width - 60}px`,
+                width: `${width - 60}px`,
+              }}
+            >
               <Image
                 loader={ImageLoader}
                 src={imageUrl(painting.images[0].original)}
@@ -133,9 +128,21 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
               />
-            </Box>
+            </Card>
+          </Box>
 
-            <Box className="desktop">
+          <Box className="desktop">
+            <Card
+              elevation={0}
+              className="painting-card-index"
+              sx={{
+                padding: 0,
+                position: "relative",
+                borderRadius: 0,
+                height: "120px",
+                width: "120px",
+              }}
+            >
               <Image
                 loader={ImageLoader}
                 quality={40}
@@ -149,28 +156,31 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
               />
-            </Box>
+            </Card>
+          </Box>
 
-            <DeletePainting painting={painting} />
-          </>
-        )}
-        {painting.images.length === 0 && (
-          <Typography
-            sx={{
-              fontWeight: 400,
-              fontSize: "0.75rem",
-              margin: "0 8px",
-              width: paintingWidth,
-              "@media (max-width: 600px)": {
-                margin: "0 4px",
-                fontSize: "0.875rem",
-              },
-            }}
-          >
-            No Image
-          </Typography>
-        )}
-      </Card>
+          <DeletePainting painting={painting} />
+        </>
+      )}
+      {painting.images.length === 0 && (
+        <Typography
+          sx={{
+            fontWeight: 400,
+            fontSize: "0.75rem",
+            margin: "0 8px",
+            width: "95%",
+            "@media (min-width: 901px)": {
+              width: "120px",
+            },
+            "@media (max-width: 600px)": {
+              margin: "0 4px",
+              fontSize: "0.875rem",
+            },
+          }}
+        >
+          No Image
+        </Typography>
+      )}
 
       {painting.title && (
         <Typography className="painting-title-index-typography">
@@ -193,7 +203,10 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             fontWeight: 400,
             fontSize: "0.75rem",
             margin: "0 8px",
-            width: paintingWidth,
+            width: "95%",
+            "@media (min-width: 901px)": {
+              width: "120px",
+            },
             "@media (max-width: 600px)": {
               margin: "0 4px",
               fontSize: "0.875rem",
@@ -212,7 +225,10 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
             fontWeight: 400,
             fontSize: "0.75rem",
             margin: "0 8px",
-            width: paintingWidth,
+            width: "95%",
+            "@media (min-width: 901px)": {
+              width: "120px",
+            },
             "@media (max-width: 600px)": {
               margin: "0 4px",
               fontSize: "0.875rem",

@@ -21,11 +21,9 @@ const Layout = function Layout({ painter, children }) {
         container
         spacing={0}
       >
-        <Box className="desktop">
-          <Grid item xs={2.5}>
-            <DesktopMenu painter={painter} />
-          </Grid>
-        </Box>
+        <Grid item className="desktop" xs={2.5}>
+          <DesktopMenu painter={painter} />
+        </Grid>
 
         <Grid
           item
