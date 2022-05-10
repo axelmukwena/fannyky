@@ -8,15 +8,16 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import NewDialog from "./NewDialog";
 import Loading from "../../Loading/Loading";
 import useUser from "../../../api/useUser";
 import CategoryPaintings from "./CategoryPaintings";
-import NextLink from "../../NextLink";
 
 const Index = function Index({ currentCategory, paintings, painter }) {
-  const [width, setWidth] = useState(0);
+  const router = useRouter();
 
+  const [width, setWidth] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
 
@@ -42,6 +43,10 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     const panel = category.slug;
     setExpanded(isExpanded ? panel : false);
     setShow(isExpanded ? category.slug : "");
+
+    if (panel !== isExpanded) {
+      router.replace(`${painter.slug}/category/${category.slug}`);
+    }
   };
 
   if (!paintings) {
@@ -72,32 +77,27 @@ const Index = function Index({ currentCategory, paintings, painter }) {
             onChange={handleChange(category)}
             sx={{ borderBottom: "1px solid #00000012" }}
           >
-            <NextLink
-              href="[painterSlug]/category/[categorySlug]"
-              as={`${painter.slug}/category/${category.slug}`}
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls={`${category.slug}-content`}
+              id={category.slug}
+              sx={{ padding: "0px" }}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                aria-controls={`${category.slug}-content`}
-                id={category.slug}
-                sx={{ padding: "0px" }}
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  fontFamily: "Roboto",
+                  margin: "0 0 0 5px",
+                  color: "#525252",
+                }}
               >
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    fontFamily: "Roboto",
-                    margin: "0 0 0 5px",
-                    color: "#525252",
-                  }}
-                >
-                  {category.name}
-                  {painter.rank === 2 ? " Works" : ""}
-                </Typography>
-              </AccordionSummary>
-            </NextLink>
+                {category.name}
+                {painter.rank === 2 ? " Works" : ""}
+              </Typography>
+            </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              {show === category && (
+              {show === category.slug && (
                 <CategoryPaintings paintings={paintings} width={width} />
               )}
             </AccordionDetails>
