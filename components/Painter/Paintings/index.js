@@ -7,7 +7,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   Box,
-  CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -116,14 +116,8 @@ const Index = function Index({ currentCategory, paintings, painter }) {
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
               {loading === true && (
-                <Box sx={{ display: "flex", color: "black" }}>
-                  <CircularProgress
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      marginLeft: "10px",
-                    }}
-                  />
+                <Box sx={{ width: "100%", color: "gray" }}>
+                  <LinearProgress sx={{}} />
                 </Box>
               )}
               {loading === false && show === category.slug && (
