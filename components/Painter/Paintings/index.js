@@ -6,6 +6,8 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Box,
+  CircularProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -20,6 +22,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
   const [width, setWidth] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -30,6 +33,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
       setExpanded(currentCategory.slug);
       setShow(currentCategory.slug);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -56,6 +60,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     }
 
     if (panel !== isExpanded) {
+      setLoading(true);
       router.replace(nextpath);
     }
   };
@@ -108,7 +113,13 @@ const Index = function Index({ currentCategory, paintings, painter }) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              {show === category.slug && (
+              {loading && (
+                <Box sx={{ display: "flex", color: "black" }}>
+                  <CircularProgress />
+                </Box>
+              )}
+
+              {!loading && show === category.slug && (
                 <CategoryPaintings paintings={paintings} width={width} />
               )}
             </AccordionDetails>
