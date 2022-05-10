@@ -116,8 +116,8 @@ const Index = function Index({ currentCategory, paintings, painter }) {
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
               {loading === true && (
-                <Box sx={{ width: "100%", color: "gray" }}>
-                  <LinearProgress sx={{}} />
+                <Box sx={{ width: "100%", color: "grey.500" }}>
+                  <LinearProgress color="inherit" />
                 </Box>
               )}
               {loading === false && show === category.slug && (
