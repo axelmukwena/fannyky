@@ -99,11 +99,11 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
     trimEnd = "";
   }
 
-  for (let i = 0; i < paintings.length; i += 1) {
-    const painting = paintings[i];
-    console.log("Painting:", painting.title, "Category:", painting.category);
-    console.log(painting.images);
-  }
+  // for (let i = 0; i < paintings.length; i += 1) {
+  //   const painting = paintings[i];
+  //   console.log("Painting:", painting.title, "Category:", painting.category);
+  //   console.log(painting.images);
+  // }
 
   return paintings.map((painting) => (
     <Grid item key={painting.slug} className="painting-grid-item">
