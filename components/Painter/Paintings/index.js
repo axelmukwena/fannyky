@@ -23,6 +23,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
   const [loading, setLoading] = useState(load);
+  console.log("Loading:", loading);
 
   function handleResize() {
     setWidth(window.innerWidth);
