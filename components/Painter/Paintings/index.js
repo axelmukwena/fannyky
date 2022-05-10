@@ -24,7 +24,9 @@ const Index = function Index({ currentCategory, paintings, painter }) {
   function handleResize() {
     setWidth(window.innerWidth);
 
-    if (currentCategory && window.innerWidth > 900) {
+    const categoryPath = `/${painter.slug}/category/${currentCategory.slug}`;
+    const currentPath = router.pathname === categoryPath;
+    if (currentPath || window.innerWidth > 900) {
       setExpanded(currentCategory.slug);
       setShow(currentCategory.slug);
     }
@@ -44,8 +46,16 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     setExpanded(isExpanded ? panel : false);
     setShow(isExpanded ? category.slug : "");
 
+    const nextpath = `/${painter.slug}/category/${category.slug}`;
+
+    const currentPath = router.pathname === nextpath;
+    const index = router.pathname === `/${painter.slug}`;
+    if (currentPath || index) {
+      return;
+    }
+
     if (panel !== isExpanded) {
-      router.replace(`/${painter.slug}/category/${category.slug}`);
+      router.replace(nextpath);
     }
   };
 
