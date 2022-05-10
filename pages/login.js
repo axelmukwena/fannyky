@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import loginUser from "../store/currentUser/login";
 import { AUTHORIZE } from "../utilities/constants";
 import { setUserCookie } from "../utilities/cookies";
+import Toast from "../utilities/toast";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -68,6 +69,7 @@ const Login = function Login() {
       return;
     }
 
+    Toast({ message: data.message, type: "error" });
     setSubmitting(false);
   }
 

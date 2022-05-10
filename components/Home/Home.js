@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography, Stack } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "../Loading/Loading";
 import styles from "../../styles/home.module.css";
 import NextLink from "../NextLink";
 import ImageLoader from "../ImageLoader";
+import NewPainter from "../Painter/Biography/NewPainter";
+import useUser from "../../api/useUser";
 
 const Home = function Home({ paintersData }) {
   const originalBuda = "/static/assets/backgrounds/original-buda.png";
@@ -18,6 +20,9 @@ const Home = function Home({ paintersData }) {
 
   const [painters, setPainters] = useState(null);
   const [width, setWidth] = useState(0);
+
+  const { user } = useUser();
+  const [openNew, setOpenNew] = useState(false);
 
   // Reverse the painters entered in the database
   function parsePainters(data) {
@@ -51,31 +56,69 @@ const Home = function Home({ paintersData }) {
     };
   }, [paintersData]);
 
+  const handleOpenNew = () => {
+    setOpenNew(true);
+  };
+
+  const handleCloseNew = () => {
+    setOpenNew(false);
+  };
+
   if (!painters) return <Loading />;
 
   return (
-    <Grid
-      direction="row"
-      justifyContent="space-evenly"
-      alignItems="center"
-      className="gradient-background"
-      style={{ margin: 0, padding: 0, height: "100vh" }}
-      container
-    >
-      {painters.map((painter) => {
-        return (
-          <Grid key={painter.slug} item sx={{ margin: 0, padding: 0 }}>
-            <NextLink
-              href="[painterSlug]"
-              as={`/${painter.slug}`}
-              style={{ textDecoration: "none" }}
+    <>
+      {user && painters.length <= 1 && (
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            width: "100%",
+            position: "absolute",
+            top: "30px",
+            zIndex: 100,
+          }}
+        >
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleOpenNew()}
+              sx={{
+                width: "200px",
+                height: "40px",
+              }}
             >
-              <Painter painter={painter} width={width} />
-            </NextLink>
-          </Grid>
-        );
-      })}
-    </Grid>
+              Add Painter
+            </Button>
+            <NewPainter open={openNew} handleClose={handleCloseNew} />
+          </>
+        </Stack>
+      )}
+      <Grid
+        direction="row"
+        justifyContent="space-evenly"
+        alignItems="center"
+        className="gradient-background"
+        sx={{ margin: 0, padding: 0, height: "100vh", position: "relative" }}
+        container
+      >
+        {painters.map((painter) => {
+          return (
+            <Grid key={painter.slug} item sx={{ margin: 0, padding: 0 }}>
+              <NextLink
+                href="[painterSlug]"
+                as={`/${painter.slug}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Painter painter={painter} width={width} />
+              </NextLink>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </>
   );
 };
 

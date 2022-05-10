@@ -18,10 +18,10 @@ import { postResource } from "../../../utilities/requests";
 import Toast from "../../../utilities/toast";
 import Loading from "../../Loading/Loading";
 import NextLink from "../../NextLink";
-import EditDialog from "./EditDialog";
+import NewPainter from "./NewPainter";
 import useUser from "../../../api/useUser";
 import CustomHorizontal from "../CustomHorizontal";
-import { imageUrl, parseCategories } from "../../../utilities/helpers";
+import { imageUrl } from "../../../utilities/helpers";
 
 const Biography = function Biography({ painter }) {
   const convertContentToHTML = (content) => {
@@ -57,10 +57,6 @@ const Biography = function Biography({ painter }) {
     }
 
     about = createMarkup(about);
-
-    console.log("Here:", painter.paintings_categories);
-    const categories = parseCategories(painter.paintings_categories);
-    console.log("Here After:", categories);
 
     return (
       <Grid container spacing={2} sx={{ marginTop: "0px" }}>
@@ -264,7 +260,7 @@ const IsLoggedIn = function IsLoggedIn({ painter }) {
           >
             Edit Painter
           </Button>
-          <EditDialog
+          <NewPainter
             painter={painter}
             open={openNew}
             handleClose={handleCloseNew}

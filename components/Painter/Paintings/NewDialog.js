@@ -154,7 +154,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
 
   const handleCategory = (selected) => {
     const filtered = painter.paintings_categories?.filter((cat) => {
-      return cat.slug === selected;
+      return cat.name === selected;
     });
 
     if (filtered && filtered.length) {
@@ -284,7 +284,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
                   {painter.paintings_categories &&
                     painter.paintings_categories.map((cat) => {
                       return (
-                        <MenuItem key={cat.slug} value={cat.slug}>
+                        <MenuItem key={cat.slug} value={cat.name}>
                           {cat.name}
                         </MenuItem>
                       );

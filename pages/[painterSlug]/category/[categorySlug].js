@@ -55,13 +55,9 @@ export async function getStaticPaths() {
     const painter = painters[i];
     const categories = painter.paintings_categories;
 
-    console.log("Painter:", painter.slug, "Categories:", categories);
-
     if (categories) {
       for (let j = 0; j < categories.length; j += 1) {
         const category = categories[j];
-        console.log("Painter:", painter.slug, "Category:", category);
-        console.log("Painter:", painter.slug, "CategorySlug:", category.slug);
         const params = {
           params: { painterSlug: painter.slug, categorySlug: category.slug },
         };
@@ -69,8 +65,6 @@ export async function getStaticPaths() {
       }
     }
   }
-
-  console.log("getStaticPaths:", paths);
 
   return { paths, fallback: "blocking" };
 }

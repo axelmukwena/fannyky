@@ -3,7 +3,7 @@ import { apiUrl } from "../../utilities/helpers";
 
 async function loginUser(params, handleResponse) {
   // Data
-  const url = apiUrl("/login");
+  const url = apiUrl("/auth/login");
   const headers = {
     headers: {
       "Content-Type": "application/json",

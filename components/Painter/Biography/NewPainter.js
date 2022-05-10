@@ -28,7 +28,7 @@ const Editor = dynamic(
   { ssr: false }
 );
 
-const EditDialog = function EditDialog({ painter, open, handleClose }) {
+const NewPainter = function NewPainter({ painter, open, handleClose }) {
   const [name, setName] = useState("");
   const [rank, setRank] = useState("");
   const [pagelink, setPagelink] = useState("");
@@ -43,12 +43,16 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   const [menuitem, setMenuitem] = useState("");
   const required = false;
 
-  useEffect(() => {
+  function initializePainter(data) {
     // New painter object because I
     // can not edit the Painter Slice Redux
     const painterObject = {};
 
-    Object.keys(painter).forEach((key) => {
+    if (!data) {
+      return;
+    }
+
+    Object.keys(data).forEach((key) => {
       if (!painter[key]) {
         painterObject[key] = "";
       } else {
@@ -72,6 +76,10 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     setMenuitems(painterObject.menuitems);
     const cats = painterObject.paintings_categories;
     setPaintingsCategories(cats || []);
+  }
+
+  useEffect(() => {
+    initializePainter(painter);
   }, [painter]);
 
   const handleImagesResponse = (data) => {
@@ -80,9 +88,8 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
   };
 
   const handlePainterResponse = (data) => {
-    Toast({ message: `${data.message} here`, type: "success" });
+    Toast({ message: data.message, type: "success" });
     // Update paintings with images
-    console.log("After SUbmit:", data);
     if (data.success && images.length > 0) {
       const { id } = data.painter;
       const params = parseImages(id, images);
@@ -114,9 +121,14 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
     };
 
     const params = parseGeneralParams(data);
-    console.log("Params:", params);
-    const path = `/${painter.id}`;
-    putResource(path, params, handlePainterResponse);
+
+    if (painter) {
+      const path = `/${painter.id}`;
+      putResource(path, params, handlePainterResponse);
+    } else {
+      const path = "/";
+      postResource(path, params, handlePainterResponse);
+    }
   };
 
   const handleAddCategory = () => {
@@ -373,7 +385,7 @@ const EditDialog = function EditDialog({ painter, open, handleClose }) {
                 variant="contained"
                 color="primary"
               >
-                Update
+                {painter ? "Update" : "Create"}
               </Button>
             </Grid>
           </Grid>
@@ -464,4 +476,4 @@ const PainterCategories = function PainterCategories({
   return null;
 };
 
-export default EditDialog;
+export default NewPainter;
