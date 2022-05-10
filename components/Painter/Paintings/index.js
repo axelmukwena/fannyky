@@ -45,7 +45,7 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     setShow(isExpanded ? category.slug : "");
 
     if (panel !== isExpanded) {
-      router.replace(`${painter.slug}/category/${category.slug}`);
+      router.replace(`/${painter.slug}/category/${category.slug}`);
     }
   };
 
