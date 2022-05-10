@@ -1,30 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import React from "react";
+import { Grid, Box } from "@mui/material";
 import MobileMenu from "./Menu/MobileMenu";
 import DesktopMenu from "./Menu/DesktopMenu";
 import Loading from "./Loading/Loading";
 
 const Layout = function Layout({ painter, children }) {
-  const [width, setWidth] = useState(0);
-
-  function handleResize() {
-    setWidth(window.innerWidth);
-  }
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    // remove resize listener
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   if (!painter) return <Loading />;
 
   return (
     <>
-      {width <= 900 ? <MobileMenu painter={painter} /> : null}
+      <Box className="mobile">
+        <MobileMenu painter={painter} />
+      </Box>
 
       <Grid
         className="painter"
@@ -34,11 +21,12 @@ const Layout = function Layout({ painter, children }) {
         container
         spacing={0}
       >
-        {width > 900 ? (
+        <Box className="desktop">
           <Grid item xs={2.5}>
             <DesktopMenu painter={painter} />
           </Grid>
-        ) : null}
+        </Box>
+
         <Grid
           item
           xs={12}

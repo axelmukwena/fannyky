@@ -1,5 +1,5 @@
 import { DeleteOutline } from "@mui/icons-material";
-import { Typography, Grid, Card } from "@mui/material";
+import { Typography, Grid, Card, Box } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -121,7 +121,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
       >
         {painting.images.length > 0 && (
           <>
-            {width <= 900 && (
+            <Box className="mobile">
               <Image
                 loader={ImageLoader}
                 src={imageUrl(painting.images[0].original)}
@@ -133,9 +133,9 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
               />
-            )}
+            </Box>
 
-            {width > 900 && (
+            <Box className="desktop">
               <Image
                 loader={ImageLoader}
                 quality={40}
@@ -149,7 +149,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
               />
-            )}
+            </Box>
 
             <DeletePainting painting={painting} />
           </>

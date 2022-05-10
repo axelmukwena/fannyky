@@ -79,3 +79,21 @@ p {
 	}
 }
 
+/* Show on small screen */
+@media only screen and (max-width: 900px) {
+  .mobile {
+    display: block;
+  }
+}
+
+/* Show on bigger screen */
+@media only screen and (min-width: 901px) {
+  .desktop {
+    display: block;
+  }
+}
+
+/* Hide all by default */
+.desktop, .mobile {
+  display: none;
+}
