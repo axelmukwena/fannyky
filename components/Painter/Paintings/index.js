@@ -16,14 +16,13 @@ import Loading from "../../Loading/Loading";
 import useUser from "../../../api/useUser";
 import CategoryPaintings from "./CategoryPaintings";
 
-const Index = function Index({ currentCategory, paintings, painter, load }) {
+const Index = function Index({ currentCategory, paintings, painter }) {
   const router = useRouter();
 
   const [width, setWidth] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
-  const [loading, setLoading] = useState(load);
-  console.log("Loading:", loading);
+  const [loading, setLoading] = useState(false);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -34,8 +33,6 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
       setExpanded(currentCategory.slug);
       setShow(currentCategory.slug);
     }
-    console.log("After Resize");
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -64,9 +61,9 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
 
     if (panel !== isExpanded) {
       setLoading(true);
-      console.log("Before Route");
-      router.replace(nextpath);
-      console.log("After Route");
+      router.replace(nextpath).then(() => {
+        setLoading(false);
+      });
     }
   };
 
@@ -118,7 +115,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              {false && (
+              {loading === true && (
                 <Box sx={{ display: "flex", color: "black" }}>
                   <CircularProgress
                     style={{
@@ -129,7 +126,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
                   />
                 </Box>
               )}
-              {show === category.slug && (
+              {loading === false && show === category.slug && (
                 <CategoryPaintings paintings={paintings} width={width} />
               )}
             </AccordionDetails>

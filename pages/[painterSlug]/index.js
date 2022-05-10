@@ -36,7 +36,6 @@ const Index = function Index({ paintings, painter, currentCategory }) {
       />
       <Layout painter={painter}>
         <Paintings
-          load={false}
           painter={painter}
           paintings={paintings}
           currentCategory={currentCategory}
