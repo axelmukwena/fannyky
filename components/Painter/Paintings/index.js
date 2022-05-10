@@ -16,13 +16,13 @@ import Loading from "../../Loading/Loading";
 import useUser from "../../../api/useUser";
 import CategoryPaintings from "./CategoryPaintings";
 
-const Index = function Index({ currentCategory, paintings, painter }) {
+const Index = function Index({ currentCategory, paintings, painter, load }) {
   const router = useRouter();
 
   const [width, setWidth] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(load);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -116,7 +116,11 @@ const Index = function Index({ currentCategory, paintings, painter }) {
               {loading && (
                 <Box sx={{ display: "flex", color: "black" }}>
                   <CircularProgress
-                    sx={{ width: "25px", height: "25px", marginLeft: "10px" }}
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      marginLeft: "10px",
+                    }}
                   />
                 </Box>
               )}
