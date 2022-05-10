@@ -23,7 +23,6 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
   const [expanded, setExpanded] = useState(false);
   const [show, setShow] = useState("");
   const [loading, setLoading] = useState(load);
-  console.log("Load:", load);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -114,7 +113,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              {loading && (
+              {loading === true && (
                 <Box sx={{ display: "flex", color: "black" }}>
                   <CircularProgress
                     style={{
@@ -126,7 +125,7 @@ const Index = function Index({ currentCategory, paintings, painter, load }) {
                 </Box>
               )}
 
-              {!loading && show === category.slug && (
+              {loading === false && show === category.slug && (
                 <CategoryPaintings paintings={paintings} width={width} />
               )}
             </AccordionDetails>
