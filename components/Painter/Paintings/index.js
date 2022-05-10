@@ -115,7 +115,9 @@ const Index = function Index({ currentCategory, paintings, painter }) {
             <AccordionDetails sx={{ padding: 0 }}>
               {loading && (
                 <Box sx={{ display: "flex", color: "black" }}>
-                  <CircularProgress />
+                  <CircularProgress
+                    sx={{ width: "25px", height: "25px", marginLeft: "10px" }}
+                  />
                 </Box>
               )}
 
