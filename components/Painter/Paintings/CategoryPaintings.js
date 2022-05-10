@@ -128,6 +128,8 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
               />
+
+              <DeletePainting painting={painting} />
             </Card>
           </Box>
 
@@ -156,10 +158,10 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
                 objectFit="cover"
                 onClick={() => handleOpenImages(painting)}
               />
+
+              <DeletePainting painting={painting} />
             </Card>
           </Box>
-
-          <DeletePainting painting={painting} />
         </>
       )}
       {painting.images.length === 0 && (
