@@ -66,15 +66,16 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     }
   };
 
+  // Append "Works" if the category is a number => year
   function parseCategory(string) {
-    if (painter.rank === 1) return string;
+    if (painter.rank === 1) return "";
 
     // If string is NaN means it is not a Number
     // Number.isNaN(Number("foo")) => true
     // Number.isNaN(Number("2000")) => false
-    if (Number.isNaN(Number(string))) return string;
+    if (Number.isNaN(Number(string))) return "";
 
-    return `${string} Works`;
+    return " Works";
   }
 
   if (!paintings) {
