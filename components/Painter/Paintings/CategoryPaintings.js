@@ -181,6 +181,7 @@ const AddPhotos = function AddPhotos({ width, paintings, handleOpenImages }) {
       {painting.title && (
         <Typography className="painting-title-index-typography">
           <NextLink
+            replace
             href="[painterSlug]/works/[workSlug]"
             as={`${painting.painter.slug}/works/${painting.slug}`}
             className="painting-title-index"
