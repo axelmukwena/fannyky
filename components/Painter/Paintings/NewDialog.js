@@ -132,7 +132,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     // If category is unspecified, set to "Uncategorized"
     let tempCategory = category;
     let tempCategorySlug = categorySlug;
-    if (tempCategorySlug !== "") {
+    if (tempCategorySlug === "") {
       tempCategory = "Uncategorized";
       tempCategorySlug = "uncategorized";
     }
