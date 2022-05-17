@@ -66,6 +66,17 @@ const Index = function Index({ currentCategory, paintings, painter }) {
     }
   };
 
+  function parseCategory(string) {
+    if (painter.rank === 1) return string;
+
+    // If string is NaN means it is not a Number
+    // Number.isNaN(Number("foo")) => true
+    // Number.isNaN(Number("2000")) => false
+    if (Number.isNaN(Number(string))) return string;
+
+    return `${string} Works`;
+  }
+
   if (!paintings) {
     return <Loading />;
   }
@@ -109,10 +120,9 @@ const Index = function Index({ currentCategory, paintings, painter }) {
                   color: "#525252",
                 }}
               >
+                {/* https://github.com/airbnb/javascript#standard-library--isnan */}
                 {category.name}
-                {painter.rank === 2 && category.slug !== "uncategorized"
-                  ? " Works"
-                  : ""}
+                {parseCategory(category.slug)}
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
