@@ -108,16 +108,6 @@ const NewPainter = function NewPainter({ painter, open, handleClose }) {
     const rawAbout = convertToRaw(about.getCurrentContent());
     const stringAbout = JSON.stringify(rawAbout);
 
-    // If category is not in the options, add it
-    const uncategorized = paintingsCategories.filter((cat) => {
-      return cat.slug === "uncategorized";
-    });
-
-    const categories = paintingsCategories;
-    if (!uncategorized.length) {
-      categories.push({ name: "Uncategorized", slug: "uncategorized" });
-    }
-
     const data = {
       rank,
       name,
@@ -127,7 +117,7 @@ const NewPainter = function NewPainter({ painter, open, handleClose }) {
       phone,
       link,
       menuitems,
-      paintings_categories: JSON.stringify(categories),
+      paintings_categories: JSON.stringify(paintingsCategories),
     };
 
     const params = parseGeneralParams(data);
