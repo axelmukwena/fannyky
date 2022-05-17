@@ -9,7 +9,7 @@ import Layout from "../../components/Layout";
 import { apiUrl } from "../../utilities/helpers";
 import Loading from "../../components/Loading/Loading";
 
-const Index = function Index({ paintings, painter, currentCategory }) {
+const Index = function Index({ paintings, painter, currentCategory, count }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -39,6 +39,7 @@ const Index = function Index({ paintings, painter, currentCategory }) {
           painter={painter}
           paintings={paintings}
           currentCategory={currentCategory}
+          count={count}
         />
       </Layout>
     </>
@@ -70,12 +71,14 @@ export async function getStaticProps(content) {
       apiUrl(`/${painterSlug}/paintings_category/${currentCategory.slug}`)
     );
     const paintings = await paintingsRes.json();
+    const count = paintings.length;
 
     return {
       props: {
         paintings,
         painter,
         currentCategory,
+        count,
       },
       revalidate: 5,
     };

@@ -16,7 +16,7 @@ import Loading from "../../Loading/Loading";
 import useUser from "../../../api/useUser";
 import CategoryPaintings from "./CategoryPaintings";
 
-const Index = function Index({ currentCategory, paintings, painter }) {
+const Index = function Index({ currentCategory, paintings, painter, count }) {
   const router = useRouter();
 
   const [width, setWidth] = useState(0);
@@ -87,43 +87,50 @@ const Index = function Index({ currentCategory, paintings, painter }) {
 
       {painter.paintings_categories.map((category) => {
         return (
-          <Accordion
-            key={category.slug}
-            elevation={0}
-            expanded={expanded === category.slug}
-            onChange={handleChange(category)}
-            sx={{ borderBottom: "1px solid #00000012" }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMore />}
-              aria-controls={`${category.slug}-content`}
-              id={category.slug}
-              sx={{ padding: "0px" }}
-            >
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                  fontFamily: "Roboto",
-                  margin: "0 0 0 5px",
-                  color: "#525252",
-                }}
+          <>
+            {""}
+            {count > 0 && (
+              <Accordion
+                key={category.slug}
+                elevation={0}
+                expanded={expanded === category.slug}
+                onChange={handleChange(category)}
+                sx={{ borderBottom: "1px solid #00000012" }}
               >
-                {category.name}
-                {painter.rank === 2 ? " Works" : ""}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ padding: 0 }}>
-              {loading === true && (
-                <Box sx={{ width: "100%", color: "grey.500" }}>
-                  <LinearProgress color="inherit" />
-                </Box>
-              )}
-              {loading === false && show === category.slug && (
-                <CategoryPaintings paintings={paintings} width={width} />
-              )}
-            </AccordionDetails>
-          </Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls={`${category.slug}-content`}
+                  id={category.slug}
+                  sx={{ padding: "0px" }}
+                >
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: "1rem",
+                      fontFamily: "Roboto",
+                      margin: "0 0 0 5px",
+                      color: "#525252",
+                    }}
+                  >
+                    {category.name}
+                    {painter.rank === 2 && category.slug !== "uncategorized"
+                      ? " Works"
+                      : ""}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ padding: 0 }}>
+                  {loading === true && (
+                    <Box sx={{ width: "100%", color: "grey.500" }}>
+                      <LinearProgress color="inherit" />
+                    </Box>
+                  )}
+                  {loading === false && show === category.slug && (
+                    <CategoryPaintings paintings={paintings} width={width} />
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            )}
+          </>
         );
       })}
     </>
