@@ -129,6 +129,14 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     const rawDescription = convertToRaw(description.getCurrentContent());
     const stringDescription = JSON.stringify(rawDescription);
 
+    // If category is unspecified, set to "Uncategorized"
+    let tempCategory = category;
+    let tempCategorySlug = categorySlug;
+    if (tempCategorySlug !== "") {
+      tempCategory = "Uncategorized";
+      tempCategorySlug = "uncategorized";
+    }
+
     const data = {
       title,
       date_created: dateCreated,
@@ -136,8 +144,8 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       rankdate,
       dimension,
       abstract,
-      category,
-      category_slug: categorySlug,
+      category: tempCategory,
+      category_slug: tempCategorySlug,
       description: stringDescription,
       painter,
     };
