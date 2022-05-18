@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const NextLink = function NextLink({ href, className, style, children }) {
   return (
-    <Link href={href} replace>
+    <Link href={href}>
       <a className={className || "default"} style={style || {}}>
         {children}
       </a>
