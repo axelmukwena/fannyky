@@ -54,7 +54,7 @@ const Contents = function Contents({ title, message, homeLink, height }) {
             {!homeLink && (
               <>
                 <span> Go </span>
-                <NextLink href="/" as="/" className="not-found-home-link">
+                <NextLink href="/" className="not-found-home-link">
                   home
                 </NextLink>
                 <span>.</span>

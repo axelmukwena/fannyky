@@ -289,8 +289,7 @@ const PaintingsDialogContent = function PaintingsDialogContent({
     return (
       <Box className="painting-dialog-content" sx={{ width: "fit-content" }}>
         <NextLink
-          href="[painterSlug]/works/[workSlug]"
-          as={`${resource.painter.slug}/works/${resource.slug}`}
+          href={`/${resource.painter.slug}/works/${resource.slug}`}
           className="painting-title-popup"
           style={{ fontWeight: 500 }}
         >

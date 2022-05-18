@@ -87,8 +87,7 @@ const GetPublications = function GetPublications({ publications, width }) {
           >
             <Grid item>
               <NextLink
-                href="/[painterSlug]/publications/[publicationSlug]"
-                as={`/${publication.painter.slug}/publications/${publication.slug}`}
+                href={`/${publication.painter.slug}/publications/${publication.slug}`}
                 className="publication-title-index"
               >
                 {publication.title}
@@ -176,8 +175,7 @@ const TrimDescription = function TrimDescription({ publication }) {
           dangerouslySetInnerHTML={description}
         />
         <NextLink
-          href="/[painterSlug]/publications/[publicationSlug]"
-          as={`/${publication.painter.slug}/publications/${publication.slug}`}
+          href={`/${publication.painter.slug}/publications/${publication.slug}`}
           style={{ textDecoration: "none" }}
         >
           <Typography
@@ -203,8 +201,7 @@ const CardImage = function CardImage({ publication, width }) {
     return (
       <Grid xs={12} sm={2} item>
         <NextLink
-          href="/[painterSlug]/publications/[publicationSlug]"
-          as={`/${publication.painter.slug}/publications/${publication.slug}`}
+          href={`/${publication.painter.slug}/publications/${publication.slug}`}
         >
           <Card
             elevation={0}

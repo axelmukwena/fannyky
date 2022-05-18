@@ -50,8 +50,7 @@ const GetTalks = function GetTalks({ talks }) {
         <div style={{ width: "100%" }}>
           <Typography style={{ paddingLeft: 50, textIndent: -47 }}>
             <NextLink
-              href="/[painterSlug]/talks/[talkSlug]"
-              as={`/${talk.painter.slug}/talks/${talk.slug}`}
+              href={`/${talk.painter.slug}/talks/${talk.slug}`}
               className="talk-title-index-all"
             >
               {talk.date}

@@ -147,8 +147,7 @@ const Biography = function Biography({ painter }) {
             )}
 
             <NextLink
-              href="/[painterSlug]/contact"
-              as={`/${painter.slug}/contact`}
+              href={`/${painter.slug}/contact`}
               style={{ textDecoration: "none" }}
             >
               <Button

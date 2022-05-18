@@ -37,8 +37,7 @@ const DesktopMenu = function DesktopMenu({ painter }) {
         <div className="logo">
           <Box onClick={handleClick} sx={{ cursor: "pointer" }}>
             <NextLink
-              href="/[painterSlug]"
-              as={`/${painter.slug}`}
+              href={`/${painter.slug}`}
               style={{ textDecoration: "none" }}
             >
               <Typography

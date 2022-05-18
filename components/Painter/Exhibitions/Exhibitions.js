@@ -90,8 +90,7 @@ const GetExhibitions = function GetExhibitions({ exhibitions }) {
             style={{ paddingLeft: 50, textIndent: -47 }}
           >
             <NextLink
-              href="/[painterSlug]/exhibitions/[exhibitionSlug]"
-              as={`/${exhibition.painter.slug}/exhibitions/${exhibition.slug}`}
+              href={`/${exhibition.painter.slug}/exhibitions/${exhibition.slug}`}
               className="exhibition-title-index-all"
             >
               {exhibition.start_date}

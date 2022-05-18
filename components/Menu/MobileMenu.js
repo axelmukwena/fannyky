@@ -47,8 +47,7 @@ const MobileMenu = function MobileMenu({ painter }) {
             <div className="logo" style={{ flexGrow: 1, marginBottom: 0 }}>
               <Box onClick={handleClick} sx={{ cursor: "pointer" }}>
                 <NextLink
-                  href="/[painterSlug]"
-                  as={`/${painter.slug}`}
+                  href={`/${painter.slug}`}
                   style={{ textDecoration: "none" }}
                 >
                   <Typography

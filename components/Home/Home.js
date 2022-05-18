@@ -108,8 +108,7 @@ const Home = function Home({ paintersData }) {
           return (
             <Grid key={painter.slug} item sx={{ margin: 0, padding: 0 }}>
               <NextLink
-                href="[painterSlug]"
-                as={`/${painter.slug}`}
+                href={`/${painter.slug}`}
                 style={{ textDecoration: "none" }}
               >
                 <Painter painter={painter} width={width} />

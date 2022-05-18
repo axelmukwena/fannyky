@@ -46,8 +46,7 @@ const GetAwards = function GetAwards({ awards, handleClick }) {
     return awards.map((award) => (
       <Grid key={award.slug} item xs={12} sm={3}>
         <NextLink
-          href="/[painterSlug]/awards/[awardSlug]"
-          as={`/${award.painter.slug}/awards/${award.slug}`}
+          href={`/${award.painter.slug}/awards/${award.slug}`}
           style={{ textDecoration: "none" }}
         >
           <Card
