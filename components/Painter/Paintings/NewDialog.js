@@ -103,17 +103,6 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     setImages([]);
   };
 
-  const handleCategory = (selected) => {
-    const filtered = painter.paintings_categories?.filter((cat) => {
-      return cat.name === selected;
-    });
-
-    if (filtered && filtered.length) {
-      setCategory(filtered[0].name);
-      setCategorySlug(filtered[0].slug);
-    }
-  };
-
   const handleToastMessage = (data) => {
     Toast({ message: data.message, type: "success" });
     if (data.success) {
@@ -151,7 +140,14 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     }
 
     if (!tempCategorySlug && tempCategory) {
-      handleCategory(tempCategory);
+      const filtered = painter.paintings_categories?.filter((cat) => {
+        return cat.name === tempCategory;
+      });
+
+      if (filtered && filtered.length) {
+        tempCategory = filtered[0].name;
+        tempCategorySlug = filtered[0].slug;
+      }
     }
 
     const data = {
@@ -182,6 +178,17 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     } else {
       const path = `/${painter.id}/paintings`;
       postResource(path, params, handlePaintingResponse);
+    }
+  };
+
+  const handleCategory = (selected) => {
+    const filtered = painter.paintings_categories?.filter((cat) => {
+      return cat.name === selected;
+    });
+
+    if (filtered && filtered.length) {
+      setCategory(filtered[0].name);
+      setCategorySlug(filtered[0].slug);
     }
   };
 
