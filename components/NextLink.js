@@ -3,7 +3,6 @@ import Link from "next/link";
 
 const NextLink = function NextLink({
   href,
-  as,
   className,
   style,
   children,
@@ -12,7 +11,7 @@ const NextLink = function NextLink({
   return (
     <>
       {replace && (
-        <Link href={href} as={as} replace>
+        <Link href={href} replace>
           <a className={className || "default"} style={style || {}}>
             {children}
           </a>
@@ -20,7 +19,7 @@ const NextLink = function NextLink({
       )}
 
       {!replace && (
-        <Link href={href} as={as}>
+        <Link href={href}>
           <a className={className || "default"} style={style || {}}>
             {children}
           </a>
