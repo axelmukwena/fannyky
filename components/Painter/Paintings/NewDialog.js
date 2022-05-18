@@ -82,6 +82,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       setAbstract(painting.abstract);
       setCategory(painting.category);
       setCategorySlug(painting.category_slug);
+      console.log("category_slug:", painting.category_slug);
     }
 
     if (painting && painting.images.length > 0) {
@@ -100,6 +101,17 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     setCategorySlug("");
     setDescription(EditorState.createEmpty());
     setImages([]);
+  };
+
+  const handleCategory = (selected) => {
+    const filtered = painter.paintings_categories?.filter((cat) => {
+      return cat.name === selected;
+    });
+
+    if (filtered && filtered.length) {
+      setCategory(filtered[0].name);
+      setCategorySlug(filtered[0].slug);
+    }
   };
 
   const handleToastMessage = (data) => {
@@ -129,12 +141,17 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     const rawDescription = convertToRaw(description.getCurrentContent());
     const stringDescription = JSON.stringify(rawDescription);
 
-    // If category is unspecified, set to "Uncategorised"
     let tempCategory = category;
     let tempCategorySlug = categorySlug;
+
+    // If category is unspecified, set to "Uncategorised"
     if (tempCategorySlug === "") {
       tempCategory = "Uncategorised";
       tempCategorySlug = "uncategorised";
+    }
+
+    if (!tempCategorySlug && tempCategory) {
+      handleCategory(tempCategory);
     }
 
     const data = {
@@ -165,17 +182,6 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     } else {
       const path = `/${painter.id}/paintings`;
       postResource(path, params, handlePaintingResponse);
-    }
-  };
-
-  const handleCategory = (selected) => {
-    const filtered = painter.paintings_categories?.filter((cat) => {
-      return cat.name === selected;
-    });
-
-    if (filtered && filtered.length) {
-      setCategory(filtered[0].name);
-      setCategorySlug(filtered[0].slug);
     }
   };
 
