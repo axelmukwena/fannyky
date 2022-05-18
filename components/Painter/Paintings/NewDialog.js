@@ -150,6 +150,10 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       painter,
     };
 
+    console.log("Data:", data);
+
+    if (false) return;
+
     const params = parseGeneralParams(data);
     if (painting) {
       const path = `/${painter.id}/paintings/${painting.id}`;
