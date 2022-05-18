@@ -82,7 +82,6 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       setAbstract(painting.abstract);
       setCategory(painting.category);
       setCategorySlug(painting.category_slug);
-      console.log("category_slug:", painting.category_slug);
     }
 
     if (painting && painting.images.length > 0) {
@@ -162,14 +161,6 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       description: stringDescription,
       painter,
     };
-
-    console.log("category:", category);
-    console.log("categorySlug:", categorySlug);
-    console.log("tempCategory:", tempCategory);
-    console.log("tempCategorySlug:", tempCategorySlug);
-    console.log("Data:", data);
-
-    if (true) return;
 
     const params = parseGeneralParams(data);
     if (painting) {
