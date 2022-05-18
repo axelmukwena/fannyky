@@ -43,7 +43,6 @@ const theme = createTheme({
           fontWeight: 400,
           fontSize: "0.9rem",
           fontFamily: "Roboto, sans-serif",
-          // fontFamily: "Titillium Web, sans-serif",
         },
       },
     },
