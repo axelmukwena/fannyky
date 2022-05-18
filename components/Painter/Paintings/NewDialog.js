@@ -279,7 +279,7 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <FormControl fullWidth required>
                 <InputLabel id="category">Category</InputLabel>
                 <Select
