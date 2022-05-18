@@ -150,9 +150,13 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
       painter,
     };
 
+    console.log("category:", category);
+    console.log("categorySlug:", categorySlug);
+    console.log("tempCategory:", tempCategory);
+    console.log("tempCategorySlug:", tempCategorySlug);
     console.log("Data:", data);
 
-    if (false) return;
+    if (true) return;
 
     const params = parseGeneralParams(data);
     if (painting) {
