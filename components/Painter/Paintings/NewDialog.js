@@ -129,12 +129,12 @@ const NewDialog = function NewDialog({ painting, painter, open, handleClose }) {
     const rawDescription = convertToRaw(description.getCurrentContent());
     const stringDescription = JSON.stringify(rawDescription);
 
-    // If category is unspecified, set to "Uncategorized"
+    // If category is unspecified, set to "Uncategorised"
     let tempCategory = category;
     let tempCategorySlug = categorySlug;
     if (tempCategorySlug === "") {
-      tempCategory = "Uncategorized";
-      tempCategorySlug = "uncategorized";
+      tempCategory = "Uncategorised";
+      tempCategorySlug = "uncategorised";
     }
 
     const data = {
