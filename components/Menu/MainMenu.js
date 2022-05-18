@@ -42,7 +42,7 @@ const MainMenu = function MainMenu({ painter, handleClose }) {
           <Link
             key={menu.id}
             onClick={(event) => handleClick(event, menu.id)}
-            href={`/${menu.painterSlug}${menu.extension}`}
+            href={`${menu.painterSlug}${menu.extension}`}
             style={{ textDecoration: "none" }}
           >
             <a style={{ textDecoration: "none" }}>
