@@ -90,7 +90,6 @@ const GetPhone = function GetPhone({ painter }) {
   if (painter.phone) {
     return (
       <Grid xs={12} item style={{ display: "flex", alignItems: "center" }}>
-        |&nbsp;&nbsp;&nbsp;
         <Phone style={{ fontSize: 19, marginRight: 7 }} />
         <Typography>{painter.phone}</Typography>
       </Grid>
